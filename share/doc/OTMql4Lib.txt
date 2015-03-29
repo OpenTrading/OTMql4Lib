@@ -1,6 +1,3 @@
-# OTMql4Lib
-Open Trading Metaquotes4 Library
-
 
 Metatrader with Python (Multi-Platform)
 
