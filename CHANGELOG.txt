@@ -1,3 +1,8 @@
+commit 1dde6188c6ddaecec29e4fd196e6d93dc54e2c40
+Date:   Sun Mar 29 18:18:59 2015 +0300
+
+    Started with some documentation.
+
 commit d83ed7428e4d1a4256691e0af7151a36133c2c56
 Date:   Sun Mar 29 01:20:47 2015 +0200
 
