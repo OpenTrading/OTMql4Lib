@@ -3,7 +3,7 @@
 #property copyright "Copyright 2013 OpenTrading"
 #property link      "https://github.com/OpenTrading/"
 
-#import "OTLibTrading.ex4"
+#import "OTMql4/OTLibTrading.ex4"
 
 int iOTOrderSelect(int iIndex, int iSelect, int iPool);
 

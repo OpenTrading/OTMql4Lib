@@ -6,7 +6,7 @@ This is just a stub for a full logging system later.
 #property copyright "Copyright 2014 Open Trading"
 #property link      "https://github.com/OpenTrading/"
 
-#import "OTLibLog.ex4"
+#import "OTMql4/OTLibLog.ex4"
 
 void vLog(int iLevel, string sMsg);
 void vError(string sMess);
