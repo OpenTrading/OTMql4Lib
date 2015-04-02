@@ -22,8 +22,7 @@ poor programming environment.
 The OTMql4Lib aims to provide a high-quality library of code to Mt4
 with testing and documentation, that can serve as a basis to other projects.
 
-
-**This is a work in progress - a pre-developers version.**
+**This is a work in progress - a developers' pre-release version.**
 
 ### Installation
 
