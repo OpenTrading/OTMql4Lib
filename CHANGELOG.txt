@@ -1,3 +1,8 @@
+commit 34af5914be82c029c99a7e475ee466477e7ab887
+Date:   Mon Mar 30 05:40:11 2015 +0300
+
+     First checkin of our library for Mql4 - untested WIP.
+
 commit 1dde6188c6ddaecec29e4fd196e6d93dc54e2c40
 Date:   Sun Mar 29 18:18:59 2015 +0300
 
