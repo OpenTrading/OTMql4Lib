@@ -1,4 +1,4 @@
-// -*-mode: c++; fill-column: 75; tab-width: 8; coding: utf-8-dos -*-
+// -*-mode: c; c-style: stroustrup; c-basic-offset: 4; coding: utf-8-dos -*-
 
 #property copyright "Copyright 2013 OpenTrading"
 #property link      "https://github.com/OpenTrading/"
@@ -7,10 +7,10 @@
 
 int iOTOrderSelect(int iIndex, int iSelect, int iPool);
 
-int iOTOrderSend(string sSymbol, int cmd, 
-		 double volume, double price, 
-		 int slippage, double stoploss, double takeprofit, 
-		 string comment, int magic, datetime expiration, 
+int iOTOrderSend(string sSymbol, int cmd,
+		 double volume, double price,
+		 int slippage, double stoploss, double takeprofit,
+		 string comment, int magic, datetime expiration,
 		 color arrow_color);
 int iOTOrderClose(int iTicket,  double fLots, double fPrice, int iSlippage, color cColor=CLR_NONE);
 

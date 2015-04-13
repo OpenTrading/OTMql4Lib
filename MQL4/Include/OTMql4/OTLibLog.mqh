@@ -1,4 +1,4 @@
-// -*-mode: c++; fill-column: 75; tab-width: 8; coding: utf-8-dos -*-
+// -*-mode: c; c-style: stroustrup; c-basic-offset: 4; coding: utf-8-dos -*-
 
 /*
 This is just a stub for a full logging system later.
@@ -9,6 +9,7 @@ This is just a stub for a full logging system later.
 #import "OTMql4/OTLibLog.ex4"
 
 void vLog(int iLevel, string sMsg);
+void vPanic(string sMess);
 void vError(string sMess);
 void vWarn(string sMess);
 void vInfo(string sMess);

@@ -45,3 +45,35 @@ https://github.com/OpenTrading/OTMql4Lib/wiki
 It's better to use the wiki for knowledge capture, and then we can pull
 the important pages back into the documentation in the share/doc directory.
 You will need to be signed into github.com to see or edit in the wiki.
+### Development
+
+#### Type Prefixing
+
+Prefix all variable, function and method names with a lowercase letter
+that indicates the type; it helps you anticipate what type a quantity
+is, and to make explicit type conversions. If the type changes, give
+it a new name with the initial letter changed. In Mql, this scheme
+has the added advantage of avoiding any naming conflict with Mql
+built-ins or most standard library modules.
+
+Choose the initial letter from the following list:
+
+||'''Prefix Letter'''||'''Variable Type'''	||
+|| a		|| array 	||
+|| b		|| boolean	||
+|| c		|| complex (unused)	||
+|| d		|| alist or dictionary	||
+|| e		|| error string return value, empty for success	||
+|| f		|| double	||
+|| g		|| generic - unknown or mutable (unused)	||
+|| h		|| hypertext - HTML/XML entity encoded string	||
+|| i		|| integer	||
+|| l		|| list or tuple	||
+|| o		|| instance or pointer to a class	||
+|| p		|| pathname - name of a file or directory	||
+|| s		|| ASCII string	||
+|| t		|| date/time value	||
+|| u		|| Unicode string	||
+|| v		|| void - return value not to be used	||
+|| z		|| non-empty string return value - empty is failure	||
+
