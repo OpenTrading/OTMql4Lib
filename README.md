@@ -1,7 +1,11 @@
 # OTMql4Lib
 ## Open Trading Metaquotes4 Library
 
+## OpenTrading Mt4 Library Code
+https://github.com/OpenTrading/OTMql4Lib
 
+The OTMql4Lib aims to provide a high-quality library of code to Mt4
+with testing and documentation, that can serve as a basis to other projects.
 
 Metatrader has been a great international success, putting into the
 hands of end-users the ability to do programmed trading, something
@@ -21,9 +25,6 @@ manufacturer, MetaQuotes. The poor nature of the language combines
 with the very poor coding practices of the community (e.g. not
 checking error codes and no documentation or testing) to create a very
 poor programming environment.
-
-The OTMql4Lib aims to provide a high-quality library of code to Mt4
-with testing and documentation, that can serve as a basis to other projects.
 
 **This is a work in progress - a developers' pre-release version.**
 

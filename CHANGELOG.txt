@@ -1,3 +1,8 @@
+commit 60ab34c439c0d8787ecc516077c8bc7008340722
+Date:   Mon Apr 13 20:33:22 2015 +0300
+
+    Added documentation on naming conventions in share/doc/09Development.txt
+
 commit c38dc2cf8c3cf55f824832f98e19141b5b385637
 Date:   Thu Apr 2 20:03:22 2015 +0300
 

@@ -1,8 +1,8 @@
-// -*-mode: c++; fill-column: 75; tab-width: 8; coding: utf-8-dos -*-
+// -*-mode: c; c-style: stroustrup; c-basic-offset: 4; coding: utf-8-dos -*-
 
 /*
 This will provide our logging functions, but is just a
-skeleton for now.
+skeleton for now. See OTLibPyLog for logging with Python.
 */
 
 #property copyright "Copyright 2014 Open Trading"
