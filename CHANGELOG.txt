@@ -1,3 +1,13 @@
+commit 3bdcba29b5fa3680ddabc3c9c1ef27b677122c93
+Date:   Thu Apr 23 16:58:14 2015 +0300
+
+    Refactored OTLibProcessCmd.mqh into OTLibMt4ProcessCmd.mqh
+    and OTZmqProcessCmd.mqh to make it easier for people to reuse
+    ProcessCmd with the OT additions, and to extend it to handle
+    their own additions.
+    
+    Added the beginning of tests in Script/OTMql4/OTLibTest.mq4
+
 commit 60ab34c439c0d8787ecc516077c8bc7008340722
 Date:   Mon Apr 13 20:33:22 2015 +0300
 

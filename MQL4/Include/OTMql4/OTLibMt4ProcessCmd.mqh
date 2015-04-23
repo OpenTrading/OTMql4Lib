@@ -5,5 +5,5 @@
 
 #import "OTMql4/OTLibMt4ProcessCmd.ex4"
 
-string eOTLibPreProcessCmd (string& aArrayAsList[]);
-string zOTLibMt4ProcessCmd(string uMess);
+string eOTLibPreProcessCmd(string& aArrayAsList[]);
+string zMt4LibProcessCmd(string uMess);

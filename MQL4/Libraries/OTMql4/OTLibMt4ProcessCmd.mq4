@@ -189,7 +189,7 @@ string zProcessCmdTer(string uCmd, string uChart, string uPeriod, string uArg1, 
 
 string zProcessCmdWin(string uCmd, string uChart, string uPeriod, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
     string uMsg;
-    string uRetval="none|";
+    string uRetval="";
     int iIndex, iPeriod;
 
     if (uCmd == "WindowBarsPerChart") {
@@ -238,7 +238,7 @@ string zProcessCmdWin(string uCmd, string uChart, string uPeriod, string uArg1, 
 
 string zProcessCmdAcc(string uCmd, string uChart, string uPeriod, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
     string uMsg;
-    string uRetval="none|";
+    string uRetval="";
     string uSymbol;
     int iCmd;
     double fVolume;
@@ -290,7 +290,7 @@ string zProcessCmdAcc(string uCmd, string uChart, string uPeriod, string uArg1, 
 
 string zProcessCmdGlo(string uCmd, string uChart, string uPeriod, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
     string uMsg;
-    string uRetval="none|";
+    string uRetval="";
     string sName;
     double fValue;
 

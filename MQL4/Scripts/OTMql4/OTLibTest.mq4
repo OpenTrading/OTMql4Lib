@@ -53,7 +53,8 @@ string eTestOTLibProcessCmd() {
     string uRetval = "";
     string uArg;
     string aOutput[];
-
+    string uExpect;
+    
     uArg = "one";
     uRetval = zOTLibProcessCmd(uArg);
     if (uRetval == "") { 
@@ -62,6 +63,14 @@ string eTestOTLibProcessCmd() {
 	return("ERROR: should NOT have returned a value -> " +uRetval);
     }
     
+    uArg = "exec|USDUSD|0|123456|TerminalPath";
+    uRetval = zOTLibProcessCmd(uArg);
+    uExpect = "string|" +TerminalPath();
+    if (uRetval == uExpect) { 
+	Print("INFO: right answer -> " +uArg);
+    } else {
+	return("ERROR: wrong return value -> " +uRetval);
+    }
     return("");
 }
 
