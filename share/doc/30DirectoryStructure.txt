@@ -1,0 +1,45 @@
+WE adopt a standard directory structure for all projects, so that it
+will be obvious what directory things should go in as the projects
+progress, and it will make it easier to share code and transfer
+knowledge between projects.  The directory structure must be complete
+so that it will support the final wrapping of the deliverable,
+including all documentation.
+
+The standardized Unix layout works for both MultiPlatformCoding under
+both Unix and Windows, and many configuration tools assume its layout. The
+layout is the defacto-standard created by the [http://www.fsf.org/ GNU]
+toolchain.
+
+In your top project directory you should find:[M]
+
+    * '''bin''': binary directory.  This will contain executables, for
+    either the main program, or support tools. For multi-platform work
+    assume that there may be platform and OS dependent subdirectories
+    such as
+	 * `bin/windows-x86`: windows subdirectory
+	 * `bin/linux-x86`: linux subdirectory
+
+    * '''etc''': configuration files - may be empty.
+
+    * '''lib''': library directory.  This will contain object libraries, for
+    either the main program, or support tools. For multi-platform work,
+    assume that there will be platform and OS dependent files under `lib`.
+
+    * '''net''': Repository for files downloaded from the net, for all
+    bundled prerquisites of code or tools required by the program. It
+    may also contain the orginal version of code that this project
+    extends, so that it's easy to compare the preoject with its origins.
+    Make protocol subdirectories such as `net/Http` `net/Ftp`
+    and in these subdirectories, put the name of the site the package
+    was downloaded from.
+
+    * '''share''': platform independent library directories. For example,
+    the on-line documentation might go in `share/doc` or in `share/html`
+    and icons might go in `share/icons` etc.
+
+    * '''src''': The source code for the application and any of the tools
+    it requires. 
+
+    * '''var''': variable run-time data, initially empty. May have 
+    subdirectories like `var/log` for log files, 
+    `var/cache` for runtime files, `var/tmp` for temporary files etc.

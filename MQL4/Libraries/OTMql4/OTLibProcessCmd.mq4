@@ -50,7 +50,7 @@ string zOTLibProcessCmd(string uMess) {
     iLen =  StringLen(uMess);
     if (iLen <= 0) {return("");}
 
-    uRetval = zMt4LibProcessCmd(uMess);
+    uRetval = zOTLibMt4ProcessCmd(uMess);
     if (uRetval != "") {
 	return(uRetval);
     }

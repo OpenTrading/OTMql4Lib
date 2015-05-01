@@ -48,33 +48,82 @@ the important pages back into the documentation in the share/doc directory.
 You will need to be signed into github.com to see or edit in the wiki.
 ### Development
 
-#### Type Prefixing
+#### Coding Practices
 
-Prefix all variable, function and method names with a lowercase letter
+##### Type Prefixing
+
+We prefix all variable, function and method names with a lowercase letter
 that indicates the type; it helps you anticipate what type a quantity
-is, and to make explicit type conversions. If the type changes, give
-it a new name with the initial letter changed. In Mql, this scheme
-has the added advantage of avoiding any naming conflict with Mql
-built-ins or most standard library modules.
+is, and to make explicit type conversions. This is not a rigid requirement,
+but it helps cut down on a very common type of mistake, pun intended.
+
+If the type changes, give it a new name with the initial letter changed.
+In Mql, this scheme has the added advantage of avoiding any naming
+conflict with Mql built-ins, or most Python standard library modules.
 
 Choose the initial letter from the following list:
 
-||'''Prefix Letter'''||'''Variable Type'''	||
-|| a		|| array 	||
-|| b		|| boolean	||
-|| c		|| complex (unused)	||
-|| d		|| alist or dictionary	||
-|| e		|| error string return value, empty for success	||
-|| f		|| double	||
-|| g		|| generic - unknown or mutable (unused)	||
-|| h		|| hypertext - HTML/XML entity encoded string	||
-|| i		|| integer	||
-|| l		|| list or tuple	||
-|| o		|| instance or pointer to a class	||
-|| p		|| pathname - name of a file or directory	||
-|| s		|| ASCII string	||
-|| t		|| date/time value	||
-|| u		|| Unicode string	||
-|| v		|| void - return value not to be used	||
-|| z		|| non-empty string return value - empty is failure	||
+||'''Prefix Letter'''	||'''Variable Type'''					||
+|| a			|| array 						||
+|| b			|| boolean						||
+|| c			|| complex (unused)					||
+|| d			|| alist or dictionary					||
+|| e			|| error string return value, empty for success		||
+|| f			|| double	       	      	    			||
+|| g			|| generic - unknown or mutable				||
+|| h			|| hypertext - HTML/XML entity encoded string		||
+|| i			|| integer		       	       			||
+|| l			|| list or tuple	(unused)			||
+|| o			|| instance or pointer to a class			||
+|| p			|| pathname - name of a file or directory		||
+|| s			|| ASCII string	      	     				||
+|| t			|| date/time value					||
+|| u			|| Unicode string					||
+|| v			|| void - return value not to be used			||
+|| z			|| non-empty string return value - empty is failure	||
 
+WE adopt a standard directory structure for all projects, so that it
+will be obvious what directory things should go in as the projects
+progress, and it will make it easier to share code and transfer
+knowledge between projects.  The directory structure must be complete
+so that it will support the final wrapping of the deliverable,
+including all documentation.
+
+The standardized Unix layout works for both MultiPlatformCoding under
+both Unix and Windows, and many configuration tools assume its layout. The
+layout is the defacto-standard created by the [http://www.fsf.org/ GNU]
+toolchain.
+
+In your top project directory you should find:[M]
+
+    * '''bin''': binary directory.  This will contain executables, for
+    either the main program, or support tools. For multi-platform work
+    assume that there may be platform and OS dependent subdirectories
+    such as
+	 * `bin/windows-x86`: windows subdirectory
+	 * `bin/linux-x86`: linux subdirectory
+
+    * '''etc''': configuration files - may be empty.
+
+    * '''lib''': library directory.  This will contain object libraries, for
+    either the main program, or support tools. For multi-platform work,
+    assume that there will be platform and OS dependent files under `lib`.
+
+    * '''net''': Repository for files downloaded from the net, for all
+    bundled prerquisites of code or tools required by the program. It
+    may also contain the orginal version of code that this project
+    extends, so that it's easy to compare the preoject with its origins.
+    Make protocol subdirectories such as `net/Http` `net/Ftp`
+    and in these subdirectories, put the name of the site the package
+    was downloaded from.
+
+    * '''share''': platform independent library directories. For example,
+    the on-line documentation might go in `share/doc` or in `share/html`
+    and icons might go in `share/icons` etc.
+
+    * '''src''': The source code for the application and any of the tools
+    it requires. 
+
+    * '''var''': variable run-time data, initially empty. May have 
+    subdirectories like `var/log` for log files, 
+    `var/cache` for runtime files, `var/tmp` for temporary files etc.

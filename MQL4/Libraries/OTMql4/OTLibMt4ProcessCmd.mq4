@@ -23,7 +23,24 @@ goes on and handles it if zMt4LibProcessCmd didn't.
 #include <OTMql4/OTLibLog.mqh>
 #include <OTMql4/OTLibStrings.mqh>
 
-string zMt4LibProcessCmd(string uMess) {
+string zOTLibMt4FormatCmd(string uType, string uChart, int iPeriod, string uMark, string uCmd) {
+    string uRetval;
+    // uType should be one of: tick retval cmd exec
+    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChart, iPeriod, uMark, uCmd);
+    return(uRetval);
+}
+
+// or bar
+string zOTLibMt4FormatTick(string uType, string uChart, int iPeriod, string uMark, string uInfo) {
+    string uRetval;
+    // uType should be one of: tick bar
+    uInfo = Bid +"|" +Ask +"|" +uInfo;
+    //? uInfo  = iACCNUM +"|" +uInfo;
+    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChart, iPeriod, uMark, uInfo);
+    return(uRetval);
+}
+
+string zOTLibMt4ProcessCmd(string uMess) {
     /* 
        This is the replacement for what should be Eval in Mt4:
        take a string expression and evaluate it.
@@ -78,6 +95,14 @@ string zMt4LibProcessCmd(string uMess) {
 	uRetval = "bool|" +RefreshRates();
     } else if (uCmd == "Symbol") {
 	uRetval = "string|" +Symbol();
+    } else if (uCmd == "Print") {
+	// FixMe: what's the return value? 
+	// FixMe: we should handle multi-args
+	Print(uArg1);
+	uRetval = "void|";
+    } else if (uKey == "Fil") {
+	// FixMe: File*
+	uRetval = "";
     } else if (uKey == "Ter") {
 	uRetval = zProcessCmdTer(uCmd, uChart, uPeriod, uArg1, uArg2, uArg3, uArg4, uArg5);
     } else if (uKey == "Win") {
