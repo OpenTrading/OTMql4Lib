@@ -85,7 +85,7 @@ string zOTLibMt4ProcessCmd(string uMess) {
     uArg5   = aArrayAsList[9];
 
     uKey = StringSubstr(uCmd, 0, 3);
-    vTrace("zMt4LibProcessCmd uKey: " +uKey +" uCmd: " +uCmd+ " uMark: " +uMark);
+    //vTrace("zMt4LibProcessCmd uKey: " +uKey +" uCmd: " +uCmd+ " uMark: " +uMark);
 
     if (uCmd == "OrdersTotal") {
 	uRetval = "int|" +OrdersTotal();
