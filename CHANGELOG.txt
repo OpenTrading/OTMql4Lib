@@ -1,3 +1,8 @@
+commit c0b1c9746d1f188ea436426adc32a01ae830db2f
+Date:   Sat May 2 14:39:09 2015 +0300
+
+    Moved in MQL4/Include/OTMql4/OTBarInfo.mqh from OTMql4Zmq.
+
 commit 3462b96932d6e36f5bde1609c924b291585c420f
 Date:   Fri May 1 17:53:04 2015 +0300
 

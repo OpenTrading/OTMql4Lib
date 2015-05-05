@@ -40,6 +40,14 @@ string zOTLibMt4FormatTick(string uType, string uChart, int iPeriod, string uMar
     return(uRetval);
 }
 
+// or bar
+string zOTLibMt4FormatRetval(string uType, string uChart, int iPeriod, string uMark, string uInfo) {
+    string uRetval;
+    // uType should be one of: retval
+    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChart, iPeriod, uMark, uInfo);
+    return(uRetval);
+}
+
 string zOTLibMt4ProcessCmd(string uMess) {
     /* 
        This is the replacement for what should be Eval in Mt4:
