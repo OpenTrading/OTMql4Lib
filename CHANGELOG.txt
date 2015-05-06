@@ -1,3 +1,8 @@
+commit c0d34605110a18b9c629fdd9f2f38663f3b631f5
+Date:   Wed May 6 16:05:29 2015 +0300
+
+    Started formalizing the formatting and unformatting of commands.
+
 commit c82c716174ae6a76cbfd5a3e75c83f77354608b5
 Date:   Tue May 5 19:34:53 2015 +0300
 

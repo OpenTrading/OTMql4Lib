@@ -24,33 +24,56 @@ goes on and handles it if zMt4LibProcessCmd didn't.
 #include <OTMql4/OTLibStrings.mqh>
 #include <OTMql4/OTLibSimpleFormatCmd.mqh>
 
-string zOTLibSimpleFormatCmd(string uType, string uChart, int iPeriod, string uMark, string uCmd) {
+string zOTLibSimpleFormatCmd(string uType, string uChartId, int iIgnore, string uMark, string uCmd) {
     string uRetval;
-    // uType should be one of: tick retval cmd exec
-    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChart, iPeriod, uMark, uCmd);
+    /* uType is cmd or exec
+    Both will be handled by ProcessCmd, but
+    cmd commands will be put back on the wire as a retval.
+    If  uType is not cmd or exec then "" is returned to signal failure.
+    */
+    if (uType != "cmd" && uType != "exec") {
+	return "";
+    }
+    // FixMe: sBAR
+    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, 0, uMark, uCmd);
     return(uRetval);
 }
 
 // or bar
-string zOTLibSimpleFormatTick(string uType, string uChart, int iPeriod, string uMark, string uInfo) {
+string zOTLibSimpleFormatTick(string uType, string uChartId, int iIgnore, string uMark, string uInfo) {
     string uRetval;
-    // uType should be one of: tick bar
-    uInfo = Bid +"|" +Ask +"|" +uInfo;
-    //? uInfo  = iACCNUM +"|" +uInfo;
-    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChart, iPeriod, uMark, uInfo);
+    /* uType should be one of: tick timer or bar
+    Both will be put on the wire as a their type topics.
+    If  uType is not tick timer or bar, then "" is returned to signal failure.
+    */
+    if (uType != "tick" && uType != "timer" && uType != "bar") {
+	return "";
+    }
+    uInfo = Bid +sBAR +Ask +sBAR +uInfo;
+    //? uInfo  = iACCNUM +sBAR +uInfo;
+    // FixMe: sBAR
+    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, 0, uMark, uInfo);
     return(uRetval);
 }
 
-// or bar
-string zOTLibSimpleFormatRetval(string uType, string uChart, int iPeriod, string uMark, string uInfo) {
+string zOTLibSimpleFormatRetval(string uType, string uChartId, int iIgnore, string uMark, string uInfo) {
     string uRetval;
-    // uType should be one of: retval
-    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChart, iPeriod, uMark, uInfo);
+    /* uType should be one of: retval
+    Will be put on the wire as a its type topic.
+    If  uType is not retval, then "" is returned to signal failure.
+    */
+    if (uType != "retval") {
+	return "";
+    }
+    // FixMe: sBAR
+    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, 0, uMark, uInfo);
     return(uRetval);
 }
 
-string eOTLibSimpleUnformatCmd (string& aArrayAsList[]) {
-    string uType, uChart, uPeriod, uMark, uCmd;
+string eOTLibSimpleUnformatCmd(string& aArrayAsList[]) {
+    /*
+     */
+    string uType, uChartId, uIgnore, uMark, uCmd;
     string uArg1="";
     string uArg2="";
     string uArg3="";
@@ -61,7 +84,7 @@ string eOTLibSimpleUnformatCmd (string& aArrayAsList[]) {
     
     iLen = ArraySize(aArrayAsList);
     if (iLen < 1) {
-	eRetval = "eOTLibSimpleUnformatCmd iLen=0: split failed with " +"|";
+	eRetval = "eOTLibSimpleUnformatCmd iLen=0: split failed with " +sBAR;
 	return(eRetval);
     }
     uType = StringTrimRight(aArrayAsList[0]);
@@ -70,13 +93,13 @@ string eOTLibSimpleUnformatCmd (string& aArrayAsList[]) {
 	eRetval = "eOTLibSimpleUnformatCmd: split failed on field 2 ";
 	return(eRetval);
     }
-    uChart = StringTrimRight(aArrayAsList[1]);
+    uChartId = StringTrimRight(aArrayAsList[1]);
 
     if (iLen < 3) {
 	eRetval = "eOTLibSimpleUnformatCmd: split failed on field 3 ";
 	return(eRetval);
     }
-    uPeriod = StringTrimRight(aArrayAsList[2]);
+    uIgnore = StringTrimRight(aArrayAsList[2]);
     
     if (iLen < 4) {
 	eRetval = "eOTLibSimpleUnformatCmd: split failed on field 4 ";
@@ -110,8 +133,8 @@ string eOTLibSimpleUnformatCmd (string& aArrayAsList[]) {
     }
     ArrayResize(aArrayAsList, 10);
     aArrayAsList[0] = uType;
-    aArrayAsList[1] = uChart;
-    aArrayAsList[2] = uPeriod;
+    aArrayAsList[1] = uChartId;
+    aArrayAsList[2] = uIgnore;
     aArrayAsList[3] = uMark;
     aArrayAsList[4] = uCmd;
     aArrayAsList[5] = uArg1;

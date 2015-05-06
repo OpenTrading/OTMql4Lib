@@ -33,7 +33,7 @@ string zOTLibMt4ProcessCmd(string uMess) {
        Returns the result of processing the command.
        Returns "" if there is an error.
     */
-    string uType, uChart, uPeriod, uMark, uCmd;
+    string uType, uChartId, uIgnore, uMark, uCmd;
     string uArg1="";
     string uArg2="";
     string uArg3="";
@@ -49,7 +49,7 @@ string zOTLibMt4ProcessCmd(string uMess) {
     vStringToArray(uMess, aArrayAsList, "|");
 
     iLen = ArraySize(aArrayAsList);
-    vDebug("zMt4LibProcessCmd: " +uMess +" ArrayLen " +iLen);
+    //vTrace("zMt4LibProcessCmd: " +uMess +" ArrayLen " +iLen);
 
     uRetval = eOTLibSimpleUnformatCmd(aArrayAsList);
     if (uRetval != "") {
@@ -58,8 +58,8 @@ string zOTLibMt4ProcessCmd(string uMess) {
     }
     
     uType   = aArrayAsList[0];
-    uChart  = aArrayAsList[1];
-    uPeriod = aArrayAsList[2];
+    uChartId  = aArrayAsList[1];
+    uIgnore = aArrayAsList[2];
     uMark   = aArrayAsList[3];
     uCmd    = aArrayAsList[4];
     uArg1   = aArrayAsList[5];
@@ -88,13 +88,13 @@ string zOTLibMt4ProcessCmd(string uMess) {
 	// FixMe: File*
 	uRetval = "";
     } else if (uKey == "Ter") {
-	uRetval = zProcessCmdTer(uCmd, uChart, uPeriod, uArg1, uArg2, uArg3, uArg4, uArg5);
+	uRetval = zProcessCmdTer(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
     } else if (uKey == "Win") {
-	uRetval = zProcessCmdWin(uCmd, uChart, uPeriod, uArg1, uArg2, uArg3, uArg4, uArg5);
+	uRetval = zProcessCmdWin(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
     } else if (uKey == "Acc") {
-	uRetval = zProcessCmdAcc(uCmd, uChart, uPeriod, uArg1, uArg2, uArg3, uArg4, uArg5);
+	uRetval = zProcessCmdAcc(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
     } else if (uKey == "Glo") {
-	uRetval = zProcessCmdGlo(uCmd, uChart, uPeriod, uArg1, uArg2, uArg3, uArg4, uArg5);
+	uRetval = zProcessCmdGlo(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
     } else {
 	vDebug("zMt4LibProcessCmd: UNHANDELED" +uKey +" uCmd: " +uCmd);
 	uRetval = "";
@@ -103,7 +103,7 @@ string zOTLibMt4ProcessCmd(string uMess) {
     return(uRetval);
 }
 
-string zProcessCmdTer(string uCmd, string uChart, string uPeriod, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
+string zProcessCmdTer(string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
     string uMsg;
     string uRetval="";
 
@@ -122,7 +122,7 @@ string zProcessCmdTer(string uCmd, string uChart, string uPeriod, string uArg1, 
     return (uRetval);
 }
 
-string zProcessCmdWin(string uCmd, string uChart, string uPeriod, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
+string zProcessCmdWin(string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
     string uMsg;
     string uRetval="";
     int iIndex, iPeriod;
@@ -171,7 +171,7 @@ string zProcessCmdWin(string uCmd, string uChart, string uPeriod, string uArg1, 
 }
 
 
-string zProcessCmdAcc(string uCmd, string uChart, string uPeriod, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
+string zProcessCmdAcc(string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
     string uMsg;
     string uRetval="";
     string uSymbol;
@@ -223,7 +223,7 @@ string zProcessCmdAcc(string uCmd, string uChart, string uPeriod, string uArg1, 
     return (uRetval);
 }
 
-string zProcessCmdGlo(string uCmd, string uChart, string uPeriod, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
+string zProcessCmdGlo(string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
     string uMsg;
     string uRetval="";
     string sName;

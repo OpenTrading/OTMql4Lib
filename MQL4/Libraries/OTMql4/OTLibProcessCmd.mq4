@@ -38,7 +38,7 @@ string zOTLibProcessCmd(string uMess) {
        Returns "" if there is an error.
     */
    
-    string uType, uChart, uPeriod, uMark, uCmd;
+    string uType, uChartId, uIgnore, uMark, uCmd;
     string uArg1="";
     string uArg2="";
     string uArg3="";
@@ -68,8 +68,8 @@ string zOTLibProcessCmd(string uMess) {
     }
     
     uType   = aArrayAsList[0];
-    uChart  = aArrayAsList[1];
-    uPeriod = aArrayAsList[2];
+    uChartId  = aArrayAsList[1];
+    uIgnore = aArrayAsList[2];
     uMark   = aArrayAsList[3];
     uCmd    = aArrayAsList[4];
     uArg1   = aArrayAsList[5];
@@ -82,12 +82,12 @@ string zOTLibProcessCmd(string uMess) {
     vTrace("zOTLibProcessCmd uKey: " +uKey +" uCmd: " +uCmd+ " uMark: " +uMark);
     if (uKey == "gOT") {
 	// extentions from OpenTrading
-	uRetval = uProcessCmdgOT(uCmd, uChart, uPeriod, uArg1, uArg2, uArg3, uArg4, uArg5);
+	uRetval = uProcessCmdgOT(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
     } else if (StringSubstr(uCmd, 1, 2) == "OT") {
-	uRetval = uProcessCmdOT(uCmd, uChart, uPeriod, uArg1, uArg2, uArg3, uArg4, uArg5);
+	uRetval = uProcessCmdOT(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
     } else if (StringSubstr(uCmd, 0, 1) == "i") {
 	//? are these Mt4 or OT?
-	uRetval = uProcessCmdi(uCmd, uChart, uPeriod, uArg1, uArg2, uArg3, uArg4, uArg5);
+	uRetval = uProcessCmdi(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
    } else {
 	// vDebug("zOTLibProcessCmd: UNHANDELED" +uKey +" uCmd: " +uCmd);
 	uRetval = "";
@@ -97,7 +97,7 @@ string zOTLibProcessCmd(string uMess) {
 
 }
 
-string uProcessCmdi (string uCmd, string uChart, string uPeriod, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
+string uProcessCmdi (string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
     string uMsg;
     string uRetval="none|";
     string uSymbol;
@@ -148,7 +148,7 @@ string uProcessCmdi (string uCmd, string uChart, string uPeriod, string uArg1, s
 
 // OpenTrading additions
 // names start with a lower case letter then OT
-string uProcessCmdOT (string uCmd, string uChart, string uPeriod, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
+string uProcessCmdOT (string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
     string uMsg;
     string uRetval="none|";
     int iTicket;
@@ -226,7 +226,7 @@ string uProcessCmdOT (string uCmd, string uChart, string uPeriod, string uArg1, 
 
 // Wrap all of the functions that depend on an order being selected
 // into a generic gOTWithOrderSelectByTicket and gOTWithOrderSelectByPosition
-string uProcessCmdgOT (string uCmd, string uChart, string uPeriod, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
+string uProcessCmdgOT (string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
     string uRetval="none|";
     string uMsg;
     int iError;
