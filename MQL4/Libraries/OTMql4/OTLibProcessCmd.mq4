@@ -22,6 +22,7 @@ goes on and handles it if zMt4LibProcessCmd didn't.
 #include <stderror.mqh>
 #include <OTMql4/OTLibLog.mqh>
 #include <OTMql4/OTLibStrings.mqh>
+#include <OTMql4/OTLibSimpleFormatCmd.mqh>
 #include <OTMql4/OTLibMt4ProcessCmd.mqh>
 // extentions from OpenTrading - see uProcessCmdgOT and uProcessCmdOT
 #include <OTMql4/OTLibTrading.mqh>
@@ -60,7 +61,7 @@ string zOTLibProcessCmd(string uMess) {
     iLen = ArraySize(aArrayAsList);
     vDebug("zOTLibProcessCmd: " +uMess +" ArrayLen " +iLen);
 
-    uRetval = eOTLibPreProcessCmd(aArrayAsList);
+    uRetval = eOTLibSimpleUnformatCmd(aArrayAsList);
     if (uRetval != "") {
 	vError("eOTLibProcessCmd: preprocess failed with error: " +uRetval);
 	return("");

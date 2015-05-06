@@ -5,8 +5,4 @@
 
 #import "OTMql4/OTLibMt4ProcessCmd.ex4"
 
-string eOTLibPreProcessCmd(string& aArrayAsList[]);
-string zOTLibMt4FormatCmd(string uType, string uChart, int iPeriod, string uMark, string uCmd);
-string zOTLibMt4FormatTick(string uType, string uChart, int iPeriod, string uMark, string uInfo);
-string zOTLibMt4FormatRetval(string uType, string uChart, int iPeriod, string uMark, string uInfo);
 string zOTLibMt4ProcessCmd(string uMess);

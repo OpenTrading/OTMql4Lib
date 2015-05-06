@@ -1,3 +1,8 @@
+commit c82c716174ae6a76cbfd5a3e75c83f77354608b5
+Date:   Tue May 5 19:34:53 2015 +0300
+
+    Minor changes to support OTMqlAMQP.
+
 commit c0b1c9746d1f188ea436426adc32a01ae830db2f
 Date:   Sat May 2 14:39:09 2015 +0300
 
