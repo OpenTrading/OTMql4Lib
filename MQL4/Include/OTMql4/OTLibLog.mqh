@@ -9,7 +9,6 @@ This is just a stub for a full logging system later.
 #import "OTMql4/OTLibLog.ex4"
 
 void vLog(int iLevel, string sMsg);
-void vPanic(string sMess);
 void vError(string sMess);
 void vWarn(string sMess);
 void vInfo(string sMess);
