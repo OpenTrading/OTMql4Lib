@@ -11,5 +11,6 @@
 string eOTLibSimpleUnformatCmd(string& aArrayAsList[]);
 
 string zOTLibSimpleFormatCmd(string uType, string uChartId, int iIgnore, string uMark, string uCmd);
+string zOTLibSimpleFormatBar(string uType, string uChartId, int iIgnore, string uMark, string uInfo);
 string zOTLibSimpleFormatTick(string uType, string uChartId, int iIgnore, string uMark, string uInfo);
 string zOTLibSimpleFormatRetval(string uType, string uChartId, int iIgnore, string uMark, string uInfo);

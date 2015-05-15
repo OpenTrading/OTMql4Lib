@@ -1,4 +1,4 @@
-// -*-mode: c; c-style: stroustrup; c-basic-offset: 4; coding: utf-8; encoding: utf-8-dos -*-
+// -*-mode: c; c-style: stroustrup; c-basic-offset: 4; coding: utf-8-dos -*-
 
 /*
  Miscellaneous functions that help handling strings.
@@ -41,16 +41,16 @@ void vStringToArray(string uInput, string& uOutput[], string uDelim) {
     ArrayResize(uOutput, 0);
     
     while(iStart < StringLen(uInput)) {
-	iDelpos = StringFind(uInput, uDelim, iStart);
-	if(iDelpos < 0) {
-	    uNextelem = StringSubstr(uInput,iStart);
-	    iStart = StringLen(uInput);
-	} else {
-	    uNextelem = StringSubstr(uInput, iStart, iDelpos-iStart);
-	    iStart = iDelpos+1;
-	}
-	ArrayResize(uOutput, ArraySize(uOutput)+1);
-	uOutput[ArraySize(uOutput)-1] = uNextelem;
+        iDelpos = StringFind(uInput, uDelim, iStart);
+        if(iDelpos < 0) {
+            uNextelem = StringSubstr(uInput,iStart);
+            iStart = StringLen(uInput);
+        } else {
+            uNextelem = StringSubstr(uInput, iStart, iDelpos-iStart);
+            iStart = iDelpos+1;
+        }
+        ArrayResize(uOutput, ArraySize(uOutput)+1);
+        uOutput[ArraySize(uOutput)-1] = uNextelem;
     }
 }
 
@@ -62,17 +62,17 @@ string uStringReplace(string uHaystack, string uNeedle, string uReplace) {
     int nlen=StringLen(uNeedle);
     
     while (iStart > -1) {
-	iStart = StringFind(uHaystack, uNeedle, iStart);
-	if (iStart > -1) {	
-	    if(iStart > 0) {
-		left = StringSubstr(uHaystack, 0, iStart);
-	    } else {
-		left = "";
-	    }
-	    right = StringSubstr(uHaystack, iStart + nlen);
-	    uHaystack = left + uReplace + right;
-	    iStart = iStart + rlen;
-	}	
+        iStart = StringFind(uHaystack, uNeedle, iStart);
+        if (iStart > -1) {      
+            if(iStart > 0) {
+                left = StringSubstr(uHaystack, 0, iStart);
+            } else {
+                left = "";
+            }
+            right = StringSubstr(uHaystack, iStart + nlen);
+            uHaystack = left + uReplace + right;
+            iStart = iStart + rlen;
+        }       
     }
     return (uHaystack);
 }

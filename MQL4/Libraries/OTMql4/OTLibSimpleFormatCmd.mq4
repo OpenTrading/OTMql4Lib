@@ -32,22 +32,37 @@ string zOTLibSimpleFormatCmd(string uType, string uChartId, int iIgnore, string 
     If  uType is not cmd or exec then "" is returned to signal failure.
     */
     if (uType != "cmd" && uType != "exec") {
-	return "";
+        return "";
     }
     // FixMe: sBAR
     uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, 0, uMark, uCmd);
     return(uRetval);
 }
 
-// or bar
-string zOTLibSimpleFormatTick(string uType, string uChartId, int iIgnore, string uMark, string uInfo) {
+string zOTLibSimpleFormatBar(string uType, string uChartId, int iIgnore, string uMark, string uInfo) {
     string uRetval;
-    /* uType should be one of: tick timer or bar
+    /* uType should be one of: bar
     Both will be put on the wire as a their type topics.
     If  uType is not tick timer or bar, then "" is returned to signal failure.
     */
-    if (uType != "tick" && uType != "timer" && uType != "bar") {
-	return "";
+    if (uType != "bar") {
+        return "";
+    }
+    uInfo = Bid +sBAR +Ask +sBAR +uInfo;
+    //? uInfo  = iACCNUM +sBAR +uInfo;
+    // FixMe: sBAR
+    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, 0, uMark, uInfo);
+    return(uRetval);
+}
+
+string zOTLibSimpleFormatTick(string uType, string uChartId, int iIgnore, string uMark, string uInfo) {
+    string uRetval;
+    /* uType should be one of: tick or timer
+    Both will be put on the wire as a their type topics.
+    If  uType is not tick timer or bar, then "" is returned to signal failure.
+    */
+    if (uType != "tick" && uType != "timer") {
+        return "";
     }
     uInfo = Bid +sBAR +Ask +sBAR +uInfo;
     //? uInfo  = iACCNUM +sBAR +uInfo;
@@ -63,7 +78,7 @@ string zOTLibSimpleFormatRetval(string uType, string uChartId, int iIgnore, stri
     If  uType is not retval, then "" is returned to signal failure.
     */
     if (uType != "retval") {
-	return "";
+        return "";
     }
     // FixMe: sBAR
     uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, 0, uMark, uInfo);
@@ -84,52 +99,52 @@ string eOTLibSimpleUnformatCmd(string& aArrayAsList[]) {
     
     iLen = ArraySize(aArrayAsList);
     if (iLen < 1) {
-	eRetval = "eOTLibSimpleUnformatCmd iLen=0: split failed with " +sBAR;
-	return(eRetval);
+        eRetval = "eOTLibSimpleUnformatCmd iLen=0: split failed with " +sBAR;
+        return(eRetval);
     }
     uType = StringTrimRight(aArrayAsList[0]);
     
     if (iLen < 2) {
-	eRetval = "eOTLibSimpleUnformatCmd: split failed on field 2 ";
-	return(eRetval);
+        eRetval = "eOTLibSimpleUnformatCmd: split failed on field 2 ";
+        return(eRetval);
     }
     uChartId = StringTrimRight(aArrayAsList[1]);
 
     if (iLen < 3) {
-	eRetval = "eOTLibSimpleUnformatCmd: split failed on field 3 ";
-	return(eRetval);
+        eRetval = "eOTLibSimpleUnformatCmd: split failed on field 3 ";
+        return(eRetval);
     }
     uIgnore = StringTrimRight(aArrayAsList[2]);
     
     if (iLen < 4) {
-	eRetval = "eOTLibSimpleUnformatCmd: split failed on field 4 ";
-	return(eRetval);
+        eRetval = "eOTLibSimpleUnformatCmd: split failed on field 4 ";
+        return(eRetval);
     }
     uMark = StringTrimRight(aArrayAsList[3]);
     if (StringLen(uMark) < 6) {
-	eRetval = "eOTLibSimpleUnformatCmd uMark: too short " +uMark;
-	return(eRetval);
+        eRetval = "eOTLibSimpleUnformatCmd uMark: too short " +uMark;
+        return(eRetval);
     }
     if (iLen <= 4) {
-	eRetval = "eOTLibSimpleUnformatCmd: split failed on field 5 ";
-	return(eRetval);
+        eRetval = "eOTLibSimpleUnformatCmd: split failed on field 5 ";
+        return(eRetval);
     }
     uCmd = StringTrimRight(aArrayAsList[4]);
     
     if (iLen > 5) {
-	uArg1 = StringTrimRight(aArrayAsList[5]);
-	if (iLen > 6) {
-	    uArg2 = StringTrimRight(aArrayAsList[6]);
-	    if (iLen > 7) {
-		uArg3 = StringTrimRight(aArrayAsList[7]);
-		if (iLen > 8) {
-		    uArg4 = StringTrimRight(aArrayAsList[8]);
-		    if (iLen > 9) {
-			uArg5 = StringTrimRight(aArrayAsList[9]);
-		    }
-		}
-	    }
-	}
+        uArg1 = StringTrimRight(aArrayAsList[5]);
+        if (iLen > 6) {
+            uArg2 = StringTrimRight(aArrayAsList[6]);
+            if (iLen > 7) {
+                uArg3 = StringTrimRight(aArrayAsList[7]);
+                if (iLen > 8) {
+                    uArg4 = StringTrimRight(aArrayAsList[8]);
+                    if (iLen > 9) {
+                        uArg5 = StringTrimRight(aArrayAsList[9]);
+                    }
+                }
+            }
+        }
     }
     ArrayResize(aArrayAsList, 10);
     aArrayAsList[0] = uType;

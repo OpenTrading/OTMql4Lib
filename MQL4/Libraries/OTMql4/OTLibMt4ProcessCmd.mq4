@@ -53,8 +53,8 @@ string zOTLibMt4ProcessCmd(string uMess) {
 
     uRetval = eOTLibSimpleUnformatCmd(aArrayAsList);
     if (uRetval != "") {
-	vError("eOTLibProcessCmd: preprocess failed with error: " +uRetval);
-	return("");
+        vError("eOTLibProcessCmd: preprocess failed with error: " +uRetval);
+        return("");
     }
     
     uType   = aArrayAsList[0];
@@ -72,32 +72,32 @@ string zOTLibMt4ProcessCmd(string uMess) {
     //vTrace("zMt4LibProcessCmd uKey: " +uKey +" uCmd: " +uCmd+ " uMark: " +uMark);
 
     if (uCmd == "OrdersTotal") {
-	uRetval = "int|" +OrdersTotal();
+        uRetval = "int|" +OrdersTotal();
     } else if (uCmd == "Period") {
-	uRetval = "int|" +Period();
+        uRetval = "int|" +Period();
     } else if (uCmd == "RefreshRates") {
-	uRetval = "bool|" +RefreshRates();
+        uRetval = "bool|" +RefreshRates();
     } else if (uCmd == "Symbol") {
-	uRetval = "string|" +Symbol();
+        uRetval = "string|" +Symbol();
     } else if (uCmd == "Print") {
-	// FixMe: what's the return value? 
-	// FixMe: we should handle multi-args
-	Print(uArg1);
-	uRetval = "void|";
+        // FixMe: what's the return value? 
+        // FixMe: we should handle multi-args
+        Print(uArg1);
+        uRetval = "void|";
     } else if (uKey == "Fil") {
-	// FixMe: File*
-	uRetval = "";
+        // FixMe: File*
+        uRetval = "";
     } else if (uKey == "Ter") {
-	uRetval = zProcessCmdTer(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
+        uRetval = zProcessCmdTer(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
     } else if (uKey == "Win") {
-	uRetval = zProcessCmdWin(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
+        uRetval = zProcessCmdWin(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
     } else if (uKey == "Acc") {
-	uRetval = zProcessCmdAcc(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
+        uRetval = zProcessCmdAcc(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
     } else if (uKey == "Glo") {
-	uRetval = zProcessCmdGlo(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
+        uRetval = zProcessCmdGlo(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
     } else {
-	vDebug("zMt4LibProcessCmd: UNHANDELED" +uKey +" uCmd: " +uCmd);
-	uRetval = "";
+        vDebug("zMt4LibProcessCmd: UNHANDELED" +uKey +" uCmd: " +uCmd);
+        uRetval = "";
     }
     
     return(uRetval);
@@ -108,15 +108,15 @@ string zProcessCmdTer(string uCmd, string uChartId, string uIgnore, string uArg1
     string uRetval="";
 
     if (uCmd == "TerminalCompany") {
-	uRetval = "string|" +TerminalCompany();
+        uRetval = "string|" +TerminalCompany();
     } else if (uCmd == "TerminalName") {
-	uRetval = "string|" +TerminalName();
+        uRetval = "string|" +TerminalName();
     } else if (uCmd == "TerminalPath") {
-	uRetval = "string|" +TerminalPath();
+        uRetval = "string|" +TerminalPath();
     } else {
-	uMsg = "Unrecognized action: " +uCmd;
-	vWarn("zProcessCmdTer: " +uMsg);
-	uRetval = "";
+        uMsg = "Unrecognized action: " +uCmd;
+        vWarn("zProcessCmdTer: " +uMsg);
+        uRetval = "";
     }
 
     return (uRetval);
@@ -128,43 +128,43 @@ string zProcessCmdWin(string uCmd, string uChartId, string uIgnore, string uArg1
     int iIndex, iPeriod;
 
     if (uCmd == "WindowBarsPerChart") {
-	uRetval = "int|" +WindowBarsPerChart();
+        uRetval = "int|" +WindowBarsPerChart();
     } else if (uCmd == "WindowFind") {
-	uRetval = "string|" +WindowFind(uArg1);
+        uRetval = "string|" +WindowFind(uArg1);
     } else if (uCmd == "WindowFirstVisibleBar") {
-	uRetval = "int|" +WindowFirstVisibleBar();
+        uRetval = "int|" +WindowFirstVisibleBar();
     } else if (uCmd == "WindowHandle") {
-	iPeriod=StrToInteger(uArg2);
-	uRetval = "int|" +WindowHandle(uArg1, iPeriod);
+        iPeriod=StrToInteger(uArg2);
+        uRetval = "int|" +WindowHandle(uArg1, iPeriod);
     } else if (uCmd == "WindowIsVisible") {
-	iIndex=StrToInteger(uArg1);
-	uRetval = "bool|" +WindowIsVisible(iIndex);
+        iIndex=StrToInteger(uArg1);
+        uRetval = "bool|" +WindowIsVisible(iIndex);
     } else if (uCmd == "WindowOnDropped") {
-	uRetval = "int|" +WindowOnDropped();
+        uRetval = "int|" +WindowOnDropped();
     } else if (uCmd == "WindowPriceMax") {
-	iIndex=StrToInteger(uArg1);
-	uRetval = "double|" +WindowPriceMax(iIndex);
+        iIndex=StrToInteger(uArg1);
+        uRetval = "double|" +WindowPriceMax(iIndex);
     } else if (uCmd == "WindowPriceMin") {
-	iIndex=StrToInteger(uArg1);
-	uRetval = "double|" +WindowPriceMin(iIndex);
+        iIndex=StrToInteger(uArg1);
+        uRetval = "double|" +WindowPriceMin(iIndex);
     } else if (uCmd == "WindowPriceOnDropped") {
-	uRetval = "double|" +WindowPriceOnDropped();
+        uRetval = "double|" +WindowPriceOnDropped();
     } else if (uCmd == "WindowRedraw") {
-	WindowRedraw();
-	uRetval = "void|";
-	// WindowScreenShot
+        WindowRedraw();
+        uRetval = "void|";
+        // WindowScreenShot
     } else if (uCmd == "WindowTimeOnDropped") {
-	uRetval = "datetime|" +WindowTimeOnDropped();
+        uRetval = "datetime|" +WindowTimeOnDropped();
     } else if (uCmd == "WindowXOnDropped") {
-	uRetval = "int|" +WindowXOnDropped();
+        uRetval = "int|" +WindowXOnDropped();
     } else if (uCmd == "WindowYOnDropped") {
-	uRetval = "int|" +WindowYOnDropped();
+        uRetval = "int|" +WindowYOnDropped();
     } else if (uCmd == "WindowsTotal") {
-	uRetval = "int|" +WindowsTotal();
+        uRetval = "int|" +WindowsTotal();
     } else {
-	uMsg="Unrecognized action: " +uCmd;
-	vWarn("zProcessCmdWin: " +uMsg);
-	uRetval = "";
+        uMsg="Unrecognized action: " +uCmd;
+        vWarn("zProcessCmdWin: " +uMsg);
+        uRetval = "";
     }
 
     return (uRetval);
@@ -179,45 +179,45 @@ string zProcessCmdAcc(string uCmd, string uChartId, string uIgnore, string uArg1
     double fVolume;
 
     if (uCmd == "AccountBalance") {
-	uRetval = "double|" +AccountBalance();
+        uRetval = "double|" +AccountBalance();
     } else if (uCmd == "AccountCompany") {
-	uRetval = "string|" +AccountCompany();
+        uRetval = "string|" +AccountCompany();
     } else if (uCmd == "AccountCredit") {
-	uRetval = "double|" +AccountCredit();
+        uRetval = "double|" +AccountCredit();
     } else if (uCmd == "AccountCurrency") {
-	uRetval = "string|" +AccountCurrency();
+        uRetval = "string|" +AccountCurrency();
     } else if (uCmd == "AccountEquity") {
-	uRetval = "double|" +AccountEquity();
+        uRetval = "double|" +AccountEquity();
     } else if (uCmd == "AccountFreeMargin") {
-	uRetval = "double|" +AccountFreeMargin();
+        uRetval = "double|" +AccountFreeMargin();
     } else if (uCmd == "AccountFreeMarginCheck") {
-	// assert
-	uSymbol=uArg1;
-	iCmd=StrToInteger(uArg2);
-	fVolume=StrToDouble(uArg3);
-	uRetval = "double|" +AccountFreeMarginCheck(uSymbol, iCmd, fVolume);
+        // assert
+        uSymbol=uArg1;
+        iCmd=StrToInteger(uArg2);
+        fVolume=StrToDouble(uArg3);
+        uRetval = "double|" +AccountFreeMarginCheck(uSymbol, iCmd, fVolume);
     } else if (uCmd == "AccountFreeMarginMode") {
-	uRetval = "double|" +AccountFreeMarginMode();
+        uRetval = "double|" +AccountFreeMarginMode();
     } else if (uCmd == "AccountLeverage") {
-	uRetval = "int|" +AccountLeverage();
+        uRetval = "int|" +AccountLeverage();
     } else if (uCmd == "AccountMargin") {
-	uRetval = "double|" +AccountMargin();
+        uRetval = "double|" +AccountMargin();
     } else if (uCmd == "AccountName") {
-	uRetval = "string|" +AccountName();
+        uRetval = "string|" +AccountName();
     } else if (uCmd == "AccountNumber") {
-	uRetval = "int|" +AccountNumber();
+        uRetval = "int|" +AccountNumber();
     } else if (uCmd == "AccountProfit") {
-	uRetval = "double|" +AccountProfit();
+        uRetval = "double|" +AccountProfit();
     } else if (uCmd == "AccountServer") {
-	uRetval = "string|" +AccountServer();
+        uRetval = "string|" +AccountServer();
     } else if (uCmd == "AccountStopoutLevel") {
-	uRetval = "int|" +AccountStopoutLevel();
+        uRetval = "int|" +AccountStopoutLevel();
     } else if (uCmd == "AccountStopoutMode") {
-	uRetval = "int|" +AccountStopoutMode();
+        uRetval = "int|" +AccountStopoutMode();
     } else {
-	uMsg="Unrecognized action: " +uCmd;
-	vWarn("zProcessCmdAcc: " +uMsg);
-	uRetval="";
+        uMsg="Unrecognized action: " +uCmd;
+        vWarn("zProcessCmdAcc: " +uMsg);
+        uRetval="";
     }
 
     return (uRetval);
@@ -230,26 +230,26 @@ string zProcessCmdGlo(string uCmd, string uChartId, string uIgnore, string uArg1
     double fValue;
 
     if (uCmd == "GlobalVariableCheck") {
-	// assert
-	sName = uArg1;
-	uRetval = "bool|" +GlobalVariableCheck(sName);
+        // assert
+        sName = uArg1;
+        uRetval = "bool|" +GlobalVariableCheck(sName);
     } else if (uCmd == "GlobalVariableDel") {
-	// assert
-	sName = uArg1;
-	uRetval = "bool|" +GlobalVariableDel(sName);
+        // assert
+        sName = uArg1;
+        uRetval = "bool|" +GlobalVariableDel(sName);
     } else if (uCmd == "GlobalVariableGet") {
-	// assert
-	sName = uArg1;
-	uRetval = "double|" +GlobalVariableGet(sName);
+        // assert
+        sName = uArg1;
+        uRetval = "double|" +GlobalVariableGet(sName);
     } else if (uCmd == "GlobalVariableSet") {
-	// assert
-	sName = uArg1;
-	fValue = StrToDouble(uArg2);
-	uRetval = "double|" +GlobalVariableSet(sName, fValue);
+        // assert
+        sName = uArg1;
+        fValue = StrToDouble(uArg2);
+        uRetval = "double|" +GlobalVariableSet(sName, fValue);
     } else {
-	uMsg = "Unrecognized action: " +uCmd;
-	vWarn("zProcessCmdGlo: " +uMsg);
-	uRetval = "";
+        uMsg = "Unrecognized action: " +uCmd;
+        vWarn("zProcessCmdGlo: " +uMsg);
+        uRetval = "";
     }
 
     return (uRetval);

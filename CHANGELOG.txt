@@ -1,3 +1,8 @@
+commit 33538a11e74ff9b220e1587a89fe020495aa3871
+Date:   Fri May 8 19:09:40 2015 +0300
+
+    Minor refactoring.
+
 commit 9bed4c4d72ddd399a11e2453128a3a6f6724fe95
 Date:   Thu May 7 01:08:05 2015 +0300
 
