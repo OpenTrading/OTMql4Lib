@@ -4,7 +4,7 @@
 #property link      "https://github.com/OpenTrading/"
 
 // our string delimiter
-#define sBAR "|"
+#define uBAR "|"
 
 #import "OTMql4/OTLibSimpleFormatCmd.ex4"
 
@@ -12,5 +12,6 @@ string eOTLibSimpleUnformatCmd(string& aArrayAsList[]);
 
 string zOTLibSimpleFormatCmd(string uType, string uChartId, int iIgnore, string uMark, string uCmd);
 string zOTLibSimpleFormatBar(string uType, string uChartId, int iIgnore, string uMark, string uInfo);
+string zOTLibSimpleFormatTimer(string uType, string uChartId, int iIgnore, string uMark, string uInfo);
 string zOTLibSimpleFormatTick(string uType, string uChartId, int iIgnore, string uMark, string uInfo);
 string zOTLibSimpleFormatRetval(string uType, string uChartId, int iIgnore, string uMark, string uInfo);

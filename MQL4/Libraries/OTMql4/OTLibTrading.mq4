@@ -31,9 +31,9 @@ int iOTOrderSend(string sSymbol, int cmd,
                  color arrow_color=CLR_NONE) {
     // Returns number of the ticket assigned to the order by the trade server or -1 if it fails.
     int iRetval;
-    bool bContinuable=true;
+    bool bContinuable = true;
     int iError;
-    int iTick=0;
+    int iTick = 0;
 
     iTick=0;
     iError=0;
@@ -45,7 +45,7 @@ int iOTOrderSend(string sSymbol, int cmd,
             continue;
         }
 
-        iRetval=OrderSend(sSymbol, cmd, volume, price, slippage, stoploss,
+        iRetval = OrderSend(sSymbol, cmd, volume, price, slippage, stoploss,
                           takeprofit, comment, magic, expiration, arrow_color);
         iOTSetTradeIsNotBusy();
 
@@ -54,8 +54,8 @@ int iOTOrderSend(string sSymbol, int cmd,
         iError=GetLastError();
         vWarn("Error sending order: " +ErrorDescription(iError) +"("+iError+")");
         // what about "no error"
-        bContinuable=bOTLibServerErrorIsContinuable(iError);
-        iRetval=-iError;
+        bContinuable = bOTLibServerErrorIsContinuable(iError);
+        iRetval = -iError;
     }
     return(iRetval);
 }
@@ -64,13 +64,13 @@ int iOTOrderClose(int iTicket,  double fLots, double fPrice, int iSlippage, colo
 
     // returns 1 on success, 0 or -iError on failure
     bool bRetval;
-    bool bContinuable=true;
+    bool bContinuable = true;
     int iError;
     int iTick=0;
 
     iTick=0;
     iError=0;
-    while (bContinuable==true && iTick < OT_MAX_TICK_RETRIES) {
+    while (bContinuable == true && iTick < OT_MAX_TICK_RETRIES) {
         iTick += 1;
         if (iOTSetTradeIsBusy() != 1) {
             vWarn(" Unable to acquire the trade context. Retrying (try #" +
@@ -78,7 +78,7 @@ int iOTOrderClose(int iTicket,  double fLots, double fPrice, int iSlippage, colo
             continue;
         }
 
-        bRetval=OrderClose(iTicket, fLots, fPrice, iSlippage, cColor);
+        bRetval = OrderClose(iTicket, fLots, fPrice, iSlippage, cColor);
         iOTSetTradeIsNotBusy();
         if (bRetval == true) {
             return(1);
@@ -88,7 +88,7 @@ int iOTOrderClose(int iTicket,  double fLots, double fPrice, int iSlippage, colo
               ": "+ErrorDescription(iError) +"("+iError+")");
 
         // what about "no error"
-        bContinuable=bOTLibServerErrorIsContinuable(iError);
+        bContinuable = bOTLibServerErrorIsContinuable(iError);
     }
 
     return(-iError);
@@ -101,11 +101,12 @@ bool bOTIsTradeAllowed() {
 
       Warning: RefreshRates can take a long time.
     */
+    int iTicks = 0;
+    
     if (IsTesting() || IsOptimization()) return (true);
 
-    int iTicks=0;
-    while(IsTradeAllowed()==false && iTicks < OT_MAX_TICK_RETRIES) {
-        iTicks+=1;
+    while( IsTradeAllowed() == false && iTicks < OT_MAX_TICK_RETRIES) {
+        iTicks += 1;
         Sleep(OT_TICK_SLEEP_MSEC); // Cycle delay
         RefreshRates();
     }
@@ -138,7 +139,8 @@ int iOTSetTradeIsBusy( int iMaxWaitingSeconds = 60 ) {
     if(IsTesting()) return(1);
     if(!bOTIsTradeAllowed()) return(-3);
 
-    int iError = 0, StartWaitingTime = GetTickCount();
+    int iError = 0;
+    int StartWaitingTime = GetTickCount();
 
     // Check whether a global variable exists and, if not, create it
     while(true) {
@@ -147,7 +149,7 @@ int iOTSetTradeIsBusy( int iMaxWaitingSeconds = 60 ) {
 
         // if the waiting time exceeds that specified in the variable
         // iMaxWaitingSeconds, stop operation, as well
-        if(GetTickCount() - StartWaitingTime > iMaxWaitingSeconds * 1000) {
+        if ((GetTickCount() - StartWaitingTime) > iMaxWaitingSeconds * 1000) {
             vWarn("Waiting time (" + iMaxWaitingSeconds + " sec.) exceeded!");
             return(-2);
         }
@@ -204,9 +206,9 @@ int iOTSetTradeIsBusy( int iMaxWaitingSeconds = 60 ) {
         }
         // try to change the value of the TradeIsBusy from 0 to 1
         // if succeed, leave the function returning 1 ("successfully completed")
-        if(GlobalVariableSetOnCondition( "fTradeIsBusy", 1.0, 0.0 ))
+        if (GlobalVariableSetOnCondition( "fTradeIsBusy", 1.0, 0.0 )) {
             return(1);
-
+	}
         // if not, 2 reasons for it are possible: TradeIsBusy = 1 (then one has to wait), or
 
         // an error occurred (this is what we will check)
@@ -248,16 +250,17 @@ int iOTSetTradeIsNotBusy() {
         // (or create the global variable)
         // if the GlobalVariableSet returns a value > 0, it means that everything
         // has succeeded. Leave the function
-        if(GlobalVariableSet( "fTradeIsBusy", 0.0 ) > 0)
+        if (GlobalVariableSet( "fTradeIsBusy", 0.0 ) > 0)
             return(1);
 
         // if the GlobalVariableSet returns a value <= 0,
         // this means that an error has occurred.
         // Display information, wait, and try again
         iError = GetLastError();
-        if(iError != 0 )
+        if (iError != 0 ) {
             vWarn("Error in TradeIsNotBusy GlobalVariableSet(\"TradeIsBusy\",0.0): " +
                   ErrorDescription(iError) );
+	}
 
         Sleep(OT_TRADE_ORDER_SLEEP_MSEC);
     }
@@ -279,7 +282,7 @@ double fOTExposedEcuInMarket(int iOrderEAMagic = 0) {
     int iRetval;
     double fExposedEcu=0.0;
 
-    int iLotSize=MarketInfo(sSymbol,MODE_LOTSIZE);
+    int iLotSize = MarketInfo(sSymbol, MODE_LOTSIZE);
     if (iLotSize < 0) {
         return(-iLotSize);
     }
@@ -371,7 +374,7 @@ int iOTMarketInfo(string s, int iMode) {
     return(iRetval);
 }
 
-bool bModifyTrailingStopLoss(int iTrailingStopLossPoints,
+bool bOTModifyTrailingStopLoss(int iTrailingStopLossPoints,
                              datetime tExpiration=0) {
     // return value of false signals an error
     string sSymbol=Symbol(); // Symbol
@@ -394,55 +397,53 @@ bool bModifyTrailingStopLoss(int iTrailingStopLossPoints,
         if (iRetval < 0) {bRetval=false; continue;}
 
         // Analysis of orders:
-        iType=OrderType(); // Order type
-        if (OrderSymbol()!=sSymbol || iType>1) continue;
+        iType = OrderType(); // Order type
+        if (OrderSymbol()!=sSymbol || iType > 1) continue;
 
-        fTakeProfit=OrderTakeProfit(); // TakeProfit of the selected order
-        fPrice =OrderOpenPrice(); // Price of the selected order
-        iTicket=OrderTicket(); // Ticket of the selected order
-        fStopLoss=OrderStopLoss(); // SL of the selected order
+        fTakeProfit = OrderTakeProfit(); // TakeProfit of the selected order
+        fPrice = OrderOpenPrice(); // Price of the selected order
+        iTicket = OrderTicket(); // Ticket of the selected order
+        fStopLoss = OrderStopLoss(); // SL of the selected order
 
-        fTrailingStopLoss=iTrailingStopLossPoints; // Initial value
+        fTrailingStopLoss = iTrailingStopLossPoints; // Initial value
         if (fTrailingStopLoss < iMinDistance) {
             // If less than allowed
             fTrailingStopLoss=iMinDistance;
         }
 
-        bModify=false; // Not to be modified
+        bModify = false; // Not to be modified
         switch(iType) {
         case OP_BUY: // Order Buy 0
-            if (NormalizeDouble(fStopLoss,Digits)< // If it is lower than we want
+            if (NormalizeDouble(fStopLoss,Digits) < // If it is lower than we want
                 NormalizeDouble(Bid-fTrailingStopLoss*Point,Digits) &&
                 Bid-fTrailingStopLoss*Point > fTrailingStopLoss*Point/10.0
-                )
-                {
-                    fStopLoss=Bid-fTrailingStopLoss*Point; // then modify it
-                    sMsg="Buy "; // Text for Buy
-                    bModify=true; // To be modified
-                }
+                ) {
+		fStopLoss=Bid-fTrailingStopLoss*Point; // then modify it
+		sMsg="Buy "; // Text for Buy
+		bModify=true; // To be modified
+	    }
             break; // Exit 'switch'
         case OP_SELL: // Order Sell 1
-            if (NormalizeDouble(fStopLoss,Digits)> // If it is higher than we want
+            if (NormalizeDouble(fStopLoss,Digits) > // If it is higher than we want
                 NormalizeDouble(Ask+fTrailingStopLoss*Point,Digits) &&
-                Ask+fTrailingStopLoss*Point > fTrailingStopLoss*Point/10.0)
+                Ask+fTrailingStopLoss*Point > fTrailingStopLoss*Point/10.0) {
                 // || NormalizeDouble(fStopLoss,Digits==0)//or equal to zero
-                {
-                    fStopLoss=Ask+fTrailingStopLoss*Point; // then modify it
-                    sMsg="Sell "; // Text for Sell
-                    bModify=true; // To be modified
-                }
+		fStopLoss=Ask+fTrailingStopLoss*Point; // then modify it
+		sMsg="Sell "; // Text for Sell
+		bModify=true; // To be modified
+	    }
         }
 
         if (bModify==false) continue;
 
-        bRetval = bRetval && bModifyOrder("Modifiying stoploss "+sMsg,
+        bRetval = bRetval && bOTModifyOrder("Modifiying stoploss "+sMsg,
                                           iTicket, fPrice, fStopLoss, fTakeProfit, tExpiration);
     }
 
     return(bRetval);
 }
 
-bool bModifyOrder(string sMsg,
+bool bOTModifyOrder(string sMsg,
                   int iTicket,
                   double fPrice,
                   double fStopLoss,
@@ -456,12 +457,12 @@ bool bModifyOrder(string sMsg,
 
     while(iRetry < OT_MAX_TICK_RETRIES) {
         // Modification cycle
-        iRetry+=1;
+        iRetry += 1;
         vInfo(sMsg +iTicket +" at " +Bid
               +" from sl " +OrderStopLoss()+" to " +fStopLoss
               +" from tp " +OrderTakeProfit()+" to " +fTakeProfit
               +". Awaiting response.");
-        bAns=OrderModify(iTicket, NormalizeDouble(fPrice, Digits),
+        bAns = OrderModify(iTicket, NormalizeDouble(fPrice, Digits),
                          NormalizeDouble(fStopLoss, Digits),
                          NormalizeDouble(fTakeProfit, Digits),
                          tExpiration);
@@ -471,11 +472,11 @@ bool bModifyOrder(string sMsg,
             return(true);
         }
 
-        if (bContinueOnOrderError(iTicket)) {
-            iTicks=0;
-            while(RefreshRates()==false && iTicks < OT_MAX_TICK_RETRIES) {
+        if (bOTContinueOnOrderError(iTicket)) {
+            iTicks = 0;
+            while ( RefreshRates()==false && iTicks < OT_MAX_TICK_RETRIES) {
                 // To the new tick
-                iTicks+=1;
+                iTicks +=  1;
                 Sleep(OT_TICK_SLEEP_MSEC); // Cycle delay
             }
             if (iTicks >= OT_MAX_TICK_RETRIES) {break;}
@@ -488,7 +489,7 @@ bool bModifyOrder(string sMsg,
     return(bRetval);
 }
 
-bool bContinueOnOrderError(int iTicket) {
+bool bOTContinueOnOrderError(int iTicket) {
     bool bContinue=false;
     int iError=GetLastError();
 
@@ -513,3 +514,4 @@ bool bContinueOnOrderError(int iTicket) {
     }
     return(bContinue);
 }
+

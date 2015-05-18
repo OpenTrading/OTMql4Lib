@@ -30,8 +30,16 @@ string zOTLibMt4ProcessCmd(string uMess) {
        take a string expression and evaluate it.
        zMt4LibProcessCmd only handles base Mt4 expressions.
 
-       Returns the result of processing the command.
-       Returns "" if there is an error.
+       Returns the result of processing the command as a string
+       in the form "type|value" where type is one of:
+       string, int, double, bool, datetime, void, json
+
+       Returns "error|explanation" if there is an error.
+
+       Returns "" if the the command was not recognized;
+       you can use this fact to process the standard Mt4 commands
+       with zOTLibMt4ProcessCmd,  and if it returns "",  
+       write your own zMyProcessCmd to process your additions.
     */
     string uType, uChartId, uIgnore, uMark, uCmd;
     string uArg1="";
@@ -44,7 +52,10 @@ string zOTLibMt4ProcessCmd(string uMess) {
     string uRetval, uKey;
     
     iLen =  StringLen(uMess);
-    if (iLen <= 0) {return("");}
+    if (iLen <= 0) {
+        vError("eOTLibProcessCmd: empty input");
+	return("");
+    }
 
     vStringToArray(uMess, aArrayAsList, "|");
 
@@ -69,16 +80,19 @@ string zOTLibMt4ProcessCmd(string uMess) {
     uArg5   = aArrayAsList[9];
 
     uKey = StringSubstr(uCmd, 0, 3);
-    //vTrace("zMt4LibProcessCmd uKey: " +uKey +" uCmd: " +uCmd+ " uMark: " +uMark);
 
-    if (uCmd == "OrdersTotal") {
-        uRetval = "int|" +OrdersTotal();
-    } else if (uCmd == "Period") {
-        uRetval = "int|" +Period();
-    } else if (uCmd == "RefreshRates") {
+    if (uCmd == "OrdersTotal") { //0
+        uRetval = "int|" +IntegerToString(OrdersTotal());
+    } else if (uCmd == "Period") { //0
+        uRetval = "int|" +IntegerToString(Period());
+    } else if (uCmd == "RefreshRates") { //0
         uRetval = "bool|" +RefreshRates();
-    } else if (uCmd == "Symbol") {
+    } else if (uCmd == "Symbol") { //0
         uRetval = "string|" +Symbol();
+    } else if (uCmd == "Comment") {
+        // FixMe: what's the return value? 
+        Comment(uArg1);
+        uRetval = "void|";
     } else if (uCmd == "Print") {
         // FixMe: what's the return value? 
         // FixMe: we should handle multi-args
@@ -96,9 +110,10 @@ string zOTLibMt4ProcessCmd(string uMess) {
     } else if (uKey == "Glo") {
         uRetval = zProcessCmdGlo(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
     } else {
-        vDebug("zMt4LibProcessCmd: UNHANDELED" +uKey +" uCmd: " +uCmd);
+        //vTrace("zMt4LibProcessCmd: UNHANDELED" +uKey +" uCmd: " +uCmd);
         uRetval = "";
     }
+    // vTrace("zMt4LibProcessCmd uMess: " +uMess +" -> " +uRetval);
     
     return(uRetval);
 }
@@ -107,11 +122,11 @@ string zProcessCmdTer(string uCmd, string uChartId, string uIgnore, string uArg1
     string uMsg;
     string uRetval="";
 
-    if (uCmd == "TerminalCompany") {
+    if (uCmd == "TerminalCompany") { //0
         uRetval = "string|" +TerminalCompany();
-    } else if (uCmd == "TerminalName") {
+    } else if (uCmd == "TerminalName") { //0
         uRetval = "string|" +TerminalName();
-    } else if (uCmd == "TerminalPath") {
+    } else if (uCmd == "TerminalPath") { //0
         uRetval = "string|" +TerminalPath();
     } else {
         uMsg = "Unrecognized action: " +uCmd;
@@ -127,40 +142,40 @@ string zProcessCmdWin(string uCmd, string uChartId, string uIgnore, string uArg1
     string uRetval="";
     int iIndex, iPeriod;
 
-    if (uCmd == "WindowBarsPerChart") {
-        uRetval = "int|" +WindowBarsPerChart();
-    } else if (uCmd == "WindowFind") {
+    if (uCmd == "WindowBarsPerChart") { //0
+        uRetval = "int|" +IntegerToString(WindowBarsPerChart());
+    } else if (uCmd == "WindowFind") { //0
         uRetval = "string|" +WindowFind(uArg1);
-    } else if (uCmd == "WindowFirstVisibleBar") {
-        uRetval = "int|" +WindowFirstVisibleBar();
+    } else if (uCmd == "WindowFirstVisibleBar") { //0
+        uRetval = "int|" +IntegerToString(WindowFirstVisibleBar());
     } else if (uCmd == "WindowHandle") {
         iPeriod=StrToInteger(uArg2);
-        uRetval = "int|" +WindowHandle(uArg1, iPeriod);
+        uRetval = "int|" +IntegerToString(WindowHandle(uArg1, iPeriod));
     } else if (uCmd == "WindowIsVisible") {
         iIndex=StrToInteger(uArg1);
         uRetval = "bool|" +WindowIsVisible(iIndex);
     } else if (uCmd == "WindowOnDropped") {
-        uRetval = "int|" +WindowOnDropped();
+        uRetval = "int|" +IntegerToString(WindowOnDropped());
     } else if (uCmd == "WindowPriceMax") {
         iIndex=StrToInteger(uArg1);
-        uRetval = "double|" +WindowPriceMax(iIndex);
+        uRetval = "double|" +DoubleToStr(DoubleToStr(WindowPriceMax(iIndex), 2), 6);
     } else if (uCmd == "WindowPriceMin") {
         iIndex=StrToInteger(uArg1);
-        uRetval = "double|" +WindowPriceMin(iIndex);
+        uRetval = "double|" +DoubleToStr(DoubleToStr(WindowPriceMin(iIndex), 2), 6);
     } else if (uCmd == "WindowPriceOnDropped") {
-        uRetval = "double|" +WindowPriceOnDropped();
-    } else if (uCmd == "WindowRedraw") {
+        uRetval = "double|" +DoubleToStr(WindowPriceOnDropped(), 6);
+    } else if (uCmd == "WindowRedraw") { //0
         WindowRedraw();
         uRetval = "void|";
         // WindowScreenShot
     } else if (uCmd == "WindowTimeOnDropped") {
         uRetval = "datetime|" +WindowTimeOnDropped();
     } else if (uCmd == "WindowXOnDropped") {
-        uRetval = "int|" +WindowXOnDropped();
+        uRetval = "int|" +IntegerToString(WindowXOnDropped());
     } else if (uCmd == "WindowYOnDropped") {
-        uRetval = "int|" +WindowYOnDropped();
-    } else if (uCmd == "WindowsTotal") {
-        uRetval = "int|" +WindowsTotal();
+        uRetval = "int|" +IntegerToString(WindowYOnDropped());
+    } else if (uCmd == "WindowsTotal") { //0
+        uRetval = "int|" +IntegerToString(WindowsTotal());
     } else {
         uMsg="Unrecognized action: " +uCmd;
         vWarn("zProcessCmdWin: " +uMsg);
@@ -178,49 +193,49 @@ string zProcessCmdAcc(string uCmd, string uChartId, string uIgnore, string uArg1
     int iCmd;
     double fVolume;
 
-    if (uCmd == "AccountBalance") {
-        uRetval = "double|" +AccountBalance();
-    } else if (uCmd == "AccountCompany") {
+    if (uCmd == "AccountBalance") { //0
+        uRetval = "double|" +DoubleToStr(AccountBalance(), 2);
+    } else if (uCmd == "AccountCompany") { //0
         uRetval = "string|" +AccountCompany();
-    } else if (uCmd == "AccountCredit") {
-        uRetval = "double|" +AccountCredit();
-    } else if (uCmd == "AccountCurrency") {
+    } else if (uCmd == "AccountCredit") { //0
+        uRetval = "double|" +DoubleToStr(AccountCredit(), 2);
+    } else if (uCmd == "AccountCurrency") { //0
         uRetval = "string|" +AccountCurrency();
-    } else if (uCmd == "AccountEquity") {
-        uRetval = "double|" +AccountEquity();
-    } else if (uCmd == "AccountFreeMargin") {
-        uRetval = "double|" +AccountFreeMargin();
+    } else if (uCmd == "AccountEquity") { //0
+        uRetval = "double|" +DoubleToStr(AccountEquity(), 2);
+    } else if (uCmd == "AccountFreeMargin") { //0
+        uRetval = "double|" +DoubleToStr(AccountFreeMargin(), 2);
     } else if (uCmd == "AccountFreeMarginCheck") {
         // assert
         uSymbol=uArg1;
         iCmd=StrToInteger(uArg2);
         fVolume=StrToDouble(uArg3);
-        uRetval = "double|" +AccountFreeMarginCheck(uSymbol, iCmd, fVolume);
-    } else if (uCmd == "AccountFreeMarginMode") {
-        uRetval = "double|" +AccountFreeMarginMode();
-    } else if (uCmd == "AccountLeverage") {
-        uRetval = "int|" +AccountLeverage();
-    } else if (uCmd == "AccountMargin") {
-        uRetval = "double|" +AccountMargin();
-    } else if (uCmd == "AccountName") {
+        uRetval = "double|" +DoubleToStr(AccountFreeMarginCheck(uSymbol, iCmd, fVolume), 2);
+    } else if (uCmd == "AccountFreeMarginMode") { //0
+        uRetval = "double|" +DoubleToStr(AccountFreeMarginMode(), 2);
+    } else if (uCmd == "AccountLeverage") { //0
+        uRetval = "int|" +IntegerToString(AccountLeverage());
+    } else if (uCmd == "AccountMargin") { //0
+        uRetval = "double|" +DoubleToStr(AccountMargin(), 2);
+    } else if (uCmd == "AccountName") { //0
         uRetval = "string|" +AccountName();
-    } else if (uCmd == "AccountNumber") {
-        uRetval = "int|" +AccountNumber();
-    } else if (uCmd == "AccountProfit") {
-        uRetval = "double|" +AccountProfit();
-    } else if (uCmd == "AccountServer") {
+    } else if (uCmd == "AccountNumber") { //0
+        uRetval = "int|" +IntegerToString(AccountNumber());
+    } else if (uCmd == "AccountProfit") { //0
+        uRetval = "double|" +DoubleToStr(AccountProfit(), 2);
+    } else if (uCmd == "AccountServer") { //0
         uRetval = "string|" +AccountServer();
-    } else if (uCmd == "AccountStopoutLevel") {
-        uRetval = "int|" +AccountStopoutLevel();
-    } else if (uCmd == "AccountStopoutMode") {
-        uRetval = "int|" +AccountStopoutMode();
+    } else if (uCmd == "AccountStopoutLevel") { //0
+        uRetval = "int|" +IntegerToString(AccountStopoutLevel());
+    } else if (uCmd == "AccountStopoutMode") { //0
+        uRetval = "int|" +IntegerToString(AccountStopoutMode());
     } else {
         uMsg="Unrecognized action: " +uCmd;
         vWarn("zProcessCmdAcc: " +uMsg);
         uRetval="";
     }
 
-    return (uRetval);
+    return(uRetval);
 }
 
 string zProcessCmdGlo(string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
@@ -228,7 +243,9 @@ string zProcessCmdGlo(string uCmd, string uChartId, string uIgnore, string uArg1
     string uRetval="";
     string sName;
     double fValue;
-
+    int iValue;
+    datetime tValue;
+    
     if (uCmd == "GlobalVariableCheck") {
         // assert
         sName = uArg1;
@@ -237,16 +254,29 @@ string zProcessCmdGlo(string uCmd, string uChartId, string uIgnore, string uArg1
         // assert
         sName = uArg1;
         uRetval = "bool|" +GlobalVariableDel(sName);
+    } else if (uCmd == "GlobalVariableDeleteAll") {
+        // assert
+        sName = uArg1;
+        iValue = StringToInteger(uArg2); //FixMe: datetime
+        //FixMe uRetval = "bool|" +GlobalVariableDeleteAll(sName, iValue);
+	uRetval = "bool|false";
     } else if (uCmd == "GlobalVariableGet") {
         // assert
         sName = uArg1;
-        uRetval = "double|" +GlobalVariableGet(sName);
+        uRetval = "double|" +DoubleToStr(GlobalVariableGet(sName), 6);
+	// overloaded
+    } else if (uCmd == "GlobalVariableName") {
+        // assert
+        iValue = StringToInteger(uArg1);
+        uRetval = "string|" +GlobalVariableName(iValue);
+	// overloaded but we cant pass pointers
     } else if (uCmd == "GlobalVariableSet") {
         // assert
         sName = uArg1;
         fValue = StrToDouble(uArg2);
-        uRetval = "double|" +GlobalVariableSet(sName, fValue);
+        uRetval = "double|" +DoubleToStr(GlobalVariableSet(sName, fValue), 6);
     } else {
+	// GlobalVariableSetOnCondition
         uMsg = "Unrecognized action: " +uCmd;
         vWarn("zProcessCmdGlo: " +uMsg);
         uRetval = "";

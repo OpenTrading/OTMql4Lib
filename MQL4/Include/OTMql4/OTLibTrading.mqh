@@ -21,12 +21,12 @@ int iOTSetTradeIsBusy(int iMaxWaitingSeconds= 60);
 int iOTSetTradeIsNotBusy();
 
 double fOTExposedEcuInMarket(int iOrderEAMagic);
-bool bModifyTrailingStopLoss(int iTrailingStopLossPoints,
+bool bOTModifyTrailingStopLoss(int iTrailingStopLossPoints,
 			     datetime tExpiration=0);
-bool bModifyOrder(string sMsg,
+bool bOTModifyOrder(string sMsg,
 		  int iTicket,
 		  double fPrice,
 		  double fStopLoss,
 		  double fTakeProfit,
 		  datetime tExpiration);
-bool bContinueOnOrderError(int iTicket);
+bool bOTContinueOnOrderError(int iTicket);

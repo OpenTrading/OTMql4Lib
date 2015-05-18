@@ -29,7 +29,7 @@ string uAnsi2Unicode(int ptrStringMemory) {
     RtlMoveMemory(ucValue, ptrStringMemory, szString + 1);
     string str = CharArrayToString(ucValue);
     LocalFree(ptrStringMemory);
-    return str;
+    return(str);
 }
 
 void vStringToArray(string uInput, string& uOutput[], string uDelim) {

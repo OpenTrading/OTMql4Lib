@@ -32,10 +32,10 @@ string zOTLibSimpleFormatCmd(string uType, string uChartId, int iIgnore, string 
     If  uType is not cmd or exec then "" is returned to signal failure.
     */
     if (uType != "cmd" && uType != "exec") {
-        return "";
+        return("");
     }
-    // FixMe: sBAR
-    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, 0, uMark, uCmd);
+    // FixMe: uBAR
+    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, iIgnore, uMark, uCmd);
     return(uRetval);
 }
 
@@ -46,12 +46,27 @@ string zOTLibSimpleFormatBar(string uType, string uChartId, int iIgnore, string 
     If  uType is not tick timer or bar, then "" is returned to signal failure.
     */
     if (uType != "bar") {
-        return "";
+        return("");
     }
-    uInfo = Bid +sBAR +Ask +sBAR +uInfo;
-    //? uInfo  = iACCNUM +sBAR +uInfo;
-    // FixMe: sBAR
-    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, 0, uMark, uInfo);
+    uInfo = Bid +uBAR +Ask +uBAR +uInfo;
+    //? uInfo  = iACCNUM +uBAR +uInfo;
+    // FixMe: uBAR
+    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, iIgnore, uMark, uInfo);
+    return(uRetval);
+}
+
+string zOTLibSimpleFormatTimer(string uType, string uChartId, int iIgnore, string uMark, string uInfo) {
+    string uRetval;
+    /* uType should be one of: tick or timer
+    Both will be put on the wire as a their type topics.
+    If  uType is not tick timer or bar, then "" is returned to signal failure.
+    */
+    if (uType != "timer") {
+        return("");
+    }
+    //? uInfo  = iACCNUM +uBAR +uInfo;
+    // FixMe: uBAR
+    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, iIgnore, uMark, uInfo);
     return(uRetval);
 }
 
@@ -61,13 +76,13 @@ string zOTLibSimpleFormatTick(string uType, string uChartId, int iIgnore, string
     Both will be put on the wire as a their type topics.
     If  uType is not tick timer or bar, then "" is returned to signal failure.
     */
-    if (uType != "tick" && uType != "timer") {
-        return "";
+    if (uType != "tick") {
+        return("");
     }
-    uInfo = Bid +sBAR +Ask +sBAR +uInfo;
-    //? uInfo  = iACCNUM +sBAR +uInfo;
-    // FixMe: sBAR
-    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, 0, uMark, uInfo);
+    uInfo = Bid +uBAR +Ask +uBAR +uInfo;
+    //? uInfo  = iACCNUM +uBAR +uInfo;
+    // FixMe: uBAR
+    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, iIgnore, uMark, uInfo);
     return(uRetval);
 }
 
@@ -78,10 +93,10 @@ string zOTLibSimpleFormatRetval(string uType, string uChartId, int iIgnore, stri
     If  uType is not retval, then "" is returned to signal failure.
     */
     if (uType != "retval") {
-        return "";
+        return("");
     }
-    // FixMe: sBAR
-    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, 0, uMark, uInfo);
+    // FixMe: uBAR
+    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, iIgnore, uMark, uInfo);
     return(uRetval);
 }
 
@@ -99,7 +114,7 @@ string eOTLibSimpleUnformatCmd(string& aArrayAsList[]) {
     
     iLen = ArraySize(aArrayAsList);
     if (iLen < 1) {
-        eRetval = "eOTLibSimpleUnformatCmd iLen=0: split failed with " +sBAR;
+        eRetval = "eOTLibSimpleUnformatCmd iLen=0: split failed with " +uBAR;
         return(eRetval);
     }
     uType = StringTrimRight(aArrayAsList[0]);

@@ -15,7 +15,7 @@ extern int iStochKperiod=5;
 extern int iStochDperiod=3;
 extern int iStochSlowing=3;
 
-string sBarInfo() {
+string uBarInfo() {
   string sInfo;
 
   sInfo="iMACD="+iMACD(NULL, 0, iFastEMA, iSlowEMA, iSignalSMA,
