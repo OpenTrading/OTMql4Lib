@@ -126,6 +126,9 @@ string zProcessCmdTer(string uCmd, string uChartId, string uIgnore, string uArg1
         uRetval = "string|" +TerminalCompany();
     } else if (uCmd == "TerminalName") { //0
         uRetval = "string|" +TerminalName();
+    } else if (uCmd == "TerminalInfoString") { //1
+	// groan - does everything coerce?
+        uRetval = "string|" +(string)TerminalInfoString(uArg1);
     } else if (uCmd == "TerminalPath") { //0
         uRetval = "string|" +TerminalPath();
     } else {
