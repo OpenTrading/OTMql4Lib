@@ -217,10 +217,14 @@ string uProcessCmdOT (string uCmd, string uChartId, string uIgnore, string uArg1
         uRetval = "bool|" + bOTContinueOnOrderError(iTicket);
     } else if (uCmd == "jOTAccountInformation") {
         uRetval = "json|" + jOTAccountInformation();
-    } else if (uCmd == "jOTOrderTickets") {
-        uRetval = "json|" + jOTOrderTickets();
+    } else if (uCmd == "jOTOrdersTickets") {
+        uRetval = "json|" + jOTOrdersTickets();
+    } else if (uCmd == "jOTOrdersHistory") {
+        uRetval = "json|" + jOTOrdersHistory();
+    } else if (uCmd == "jOTOrdersTrades") {
+        uRetval = "json|" + jOTOrdersTrades();
     } else if (uCmd == "jOTOrders") {
-        uRetval = "json|" + jOTOrders();
+        uRetval = "json|" + jOTOrders(StrToInteger(uArg1));
     } else if (uCmd == "jOTOrderInformation") {
         iTicket = StrToInteger(uArg1);
         uRetval = "json|" + jOTOrderInformation(iTicket);

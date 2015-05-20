@@ -10,6 +10,8 @@
 #include <OTMql4/OTLibConstants.mqh>
 #include <OTMql4/OTLibServerErrors.mqh>
 
+double fEPS=0.000001;
+
 int iOTOrderSelect(int iIndex, int iSelect, int iPool=MODE_TRADES) {
     // returns 1 on success, 0 or -iError on failure
     bool bRetval;
@@ -60,6 +62,12 @@ int iOTOrderSend(string sSymbol, int cmd,
     return(iRetval);
 }
 
+int iOTOrderCloseFull(int iTicket, double fPrice, int iSlippage, color cColor=CLR_NONE) {
+    // returns 1 on success, 0 or -iError on failure
+    double fLots=0.0;
+    return(iOTOrderClose(iTicket, fLots, fPrice, iSlippage, cColor));
+}
+
 int iOTOrderClose(int iTicket,  double fLots, double fPrice, int iSlippage, color cColor=CLR_NONE) {
 
     // returns 1 on success, 0 or -iError on failure
@@ -77,7 +85,17 @@ int iOTOrderClose(int iTicket,  double fLots, double fPrice, int iSlippage, colo
                   iTick + ")");
             continue;
         }
-
+	if (fLots < fEPS) {
+	    iError = iOTOrderSelect(iTicket, SELECT_BY_TICKET, MODE_TRADES);
+	    if (iError <= 0) {
+		vWarn("Select order failed " +
+		      " for order " + iTicket +
+		      ": " + ErrorDescription(GetLastError()));
+		// FixMe?: check the error for fatal ones
+		continue;
+	    }
+	    fLots = OrderLots();
+	}
         bRetval = OrderClose(iTicket, fLots, fPrice, iSlippage, cColor);
         iOTSetTradeIsNotBusy();
         if (bRetval == true) {
@@ -289,7 +307,7 @@ double fOTExposedEcuInMarket(int iOrderEAMagic = 0) {
 
     for(i=OrdersTotal()-1; i>=0; i--) {
 
-        iRetval=iOTOrderSelect(i, SELECT_BY_POS, MODE_TRADES);
+        iRetval = iOTOrderSelect(i, SELECT_BY_POS, MODE_TRADES);
         if (iRetval <= 0) {
             vWarn("Select order failed " +
                   " for order " + i +
@@ -297,39 +315,44 @@ double fOTExposedEcuInMarket(int iOrderEAMagic = 0) {
             continue;
         }
 
-        if(OrderSymbol()!=Symbol()) continue;
         if (iOrderEAMagic > 0 && OrderMagicNumber() != iOrderEAMagic) continue;
 
         double fStopLoss=OrderStopLoss();
         if (fStopLoss == 0.0) {
-            fExposedEcu=AccountFreeMargin();
+            vWarn("The exposure is probably infinite " +
+                  " for order " + OrderTicket() +" (no stoploss)";
+            fExposedEcu = AccountFreeMargin();
             break;
         }
 
-        int iType=OrderType(); // Order type
-        double fOrderLots=OrderLots();
-        double fOpenPrice=OrderOpenPrice();
-        double fMarginRequired=MarketInfo(Symbol(), MODE_MARGINREQUIRED);
+        int iType = OrderType(); // Order type
+        double fOrderLots = OrderLots();
+	string uSymbol = OrderSymbol();
+	// FixMe: check retval
+	double fLotSize = MarketInfo(uSymbol, MODE_LOTSIZE);
+        double fOpenPrice = OrderOpenPrice();
+        double fMarginRequired = MarketInfo(uSymbol, MODE_MARGINREQUIRED);
+	
         double fWorstCase;
         if (iType == OP_BUY) {
             if (fStopLoss < Bid) {
-                fWorstCase=(Bid-fStopLoss)/Bid*fMarginRequired;
-                fExposedEcu+=fWorstCase * fOrderLots;
+                fWorstCase = (Bid-fStopLoss)/Bid*fMarginRequired;
+                fExposedEcu += fWorstCase * fOrderLots * fLotSize;
                 vDebug("Exposure on order # "+i+
-                       " fExposure="+ (fWorstCase * fOrderLots)+
+                       " fExposure="+ (fWorstCase * fOrderLots * fLotSize )+
                        " Bid="+Bid+
                        " fStopLoss="+fStopLoss+
-                       " lots fMarginRequired="+fMarginRequired*fOrderLots);
+                       " lots fMarginRequired="+fMarginRequired*fOrderLots * fLotSize);
             }
         } else if (iType == OP_SELL) {
             if (fStopLoss > Ask) {
-                fWorstCase=(fStopLoss-Ask)/Ask*fMarginRequired;
-                fExposedEcu+=fWorstCase * fOrderLots;
+                fWorstCase = (fStopLoss-Ask)/Ask*fMarginRequired;
+                fExposedEcu += fWorstCase * fOrderLots * fLotSize;
                 vDebug("Exposure on order # "+i+
-                       " fExposure="+ (fWorstCase * fOrderLots)+
+                       " fExposure="+ (fWorstCase * fOrderLots * fLotSize)+
                        " Ask="+Ask+
                        " fStopLoss="+fStopLoss+
-                       " lots fMarginRequired="+fMarginRequired*fOrderLots);
+                       " lots fMarginRequired="+fMarginRequired*fOrderLots * fLotSize);
             }
         }
     }
@@ -398,7 +421,7 @@ bool bOTModifyTrailingStopLoss(int iTrailingStopLossPoints,
 
         // Analysis of orders:
         iType = OrderType(); // Order type
-        if (OrderSymbol()!=sSymbol || iType > 1) continue;
+        if (OrderSymbol() != sSymbol || iType > 1) continue;
 
         fTakeProfit = OrderTakeProfit(); // TakeProfit of the selected order
         fPrice = OrderOpenPrice(); // Price of the selected order

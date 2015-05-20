@@ -6,8 +6,10 @@
 #import "OTMql4/OTLibJsonFormat.ex4"
 
 string jOTAccountInformation();
-string jOTOrderTickets();
-string jOTOrders();
+string jOTOrdersTickets();
+string jOTOrdersTrades();
+string jOTOrdersHistory();
+string jOTOrders(int iMode);
 string jOTOrderInformation(int iTicket);
 string jOTMarketInformation(string uSymbol);
 string jOTTickInformation(string uSymbol, int iTimeFrame);

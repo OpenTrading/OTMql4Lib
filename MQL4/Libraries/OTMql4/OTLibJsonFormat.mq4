@@ -23,27 +23,27 @@ string jOTAccountInformation() {
     
     // FixMe: coalesce
     uRetval = "{";
-    uRetval += StringFormat("\"status\": \"%s\",", "ok");
-    uRetval += StringFormat("\"balance\": %f,", AccountBalance()); // Decimal
-    uRetval += StringFormat("\"credit\": %f,", AccountCredit()); // Decimal
-    uRetval += StringFormat("\"company\": \"%s\",", AccountCompany());
-    uRetval += StringFormat("\"currency\": \"%s\",", AccountCurrency());
-    uRetval += StringFormat("\"equity\": %f,", AccountEquity()); // Decimal
-    uRetval += StringFormat("'free_margin': %f,", AccountFreeMargin()); // Decimal
-    uRetval += StringFormat("'free_margin_mode': \"%f\",", AccountFreeMarginMode());
-    uRetval += StringFormat("\"leverage\": %i,", AccountLeverage());
-    uRetval += StringFormat("\"margin\": %f,", AccountMargin()); // Decimal
-    uRetval += StringFormat("\"name\": \"%s\",", AccountName());
-    uRetval += StringFormat("\"number\": %i,", AccountNumber());
-    uRetval += StringFormat("\"profit\": %f,", AccountProfit()); // Decimal
-    uRetval += StringFormat("\"server\": \"%s\",", AccountServer());
-    uRetval += StringFormat("'stopout_level': \"%i\",", AccountStopoutLevel()); //?
-    uRetval += StringFormat("'stopout_mode': %i", AccountStopoutMode()); //?
+    uRetval += StringFormat("\"status\": \"%s\", ", "ok");
+    uRetval += StringFormat("\"balance\": %f, ", AccountBalance()); // Decimal
+    uRetval += StringFormat("\"credit\": %f, ", AccountCredit()); // Decimal
+    uRetval += StringFormat("\"company\": \"%s\", ", AccountCompany());
+    uRetval += StringFormat("\"currency\": \"%s\", ", AccountCurrency());
+    uRetval += StringFormat("\"equity\": %f, ", AccountEquity()); // Decimal
+    uRetval += StringFormat("'free_margin': %f, ", AccountFreeMargin()); // Decimal
+    uRetval += StringFormat("'free_margin_mode': \"%f\", ", AccountFreeMarginMode());
+    uRetval += StringFormat("\"leverage\": %i, ", AccountLeverage());
+    uRetval += StringFormat("\"margin\": %f, ", AccountMargin()); // Decimal
+    uRetval += StringFormat("\"name\": \"%s\", ", AccountName());
+    uRetval += StringFormat("\"number\": %i, ", AccountNumber());
+    uRetval += StringFormat("\"profit\": %f, ", AccountProfit()); // Decimal
+    uRetval += StringFormat("\"server\": \"%s\", ", AccountServer());
+    uRetval += StringFormat("\"stopout_level\": %i, ", AccountStopoutLevel()); //?
+    uRetval += StringFormat("\"stopout_mode\": %i", AccountStopoutMode()); //?
     uRetval += "}";
     return(uRetval);
 }    
 
-string jOTOrderTickets() {
+string jOTOrdersTickets() {
     string uRetval;
     int iRetval;
     int i;
@@ -59,13 +59,21 @@ string jOTOrderTickets() {
     return(uRetval);
 }    
 
-string jOTOrders() {
+string jOTOrdersTrades() {
+    return (jOTOrders(MODE_TRADES));
+}
+
+string jOTOrdersHistory() {
+    return (jOTOrders(MODE_HISTORY));
+}
+
+string jOTOrders(int iMode) {
     string uRetval, uReason;
     int i, iRetval, iTicket;
     
     uRetval = "[";
     for(i=OrdersTotal()-1; i>=0; i--) {
-	iRetval = iOTOrderSelect(i, SELECT_BY_POS, MODE_TRADES);
+	iRetval = iOTOrderSelect(i, SELECT_BY_POS, iMode);
 	if (iRetval <= 0) {
 	    uReason = ErrorDescription(GetLastError());
 	    vWarn("Select order failed " +
@@ -91,24 +99,24 @@ string jOTOrderInformationByTicket(int iTicket) {
 	uReason = ErrorDescription(GetLastError());
 	vWarn("Select order failed " +
 	      " for order " + iTicket + ": " + uReason);
-	uRetval += StringFormat("\"status\": \"%s\",", "failed");
+	uRetval += StringFormat("\"status\": \"%s\", ", "failed");
 	uRetval += StringFormat("\"reason\": \"%s\"", uReason);
     } else {
-	uRetval += StringFormat("\"ticket\": %i,", OrderTicket());
-	uRetval += StringFormat("\"symbol\": \"%s\",", OrderSymbol());
-	uRetval += StringFormat("\"status\": \"%s\",", "ok");
-	uRetval += StringFormat("\"opentime\": %i,", OrderOpenTime());
-	uRetval += StringFormat("\"type\": %i,", OrderType());
-	uRetval += StringFormat("\"volume\": %i,", OrderLots());
-	uRetval += StringFormat("\"openprice\": %f,", OrderOpenPrice());
-	uRetval += StringFormat("\"stoploss\": %f,", OrderStopLoss());
-	uRetval += StringFormat("\"takeprofit\": %f,", OrderTakeProfit());
-	uRetval += StringFormat("\"closetime\": %i,", OrderCloseTime());
-	uRetval += StringFormat("\"closeprice\": %f,", OrderClosePrice());
-	uRetval += StringFormat("\"commission\": %f,", OrderCommission());
-	uRetval += StringFormat("\"swap\": %f,", OrderSwap());
-	uRetval += StringFormat("\"profit\": %f,", OrderProfit());
-	uRetval += StringFormat("\"comment\": \"%s\",", OrderComment());
+	uRetval += StringFormat("\"ticket\": %i, ", OrderTicket());
+	uRetval += StringFormat("\"symbol\": \"%s\", ", OrderSymbol());
+	uRetval += StringFormat("\"status\": \"%s\", ", "ok");
+	uRetval += StringFormat("\"opentime\": %i, ", OrderOpenTime());
+	uRetval += StringFormat("\"type\": %i, ", OrderType());
+	uRetval += StringFormat("\"lots\": %f, ", OrderLots());
+	uRetval += StringFormat("\"openprice\": %f, ", OrderOpenPrice());
+	uRetval += StringFormat("\"stoploss\": %f, ", OrderStopLoss());
+	uRetval += StringFormat("\"takeprofit\": %f, ", OrderTakeProfit());
+	uRetval += StringFormat("\"closetime\": %i, ", OrderCloseTime());
+	uRetval += StringFormat("\"closeprice\": %f, ", OrderClosePrice());
+	uRetval += StringFormat("\"commission\": %f, ", OrderCommission());
+	uRetval += StringFormat("\"swap\": %f, ", OrderSwap());
+	uRetval += StringFormat("\"profit\": %f, ", OrderProfit());
+	uRetval += StringFormat("\"comment\": \"%s\", ", OrderComment());
 	uRetval += StringFormat("\"magicnumber\": %i", OrderMagicNumber());
     }
     uRetval += "}";
@@ -120,34 +128,34 @@ string jOTMarketInformation(string uSymbol) {
     
     // FixMe: coalesce
     uRetval = "{";
-    uRetval += StringFormat("\"symbol\": \"%s\",", uSymbol);
-    uRetval += StringFormat("\"low\": %f,", MarketInfo(uSymbol, MODE_LOW));
-    uRetval += StringFormat("\"high\": %f,", MarketInfo(uSymbol, MODE_HIGH));
-    uRetval += StringFormat("\"time\": %d,", MarketInfo(uSymbol, MODE_TIME));//fix
-    uRetval += StringFormat("\"bid\": %f,", MarketInfo(uSymbol, MODE_BID));
-    uRetval += StringFormat("\"ask\": %f,", MarketInfo(uSymbol, MODE_ASK));
-    uRetval += StringFormat("\"point\": %f,", MarketInfo(uSymbol, MODE_POINT));//fix?
-    uRetval += StringFormat("\"digits\": %f,", MarketInfo(uSymbol, MODE_DIGITS));//fix?
-    uRetval += StringFormat("\"spread\": %f,", MarketInfo(uSymbol, MODE_SPREAD));
-    uRetval += StringFormat("\"stoplevel\": %f,", MarketInfo(uSymbol, MODE_STOPLEVEL));
-    uRetval += StringFormat("\"lotsize\": %f,", MarketInfo(uSymbol, MODE_LOTSIZE));
-    uRetval += StringFormat("\"tickvalue\": %f,", MarketInfo(uSymbol, MODE_TICKVALUE));
-    uRetval += StringFormat("\"ticksize\": %f,", MarketInfo(uSymbol, MODE_TICKSIZE));
-    uRetval += StringFormat("\"swaplong\": %f,", MarketInfo(uSymbol, MODE_SWAPLONG));
-    uRetval += StringFormat("\"swapshort\": %f,", MarketInfo(uSymbol, MODE_SWAPSHORT));
-    uRetval += StringFormat("\"starting\": \"%s\",", (string)MarketInfo(uSymbol, MODE_STARTING));//?
-    uRetval += StringFormat("\"expiration\": \"%s\",", (string)MarketInfo(uSymbol, MODE_EXPIRATION));//?
-    uRetval += StringFormat("\"tradeallowed\": \"%s\",", (string)MarketInfo(uSymbol, MODE_TRADEALLOWED));//?
-    uRetval += StringFormat("\"minlot\": \"%s\",", (string)MarketInfo(uSymbol, MODE_MINLOT));//?
-    uRetval += StringFormat("\"lotstep\": \"%s\",", (string)MarketInfo(uSymbol, MODE_LOTSTEP));//?
-    uRetval += StringFormat("\"maxlot\": \"%s\",", (string)MarketInfo(uSymbol, MODE_MAXLOT));//?
-    uRetval += StringFormat("\"swaptype\": \"%s\",", (string)MarketInfo(uSymbol, MODE_SWAPTYPE));//?
-    uRetval += StringFormat("\"profitcalcmode\": \"%s\",", (string)MarketInfo(uSymbol, MODE_PROFITCALCMODE));//?
-    uRetval += StringFormat("\"margincalcmode\": \"%s\",", (string)MarketInfo(uSymbol, MODE_MARGINCALCMODE));//?
-    uRetval += StringFormat("\"margininit\": \"%s\",", (string)MarketInfo(uSymbol, MODE_MARGININIT));
-    uRetval += StringFormat("\"marginmaintenance\": \"%s\",", (string)MarketInfo(uSymbol, MODE_MARGINMAINTENANCE));
-    uRetval += StringFormat("\"marginhedged\": \"%s\",", (string)MarketInfo(uSymbol, MODE_MARGINHEDGED));
-    uRetval += StringFormat("\"marginrequired\": \"%s\",", (string)MarketInfo(uSymbol, MODE_MARGINREQUIRED));
+    uRetval += StringFormat("\"symbol\": \"%s\", ", uSymbol);
+    uRetval += StringFormat("\"low\": %f, ", MarketInfo(uSymbol, MODE_LOW));
+    uRetval += StringFormat("\"high\": %f, ", MarketInfo(uSymbol, MODE_HIGH));
+    uRetval += StringFormat("\"time\": %d, ", MarketInfo(uSymbol, MODE_TIME));//fix
+    uRetval += StringFormat("\"bid\": %f, ", MarketInfo(uSymbol, MODE_BID));
+    uRetval += StringFormat("\"ask\": %f, ", MarketInfo(uSymbol, MODE_ASK));
+    uRetval += StringFormat("\"point\": %f, ", MarketInfo(uSymbol, MODE_POINT));//fix?
+    uRetval += StringFormat("\"digits\": %f, ", MarketInfo(uSymbol, MODE_DIGITS));//fix?
+    uRetval += StringFormat("\"spread\": %f, ", MarketInfo(uSymbol, MODE_SPREAD));
+    uRetval += StringFormat("\"stoplevel\": %f, ", MarketInfo(uSymbol, MODE_STOPLEVEL));
+    uRetval += StringFormat("\"lotsize\": %f, ", MarketInfo(uSymbol, MODE_LOTSIZE));
+    uRetval += StringFormat("\"tickvalue\": %f, ", MarketInfo(uSymbol, MODE_TICKVALUE));
+    uRetval += StringFormat("\"ticksize\": %f, ", MarketInfo(uSymbol, MODE_TICKSIZE));
+    uRetval += StringFormat("\"swaplong\": %f, ", MarketInfo(uSymbol, MODE_SWAPLONG));
+    uRetval += StringFormat("\"swapshort\": %f, ", MarketInfo(uSymbol, MODE_SWAPSHORT));
+    uRetval += StringFormat("\"starting\": \"%s\", ", (string)MarketInfo(uSymbol, MODE_STARTING));//?
+    uRetval += StringFormat("\"expiration\": \"%s\", ", (string)MarketInfo(uSymbol, MODE_EXPIRATION));//?
+    uRetval += StringFormat("\"tradeallowed\": \"%s\", ", (string)MarketInfo(uSymbol, MODE_TRADEALLOWED));//?
+    uRetval += StringFormat("\"minlot\": \"%s\", ", (string)MarketInfo(uSymbol, MODE_MINLOT));//?
+    uRetval += StringFormat("\"lotstep\": \"%s\", ", (string)MarketInfo(uSymbol, MODE_LOTSTEP));//?
+    uRetval += StringFormat("\"maxlot\": \"%s\", ", (string)MarketInfo(uSymbol, MODE_MAXLOT));//?
+    uRetval += StringFormat("\"swaptype\": \"%s\", ", (string)MarketInfo(uSymbol, MODE_SWAPTYPE));//?
+    uRetval += StringFormat("\"profitcalcmode\": \"%s\", ", (string)MarketInfo(uSymbol, MODE_PROFITCALCMODE));//?
+    uRetval += StringFormat("\"margincalcmode\": \"%s\", ", (string)MarketInfo(uSymbol, MODE_MARGINCALCMODE));//?
+    uRetval += StringFormat("\"margininit\": \"%s\", ", (string)MarketInfo(uSymbol, MODE_MARGININIT));
+    uRetval += StringFormat("\"marginmaintenance\": \"%s\", ", (string)MarketInfo(uSymbol, MODE_MARGINMAINTENANCE));
+    uRetval += StringFormat("\"marginhedged\": \"%s\", ", (string)MarketInfo(uSymbol, MODE_MARGINHEDGED));
+    uRetval += StringFormat("\"marginrequired\": \"%s\", ", (string)MarketInfo(uSymbol, MODE_MARGINREQUIRED));
     uRetval += StringFormat("\"freezelevel\": \"%s\"", (string)MarketInfo(uSymbol, MODE_FREEZELEVEL));
     uRetval += "}";
     return(uRetval);
@@ -155,17 +163,18 @@ string jOTMarketInformation(string uSymbol) {
 
 string jOTTickInformation(string uSymbol, int iTimeFrame) {
     string uRetval;
-    int iPricePower;
-    double fBid, fAsk;
+    int iDigits;
+    double fBid, fAsk, fPoint;
     
-    iPricePower = (int) MarketInfo(uSymbol, MODE_DIGITS);
-    fBid = NormalizeDouble(MarketInfo(uSymbol, MODE_BID), iPricePower);
-    fAsk = NormalizeDouble(MarketInfo(uSymbol, MODE_ASK), iPricePower);
+    iDigits = (int) MarketInfo(uSymbol, MODE_DIGITS);
+    fBid = NormalizeDouble(MarketInfo(uSymbol, MODE_BID), iDigits);
+    fAsk = NormalizeDouble(MarketInfo(uSymbol, MODE_ASK), iDigits);
+    fPoint = NormalizeDouble(MarketInfo(uSymbol, MODE_POINT), iDigits);
     // FixMe: coalesce
     uRetval = "{";
     uRetval += StringFormat("\"currenttime\": \"%s\"", IntegerToString(TimeCurrent()));
-    uRetval += StringFormat("\"bid\": %f,", fBid*MathPow(10, iPricePower));
-    uRetval += StringFormat("\"ask\": %f", fAsk*MathPow(10, iPricePower));
+    uRetval += StringFormat("\"bid\": %f, ", fBid*MathPow(10, iDigits));
+    uRetval += StringFormat("\"ask\": %f", fAsk*MathPow(10, iDigits));
     
     uRetval += "}";
     return(uRetval);
@@ -173,17 +182,18 @@ string jOTTickInformation(string uSymbol, int iTimeFrame) {
 
 string jOTBarInformation(string uSymbol, int iTimeFrame, int iBar) {
     string uRetval;
-    int iPricePower;
+    int iDigits, iSpread;
     
     // FixMe: coalesce
     uRetval = "{";
-    iPricePower = (int) MarketInfo(uSymbol, MODE_DIGITS);
+    iDigits = (int) MarketInfo(uSymbol, MODE_DIGITS);
+    iSpread = (int) MarketInfo(uSymbol, MODE_SPREAD);
     
     uRetval += StringFormat("\"bartime\": \"%s\"", TimeToStr(iTime(uSymbol, iTimeFrame, iBar)));
-    uRetval += StringFormat("\"open\": %i,", iOpen(uSymbol, iTimeFrame, iBar)*MathPow(10, iPricePower));
-    uRetval += StringFormat("\"high\": %i,", iHigh(uSymbol, iTimeFrame, iBar)*MathPow(10, iPricePower));
-    uRetval += StringFormat("\"low\": %i,", iLow(uSymbol, iTimeFrame, iBar)*MathPow(10, iPricePower));
-    uRetval += StringFormat("\"close\": %i,", iClose(uSymbol, iTimeFrame, iBar)*MathPow(10, iPricePower));
+    uRetval += StringFormat("\"open\": %i, ", iOpen(uSymbol, iTimeFrame, iBar)*MathPow(10, iDigits));
+    uRetval += StringFormat("\"high\": %i, ", iHigh(uSymbol, iTimeFrame, iBar)*MathPow(10, iDigits));
+    uRetval += StringFormat("\"low\": %i, ", iLow(uSymbol, iTimeFrame, iBar)*MathPow(10, iDigits));
+    uRetval += StringFormat("\"close\": %i, ", iClose(uSymbol, iTimeFrame, iBar)*MathPow(10, iDigits));
     uRetval += StringFormat("\"volume\": %i", iVolume(uSymbol, iTimeFrame, iBar));
 
     uRetval += "}";
@@ -193,9 +203,9 @@ string jOTBarInformation(string uSymbol, int iTimeFrame, int iBar) {
 string jOTTimerInformation() {
     string uRetval;
     uRetval = "{";
-    uRetval += StringFormat("\"IsConnected\": %i,", IsConnected());
-    //    uRetval += StringFormat("\"IsTradeAllowed\": %i,", IsTradeAllowed());
-    uRetval += StringFormat("\"OrdersTotal\": %i,", OrdersTotal());
+    uRetval += StringFormat("\"IsConnected\": %i, ", IsConnected());
+    //    uRetval += StringFormat("\"IsTradeAllowed\": %i, ", IsTradeAllowed());
+    uRetval += StringFormat("\"OrdersTotal\": %i, ", OrdersTotal());
     uRetval += StringFormat("\"IsTradeContextBusy\": %i", IsTradeContextBusy());
     uRetval += "}";
     return(uRetval);
