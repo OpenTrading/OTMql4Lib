@@ -20,7 +20,7 @@ This is simple string formatting: a JSON structure or class is never used.
 
 string jOTAccountInformation() {
     string uRetval;
-    
+
     // FixMe: coalesce
     uRetval = "{";
     uRetval += StringFormat("\"status\": \"%s\", ", "ok");
@@ -41,13 +41,13 @@ string jOTAccountInformation() {
     uRetval += StringFormat("\"stopout_mode\": %i", AccountStopoutMode()); //?
     uRetval += "}";
     return(uRetval);
-}    
+}
 
 string jOTOrdersTickets() {
     string uRetval;
     int iRetval;
     int i;
-    
+
     uRetval = "[";
     for(i=OrdersTotal()-1; i>=0; i--) {
         iRetval = iOTOrderSelect(i, SELECT_BY_POS, MODE_TRADES);
@@ -57,7 +57,7 @@ string jOTOrdersTickets() {
     }
     uRetval += "]";
     return(uRetval);
-}    
+}
 
 string jOTOrdersTrades() {
     return (jOTOrders(MODE_TRADES));
@@ -70,7 +70,7 @@ string jOTOrdersHistory() {
 string jOTOrders(int iMode) {
     string uRetval, uReason;
     int i, iRetval, iTicket;
-    
+
     uRetval = "[";
     for(i=OrdersTotal()-1; i>=0; i--) {
 	iRetval = iOTOrderSelect(i, SELECT_BY_POS, iMode);
@@ -86,12 +86,12 @@ string jOTOrders(int iMode) {
     }
     uRetval += "]";
     return(uRetval);
-}    
+}
 
 string jOTOrderInformationByTicket(int iTicket) {
     string uRetval, uReason;
     int iRetval;
-    
+
     // FixMe: coalesce
     uRetval = "{";
     iRetval = iOTOrderSelect(iTicket, SELECT_BY_TICKET, MODE_TRADES);
@@ -125,7 +125,7 @@ string jOTOrderInformationByTicket(int iTicket) {
 
 string jOTMarketInformation(string uSymbol) {
     string uRetval;
-    
+
     // FixMe: coalesce
     uRetval = "{";
     uRetval += StringFormat("\"symbol\": \"%s\", ", uSymbol);
@@ -159,13 +159,13 @@ string jOTMarketInformation(string uSymbol) {
     uRetval += StringFormat("\"freezelevel\": \"%s\"", (string)MarketInfo(uSymbol, MODE_FREEZELEVEL));
     uRetval += "}";
     return(uRetval);
-}    
+}
 
 string jOTTickInformation(string uSymbol, int iTimeFrame) {
     string uRetval;
     int iDigits;
     double fBid, fAsk, fPoint;
-    
+
     iDigits = (int) MarketInfo(uSymbol, MODE_DIGITS);
     fBid = NormalizeDouble(MarketInfo(uSymbol, MODE_BID), iDigits);
     fAsk = NormalizeDouble(MarketInfo(uSymbol, MODE_ASK), iDigits);
@@ -175,20 +175,20 @@ string jOTTickInformation(string uSymbol, int iTimeFrame) {
     uRetval += StringFormat("\"currenttime\": \"%s\"", IntegerToString(TimeCurrent()));
     uRetval += StringFormat("\"bid\": %f, ", fBid*MathPow(10, iDigits));
     uRetval += StringFormat("\"ask\": %f", fAsk*MathPow(10, iDigits));
-    
+
     uRetval += "}";
     return(uRetval);
-}    
+}
 
 string jOTBarInformation(string uSymbol, int iTimeFrame, int iBar) {
     string uRetval;
     int iDigits, iSpread;
-    
+
     // FixMe: coalesce
     uRetval = "{";
     iDigits = (int) MarketInfo(uSymbol, MODE_DIGITS);
     iSpread = (int) MarketInfo(uSymbol, MODE_SPREAD);
-    
+
     uRetval += StringFormat("\"bartime\": \"%s\"", TimeToStr(iTime(uSymbol, iTimeFrame, iBar)));
     uRetval += StringFormat("\"open\": %i, ", iOpen(uSymbol, iTimeFrame, iBar)*MathPow(10, iDigits));
     uRetval += StringFormat("\"high\": %i, ", iHigh(uSymbol, iTimeFrame, iBar)*MathPow(10, iDigits));

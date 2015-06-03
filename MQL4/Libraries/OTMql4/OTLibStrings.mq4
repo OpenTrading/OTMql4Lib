@@ -36,10 +36,10 @@ void vStringToArray(string uInput, string& uOutput[], string uDelim) {
     int iStart=0;
     int iDelpos;
     string uNextelem;
-    
+
     if (uInput == "") return;
     ArrayResize(uOutput, 0);
-    
+
     while(iStart < StringLen(uInput)) {
         iDelpos = StringFind(uInput, uDelim, iStart);
         if(iDelpos < 0) {
@@ -60,10 +60,10 @@ string uStringReplace(string uHaystack, string uNeedle, string uReplace) {
     int iStart=0;
     int rlen=StringLen(uReplace);
     int nlen=StringLen(uNeedle);
-    
+
     while (iStart > -1) {
         iStart = StringFind(uHaystack, uNeedle, iStart);
-        if (iStart > -1) {      
+        if (iStart > -1) {
             if(iStart > 0) {
                 left = StringSubstr(uHaystack, 0, iStart);
             } else {
@@ -72,7 +72,7 @@ string uStringReplace(string uHaystack, string uNeedle, string uReplace) {
             right = StringSubstr(uHaystack, iStart + nlen);
             uHaystack = left + uReplace + right;
             iStart = iStart + rlen;
-        }       
+        }
     }
     return (uHaystack);
 }

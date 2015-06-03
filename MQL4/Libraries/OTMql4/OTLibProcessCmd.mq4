@@ -9,7 +9,7 @@ I know this is verbose and could be done more compactly,
 but it's clean and robust so I'll leave it like this for now.
 
 If you want to extend this for your own functions you have declared in Mql4,
-look at how zOTLibProcessCmd calls zMt4LibProcessCmd and then 
+look at how zOTLibProcessCmd calls zMt4LibProcessCmd and then
 goes on and handles it if zMt4LibProcessCmd didn't.
 
  */
@@ -29,7 +29,7 @@ goes on and handles it if zMt4LibProcessCmd didn't.
 #include <OTMql4/OTLibTrading.mqh>
 
 string zOTLibProcessCmd(string uMess) {
-    /* 
+    /*
        This is the replacement for what should be Eval in Mt4:
        take a string expression and evaluate it.
        zMt4LibProcessCmd handles base Mt4 expressions, and
@@ -38,17 +38,19 @@ string zOTLibProcessCmd(string uMess) {
        Returns the result of processing the command.
        Returns "" if there is an error.
     */
-   
+
     string uType, uChartId, uIgnore, uMark, uCmd;
     string uArg1="";
     string uArg2="";
     string uArg3="";
     string uArg4="";
     string uArg5="";
+    string uArg6="";
+    string uArg7="";
     string aArrayAsList[];
     int iLen;
     string uRetval, uKey;
-    
+
     iLen =  StringLen(uMess);
     if (iLen <= 0) {return("");}
 
@@ -56,7 +58,7 @@ string zOTLibProcessCmd(string uMess) {
     if (uRetval != "") {
         return(uRetval);
     }
-    
+
     vStringToArray(uMess, aArrayAsList, "|");
 
     iLen = ArraySize(aArrayAsList);
@@ -67,7 +69,7 @@ string zOTLibProcessCmd(string uMess) {
         vError("eOTLibProcessCmd: preprocess failed with error: " +uRetval);
         return("");
     }
-    
+
     uType   = aArrayAsList[0];
     uChartId  = aArrayAsList[1];
     uIgnore = aArrayAsList[2];
@@ -78,27 +80,32 @@ string zOTLibProcessCmd(string uMess) {
     uArg3   = aArrayAsList[7];
     uArg4   = aArrayAsList[8];
     uArg5   = aArrayAsList[9];
-    
+    uArg6   = aArrayAsList[10];
+    uArg7   = aArrayAsList[11];
+
     uKey = StringSubstr(uCmd, 0, 3);
     if (uKey == "gOT") {
         // extentions from OpenTrading
-        uRetval = uProcessCmdgOT(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
+        uRetval = uProcessCmdgOT(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5, uArg6, uArg7);
+
     } else if (StringSubstr(uCmd, 1, 2) == "OT") {
-        uRetval = uProcessCmdOT(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
+        uRetval = uProcessCmdOT(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5, uArg6, uArg7);
+
     } else if (StringSubstr(uCmd, 0, 1) == "i") {
         //? are these Mt4 or OT?
-        uRetval = uProcessCmdi(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
+        uRetval = uProcessCmdi(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5, uArg6, uArg7);
+
    } else {
         // vDebug("zOTLibProcessCmd: UNHANDELED" +uKey +" uCmd: " +uCmd);
         uRetval = "";
     }
     // vTrace("zOTLibProcessCmd uMess: " +uMess +" -> " +uRetval);
-    
+
     return(uRetval);
 
 }
 
-string uProcessCmdi (string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
+string uProcessCmdi (string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5, string uArg6, string uArg7) {
     string uMsg;
     string uRetval="none|";
     string uSymbol;
@@ -149,10 +156,10 @@ string uProcessCmdi (string uCmd, string uChartId, string uIgnore, string uArg1,
 
 // OpenTrading additions
 // names start with a lower case letter then OT
-string uProcessCmdOT (string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
-    string uMsg;
+string uProcessCmdOT(string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5, string uArg6, string uArg7) {
+    string uMsg, sSymbol;
     string uRetval="none|";
-    int iTicket, iTimeframe, iBar;
+    int iTicket, iTimeframe, iCmd, iBar;
     double fLots;
     double fPrice;
     double fStopLoss;
@@ -162,19 +169,46 @@ string uProcessCmdOT (string uCmd, string uChartId, string uIgnore, string uArg1
     int iOrderEAMagic;
     int iTrailingStopLossPoints;
     int iSlippage;
+    color cColor;
 
     if (uCmd == "iOTOrderSelect") {
         uRetval = "int|" +IntegerToString( iOTOrderSelect(StrToInteger(uArg1), StrToInteger(uArg2), StrToInteger(uArg3)));
+
+    } else if (uCmd == "iOTOrderSend") {
+        sSymbol = uArg1;
+	// assert string length > 3
+	iCmd = StrToInteger(uArg2);
+        fLots = StrToDouble(uArg3);
+	fPrice = StrToDouble(uArg4);
+	iSlippage = StrToInteger(uArg5);
+        fStopLoss = StrToDouble(uArg6);
+        fTakeProfit = StrToDouble(uArg7);
+        // FixMe:
+	cColor=CLR_NONE;
+        uRetval = "int|" +IntegerToString(iOTOrderSend(sSymbol, iCmd,
+						       fLots, fPrice, iSlippage,
+						       fStopLoss, fTakeProfit
+						       ));
+
+    } else if (uCmd == "iOTOrderSendMarket") {
+        sSymbol = uArg1;
+	iCmd = StrToInteger(uArg2);
+        fLots = StrToDouble(uArg3);
+        // fPrice = StrToDouble(uArg4);
+        // iSlippage = StrToInteger(uArg5);
+        // FixMe:
+        cColor=CLR_NONE;
+        uRetval = "int|" +IntegerToString( iOTOrderSendMarket(sSymbol, iCmd, fLots));
+
     } else if (uCmd == "iOTOrderClose") {
         iTicket = StrToInteger(uArg1);
         fLots = StrToDouble(uArg2);
         fPrice = StrToDouble(uArg3);
         iSlippage = StrToInteger(uArg4);
         // FixMe:
-        color cColor=CLR_NONE;
+	cColor=CLR_NONE;
         uRetval = "int|" +IntegerToString( iOTOrderClose(iTicket, fLots, fPrice, iSlippage, cColor));
-    } else if (uCmd == "bOTIsTradeAllowed") {
-        uRetval = "bool|" + bOTIsTradeAllowed();
+
     } else if (uCmd == "iOTSetTradeIsBusy") {
         if (StringLen(uArg1) < 1) {
             uRetval = "int|" +IntegerToString( iOTSetTradeIsBusy(60));
@@ -182,8 +216,10 @@ string uProcessCmdOT (string uCmd, string uChartId, string uIgnore, string uArg1
             iMaxWaitingSeconds = StrToInteger(uArg1);
             uRetval = "int|" +IntegerToString( iOTSetTradeIsBusy(iMaxWaitingSeconds));
         }
+
     } else if (uCmd == "iOTSetTradeIsNotBusy") {
         uRetval = "int|" +IntegerToString( iOTSetTradeIsNotBusy());
+
     } else if (uCmd == "fOTExposedEcuInMarket") {
         if (StringLen(uArg1) < 1) {
             iOrderEAMagic = 0;
@@ -191,16 +227,36 @@ string uProcessCmdOT (string uCmd, string uChartId, string uIgnore, string uArg1
             iOrderEAMagic = StrToInteger(uArg1);
         }
         uRetval = "double|" +DoubleToStr( fOTExposedEcuInMarket(iOrderEAMagic), 2);
+
+    } else if (uCmd == "bOTIsTradeAllowed") {
+        uRetval = "bool|" + bOTIsTradeAllowed();
+
+    } else if (uCmd == "iOTRefreshRates") {
+        uRetval = "bool|" + iOTRefreshRates();
+
+    } else if (uCmd == "iOTMarketInfo") {
+        sSymbol = uArg1;
+	iCmd = StrToInteger(uArg2);
+        uRetval = "int|" + iOTMarketInfo(sSymbol, iCmd);
+
+    } else if (uCmd == "fOTMarketInfo") {
+        sSymbol = uArg1;
+	iCmd = StrToInteger(uArg2);
+        uRetval = "double|" + fOTMarketInfo(sSymbol, iCmd);
+
     } else if (uCmd == "bOTModifyTrailingStopLoss") {
-        // this implies a selected order
-        iTrailingStopLossPoints = StrToInteger(uArg1);
-        if (StringLen(uArg2) < 1) {
+        sSymbol = uArg1;
+        iTrailingStopLossPoints = StrToInteger(uArg2);
+        if (StringLen(uArg3) < 1) {
             tExpiration = 0;
         } else {
             // FixMe: StrToDateTime?
-            tExpiration = StrToInteger(uArg2);
+            tExpiration = StrToInteger(uArg3);
         }
-        uRetval = "bool|" + bOTModifyTrailingStopLoss(iTrailingStopLossPoints, tExpiration);
+        uRetval = "bool|" + bOTModifyTrailingStopLoss(sSymbol,
+						      iTrailingStopLossPoints,
+						      tExpiration);
+
     } else if (uCmd == "bOTModifyOrder") {
         // this implies a selected order
         iTicket = StrToInteger(uArg2);
@@ -212,9 +268,11 @@ string uProcessCmdOT (string uCmd, string uChartId, string uIgnore, string uArg1
         // Notes: Open price and expiration time can be changed only for pending orders.
         uRetval = "bool|" + bOTModifyOrder(uArg1, iTicket, fPrice,
                                          fStopLoss, fTakeProfit, tExpiration);
+
     } else if (uCmd == "bOTContinueOnOrderError") {
         iTicket = StrToInteger(uArg1);
         uRetval = "bool|" + bOTContinueOnOrderError(iTicket);
+
     } else if (uCmd == "jOTAccountInformation") {
         uRetval = "json|" + jOTAccountInformation();
     } else if (uCmd == "jOTOrdersTickets") {
@@ -225,9 +283,9 @@ string uProcessCmdOT (string uCmd, string uChartId, string uIgnore, string uArg1
         uRetval = "json|" + jOTOrdersTrades();
     } else if (uCmd == "jOTOrders") {
         uRetval = "json|" + jOTOrders(StrToInteger(uArg1));
-    } else if (uCmd == "jOTOrderInformation") {
+    } else if (uCmd == "jOTOrderInformationByTicket") {
         iTicket = StrToInteger(uArg1);
-        uRetval = "json|" + jOTOrderInformation(iTicket);
+        uRetval = "json|" + jOTOrderInformationByTicket(iTicket);
     } else if (uCmd == "jOTMarketInformation") {
         uRetval = "json|" + jOTMarketInformation(uArg1);
     } else if (uCmd == "jOTBarInformation") {
@@ -246,7 +304,7 @@ string uProcessCmdOT (string uCmd, string uChartId, string uIgnore, string uArg1
 
 // Wrap all of the functions that depend on an order being selected
 // into a generic gOTWithOrderSelectByTicket and gOTWithOrderSelectByPosition
-string uProcessCmdgOT (string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) {
+string uProcessCmdgOT(string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5, string uArg6, string uArg7) {
     string uRetval="none|";
     string uMsg;
     int iError;

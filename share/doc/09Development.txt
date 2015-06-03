@@ -27,7 +27,7 @@ Choose the initial letter from the following list:
 || i			|| integer		       	       			||
 || l			|| list or tuple	(unused)			||
 || o			|| instance or pointer to a class			||
-|| p			|| pathname - name of a file or directory		||
+|| r			|| series       	    				||
 || s			|| ASCII string	      	     				||
 || t			|| date/time value					||
 || u			|| Unicode string					||

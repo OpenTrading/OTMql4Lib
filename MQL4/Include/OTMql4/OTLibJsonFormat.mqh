@@ -10,7 +10,7 @@ string jOTOrdersTickets();
 string jOTOrdersTrades();
 string jOTOrdersHistory();
 string jOTOrders(int iMode);
-string jOTOrderInformation(int iTicket);
+string jOTOrderInformationByTicket(int iTicket);
 string jOTMarketInformation(string uSymbol);
 string jOTTickInformation(string uSymbol, int iTimeFrame);
 string jOTBarInformation(string uSymbol, int iTimeFrame, int iBar);

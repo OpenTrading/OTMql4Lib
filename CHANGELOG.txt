@@ -1,3 +1,8 @@
+commit 57205bad1d4c9908b1a19d7f3be056dfebd79540
+Date:   Wed May 20 23:15:13 2015 +0300
+
+    Trading and JSON bugfixes.
+
 commit 69592b42c3480d35ad12fefcc4b4ac6f6cb56976
 Date:   Tue May 19 20:53:06 2015 +0300
 

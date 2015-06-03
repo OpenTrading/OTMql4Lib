@@ -25,7 +25,7 @@ OTLibProcessCmd.mq4.
 #include <OTMql4/OTLibSimpleFormatCmd.mqh>
 
 string zOTLibMt4ProcessCmd(string uMess) {
-    /* 
+    /*
        This is the replacement for what should be Eval in Mt4:
        take a string expression and evaluate it.
        zMt4LibProcessCmd only handles base Mt4 expressions.
@@ -38,7 +38,7 @@ string zOTLibMt4ProcessCmd(string uMess) {
 
        Returns "" if the the command was not recognized;
        you can use this fact to process the standard Mt4 commands
-       with zOTLibMt4ProcessCmd,  and if it returns "",  
+       with zOTLibMt4ProcessCmd,  and if it returns "",
        write your own zMyProcessCmd to process your additions.
     */
     string uType, uChartId, uIgnore, uMark, uCmd;
@@ -47,10 +47,12 @@ string zOTLibMt4ProcessCmd(string uMess) {
     string uArg3="";
     string uArg4="";
     string uArg5="";
+    string uArg6="";
+    string uArg7="";
     string aArrayAsList[];
     int iLen;
     string uRetval, uKey;
-    
+
     iLen =  StringLen(uMess);
     if (iLen <= 0) {
         vError("eOTLibProcessCmd: empty input");
@@ -67,7 +69,7 @@ string zOTLibMt4ProcessCmd(string uMess) {
         vError("eOTLibProcessCmd: preprocess failed with error: " +uRetval);
         return("");
     }
-    
+
     uType   = aArrayAsList[0];
     uChartId  = aArrayAsList[1];
     uIgnore = aArrayAsList[2];
@@ -78,6 +80,8 @@ string zOTLibMt4ProcessCmd(string uMess) {
     uArg3   = aArrayAsList[7];
     uArg4   = aArrayAsList[8];
     uArg5   = aArrayAsList[9];
+    uArg6   = aArrayAsList[10];
+    uArg7   = aArrayAsList[11];
 
     uKey = StringSubstr(uCmd, 0, 3);
 
@@ -90,11 +94,11 @@ string zOTLibMt4ProcessCmd(string uMess) {
     } else if (uCmd == "Symbol") { //0
         uRetval = "string|" +Symbol();
     } else if (uCmd == "Comment") {
-        // FixMe: what's the return value? 
+        // FixMe: what's the return value?
         Comment(uArg1);
         uRetval = "void|";
     } else if (uCmd == "Print") {
-        // FixMe: what's the return value? 
+        // FixMe: what's the return value?
         // FixMe: we should handle multi-args
         Print(uArg1);
         uRetval = "void|";
@@ -114,7 +118,7 @@ string zOTLibMt4ProcessCmd(string uMess) {
         uRetval = "";
     }
     // vTrace("zMt4LibProcessCmd uMess: " +uMess +" -> " +uRetval);
-    
+
     return(uRetval);
 }
 
@@ -248,7 +252,7 @@ string zProcessCmdGlo(string uCmd, string uChartId, string uIgnore, string uArg1
     double fValue;
     int iValue;
     datetime tValue;
-    
+
     if (uCmd == "GlobalVariableCheck") {
         // assert
         sName = uArg1;

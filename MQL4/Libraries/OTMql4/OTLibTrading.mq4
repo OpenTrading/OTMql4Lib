@@ -26,9 +26,47 @@ int iOTOrderSelect(int iIndex, int iSelect, int iPool=MODE_TRADES) {
     return(1);
 }
 
+int iOTOrderSendMarket(string sSymbol, int iCmd, double fVolume,
+		       int iStops=5, int iProfits=10, int slippage=3) {
+    //                  int slippage, double stoploss, double fTakeprofit,
+    double fPrice, fBid, fAsk;
+    double fStoploss;
+    double fTakeprofit;
+    double fMinstoplevel;
+    int iRetval;
+
+    if (bOTIsTradeAllowed() == false) {
+	// does iOTRefreshRates()
+	return(-1);
+    }
+    fBid = MarketInfo(sSymbol, MODE_BID);
+    //? assert >0
+    fAsk = MarketInfo(sSymbol, MODE_ASK);
+    //? assert >0
+    fMinstoplevel = MarketInfo(sSymbol, MODE_STOPLEVEL);
+
+    if (iCmd == OP_BUY) {
+	//--- calculated SL and TP fPrices must be normalized
+	fStoploss = NormalizeDouble(fBid-iStops*fMinstoplevel*Point, Digits);
+	fTakeprofit = NormalizeDouble(fAsk+iProfits*fMinstoplevel*Point, Digits);
+	fPrice = NormalizeDouble(fAsk, Digits);
+    } else {
+	//--- calculated SL and TP fPrices must be normalized
+	fStoploss = NormalizeDouble(fBid-iStops*fMinstoplevel*Point, Digits);
+	fTakeprofit = NormalizeDouble(fAsk+iProfits*fMinstoplevel*Point, Digits);
+	fPrice = NormalizeDouble(fBid, Digits);
+    }
+
+    iRetval = iOTOrderSend(sSymbol, iCmd,
+			   fVolume, fPrice, slippage,
+			   fStoploss, fTakeprofit);
+    // 130 is invalid stops
+    return(iRetval);
+}
+
 int iOTOrderSend(string sSymbol, int cmd,
-                 double volume, double price,
-                 int slippage, double stoploss, double takeprofit,
+                 double fVolume, double fPrice, int slippage,
+		 double fStoploss, double fTakeprofit,
                  string comment="", int magic=0, datetime expiration=0,
                  color arrow_color=CLR_NONE) {
     // Returns number of the ticket assigned to the order by the trade server or -1 if it fails.
@@ -39,7 +77,7 @@ int iOTOrderSend(string sSymbol, int cmd,
 
     iTick=0;
     iError=0;
-    while (bContinuable==true && iTick < OT_MAX_TICK_RETRIES) {
+    while (bContinuable == true && iTick < OT_MAX_TICK_RETRIES) {
         iTick += 1;
 
         if (iOTSetTradeIsBusy() != 1) {
@@ -47,8 +85,8 @@ int iOTOrderSend(string sSymbol, int cmd,
             continue;
         }
 
-        iRetval = OrderSend(sSymbol, cmd, volume, price, slippage, stoploss,
-                          takeprofit, comment, magic, expiration, arrow_color);
+        iRetval = OrderSend(sSymbol, cmd, fVolume, fPrice, slippage, fStoploss,
+			    fTakeprofit, comment, magic, expiration, arrow_color);
         iOTSetTradeIsNotBusy();
 
         if (iRetval > 0) {return(iRetval);}
@@ -112,53 +150,33 @@ int iOTOrderClose(int iTicket,  double fLots, double fPrice, int iSlippage, colo
     return(-iError);
 }
 
-bool bOTIsTradeAllowed() {
-    /*
-      Wait for the trade context to become free.
-      Returns true if the trade context is free.
-
-      Warning: RefreshRates can take a long time.
-    */
-    int iTicks = 0;
-    
-    if (IsTesting() || IsOptimization()) return (true);
-
-    while( IsTradeAllowed() == false && iTicks < OT_MAX_TICK_RETRIES) {
-        iTicks += 1;
-        Sleep(OT_TICK_SLEEP_MSEC); // Cycle delay
-        RefreshRates();
-    }
-    if (iTicks >= OT_MAX_TICK_RETRIES) {
-        vWarn("Unable to acquire trade context for : "+Symbol()+
-              " in " + OT_MAX_TICK_RETRIES + " tries.");
-        return(false);
-    }
-    return (true);
-}
-
-/*
-  from http://articles.mql4.com/141
-
-  The function sets the global variable fTradeIsBusy value 0 with 1.
-  If TradeIsBusy = 1 at the moment of launch, the function waits
-  until TradeIsBusy is 0, and then replaces it with 1.0.
-  If there is no global variable TradeIsBusy, the function creates it.
-
-  Return codes:
-   1 - successfully completed. The global variable TradeIsBusy was assigned with value 1
-  -1 - TradeIsBusy = 1 at the moment of launch of the function, the waiting was interrupted by the user
-       (the expert was removed from the chart, the terminal was closed, the chart period and/or symbol
-       was changed, etc.)
-  -2 - TradeIsBusy = 1 at the moment of launch of the function, the waiting limit was exceeded (60 sec)
-  -3 - No connection to server
-*/
 int iOTSetTradeIsBusy( int iMaxWaitingSeconds = 60 ) {
+    /*
+      from http://articles.mql4.com/141
 
+      The function sets the global variable fTradeIsBusy value 0 with 1.
+      If TradeIsBusy = 1 at the moment of launch, the function waits
+      until TradeIsBusy is 0, and then replaces it with 1.0.
+      If there is no global variable TradeIsBusy, the function creates it.
+
+      Return codes:
+      1 - successfully completed. The global variable TradeIsBusy was assigned 1
+      -1 - TradeIsBusy = 1 at the moment of launch, the waiting was interrupted by the user
+      (the expert was removed from the chart, the terminal was closed, 
+      the chart period and/or symbol was changed, etc.)
+      -2 - TradeIsBusy = 1 at the moment of launch of the function, the 
+      waiting limit was exceeded (60 sec)
+      -3 - No connection to server
+    */
+    int iError = 0;
+    int StartWaitingTime;
+    
     if(IsTesting()) return(1);
     if(!bOTIsTradeAllowed()) return(-3);
+    //FixMe: something is broken below here and it may be overkill
+    return(1);
 
-    int iError = 0;
-    int StartWaitingTime = GetTickCount();
+    StartWaitingTime = GetTickCount();
 
     // Check whether a global variable exists and, if not, create it
     while(true) {
@@ -174,32 +192,29 @@ int iOTSetTradeIsBusy( int iMaxWaitingSeconds = 60 ) {
         // check whether the global variable exists
         // if it does, leave the loop and go to the block of changing
         // TradeIsBusy value
-        if(GlobalVariableCheck( "fTradeIsBusy" )) break;
+        if (GlobalVariableCheck( "fTradeIsBusy" )) break;
 
-        // if the GlobalVariableCheck returns FALSE, it means that it does not exist or
-        // an error has occurred during checking
-
+        // if the GlobalVariableCheck returns FALSE, it means that it does
+	// not exist or an error has occurred during checking.
         iError = GetLastError();
-        // if it is still an error, display information, wait for 0.1 second, and
-        // restart checking
-        if(iError != 0) {
-            vWarn(" Error in TradeIsBusy GlobalVariableCheck(\"TradeIsBusy\"): " +
+        if (iError != 0) {
+            vWarn("Error in TradeIsBusy GlobalVariableCheck(\"TradeIsBusy\"): " +
                   ErrorDescription(iError) );
             Sleep(OT_TRADE_ORDER_SLEEP_MSEC);
             continue;
         }
 
         // if there is no error, it means that there is just no global variable,
-        // try to create it
+        // try to create it as a temporary global variable.
         // if the GlobalVariableSet > 0, it means that the global variable
         // has been successfully created. Leave the function.
-        if(GlobalVariableSet( "fTradeIsBusy", 1.0 ) > 0 )
+        GlobalVariableTemp("fTradeIsBusy");
+        if (GlobalVariableSet( "fTradeIsBusy", 1.0 ) > 0 ) {
             return(1);
-
+	}
         // if the GlobalVariableSet has returned a value <= 0,
         // it means that an error occurred at creation of the variable
         iError = GetLastError();
-        // display information, wait for 0.1 second, and try again
         if(iError != 0) {
             vWarn("Error in TradeIsBusy GlobalVariableSet(\"TradeIsBusy\",0.0 ): " +
                   ErrorDescription(iError) );
@@ -239,9 +254,12 @@ int iOTSetTradeIsBusy( int iMaxWaitingSeconds = 60 ) {
             continue;
         }
 
-        // if there is no error, it means that TradeIsBusy = 1 (another expert is trading),
+        // if there is no error, it means that TradeIsBusy = 1
+	// (another expert is trading),
         // then display information and wait...
         vInfo("Waiting for the trade context to become free...");
+	//? use refreshrates instead of sleep? - it can be slow
+	// and may be called later on in the sequence that calls this
         Sleep(OT_TRADE_ORDER_SLEEP_MSEC);
     }
     /* should be unreached */
@@ -256,9 +274,12 @@ int iOTSetTradeIsBusy( int iMaxWaitingSeconds = 60 ) {
 */
 int iOTSetTradeIsNotBusy() {
     int iError;
-    // if testing, there is no sense to divide the trade context -
-    // just terminate the function
+
+    // if testing, just terminate
     if(IsTesting()) return(0);
+    
+    //FixMe: something is broken below here and it may be overkill
+    return(0);
 
     while(true) {
         // if the expert was terminated by the user,
@@ -279,7 +300,8 @@ int iOTSetTradeIsNotBusy() {
             vWarn("Error in TradeIsNotBusy GlobalVariableSet(\"TradeIsBusy\",0.0): " +
                   ErrorDescription(iError) );
 	}
-
+	//? use refreshrates instead of sleep? - it can be slow
+	// and may be called later on in the sequence that calls this
         Sleep(OT_TRADE_ORDER_SLEEP_MSEC);
     }
     /* should be unreached */
@@ -290,7 +312,7 @@ int iOTSetTradeIsNotBusy() {
 /*
 fOTExposedEcuInMarket shows how much worse thing could get, unlike
 AccountMargin which shows how bad things are now.  It's the worst case sum
-of Open against the order's stoploss * return value < 0 means we have
+of Open against the order's fStoploss * return value < 0 means we have
 exposure * iOrderEAMagic=0 gives us exposed margin for ALL orders, ours or not.
 */
 
@@ -298,6 +320,7 @@ double fOTExposedEcuInMarket(int iOrderEAMagic = 0) {
     string sSymbol=Symbol(); // Symbol
     int i;
     int iRetval;
+    double fStopLoss;
     double fExposedEcu=0.0;
 
     int iLotSize = MarketInfo(sSymbol, MODE_LOTSIZE);
@@ -317,12 +340,12 @@ double fOTExposedEcuInMarket(int iOrderEAMagic = 0) {
 
         if (iOrderEAMagic > 0 && OrderMagicNumber() != iOrderEAMagic) continue;
 
-        double fStopLoss=OrderStopLoss();
-        if (fStopLoss == 0.0) {
+	fStopLoss = OrderStopLoss();
+        if (fStopLoss < fEPS) {
             vWarn("The exposure is probably infinite " +
-                  " for order " + OrderTicket() +" (no stoploss)";
+                  " for order " + OrderTicket() +" (no stoploss)");
             fExposedEcu = AccountFreeMargin();
-            break;
+	    return(fExposedEcu);
         }
 
         int iType = OrderType(); // Order type
@@ -332,7 +355,7 @@ double fOTExposedEcuInMarket(int iOrderEAMagic = 0) {
 	double fLotSize = MarketInfo(uSymbol, MODE_LOTSIZE);
         double fOpenPrice = OrderOpenPrice();
         double fMarginRequired = MarketInfo(uSymbol, MODE_MARGINREQUIRED);
-	
+
         double fWorstCase;
         if (iType == OP_BUY) {
             if (fStopLoss < Bid) {
@@ -360,26 +383,74 @@ double fOTExposedEcuInMarket(int iOrderEAMagic = 0) {
     return(fExposedEcu);
 }
 
+bool bOTIsTradeAllowed() {
+    /*
+      Wait for the trade context to become free.
+      Returns true if the trade context is free.
 
+      You probably want to use this in place of RefreshRates:
+      it checks IsTradeAllowed and runs RefreshRates.
+
+      Warning: RefreshRates can take a long time.
+    */
+    int iTicks = 0;
+    int iRetval;
+    
+    if (IsTesting() || IsOptimization()) return (true);
+    if (IsConnected() == false) {
+	vWarn("Unable to trade : not connected");
+	return(false);
+    }
+
+    while( IsTradeAllowed() == false && iTicks < OT_MAX_TICK_RETRIES) {
+        iTicks += 1;
+	 // use refresh rates to Cycle delay
+        if (iOTRefreshRates() < 0) {
+	    return(false);
+	}
+    }
+    if (iTicks >= OT_MAX_TICK_RETRIES) {
+        vWarn("Unable to get TradeAllowed context for : "+
+              " in " + OT_MAX_TICK_RETRIES + " tries.");
+        return(false);
+    }
+    return (true);
+}
+
+int iOTRefreshRates() {
+    /*
+      Returns 0 on success or -iError on failure
+
+      Warning: RefreshRates can take a long time.
+    */
+    int iTicks=0;
+
+    if (IsTesting() || IsOptimization()) return (0);
+    if (IsConnected() == false) {
+	vWarn("Unable to refresh rates : not connected");
+	return(-1);
+    }
+
+    while(RefreshRates() == false && iTicks < OT_MAX_TICK_RETRIES) {
+	iTicks += 1;
+	Sleep(OT_TICK_SLEEP_MSEC); // Cycle delay
+    }
+
+    if (iTicks >= OT_MAX_TICK_RETRIES) {
+	vWarn("Unable to refresh rates"+
+	      " in " +OT_TICK_SLEEP_MSEC +"tries.");
+	return(-2);
+    }
+    return(0);
+ }
+/* This is wrong: MarketInfo returns many types */
 int iOTMarketInfo(string s, int iMode) {
     /*
-      Before using the MarketInfo() we use the function  RefreshRates()
+      Before using the MarketInfo() you should use the function  RefreshRates()
       to be sure that we getting the up-to-date market data.
-      returns 0 or -iError on failure
 
-      int iTicks=0;
-      while(RefreshRates()==false && iTicks < OFMAX_TICK_RETRIES) {
-      iTicks+=1;
-      Sleep(OFMAX_TICK_SLEEP); // Cycle delay
-      }
-
-      if (iTicks >= OFMAX_TICK_RETRIES) {
-      vWarn("Unable to refresh rates for : "+s+
-      " in "+OFMAX_TICK_RETRIES+"tries.");
-      return(-1);
-      }
     */
-    if (s=="") {
+    if (s == "") {
         vWarn("iOTMarketInfo - Empty symbol for getting "+iMode);
         return(-1);
     }
@@ -397,14 +468,42 @@ int iOTMarketInfo(string s, int iMode) {
     return(iRetval);
 }
 
-bool bOTModifyTrailingStopLoss(int iTrailingStopLossPoints,
-                             datetime tExpiration=0) {
+double fOTMarketInfo(string s, int iMode) {
+    /*
+      Before using the MarketInfo() you should use the function  RefreshRates()
+      to be sure that we getting the up-to-date market data.
+
+    */
+    int iError;
+    double fRetval;
+    
+    if (s == "") {
+        vWarn("iOTMarketInfo - Empty symbol for getting "+iMode);
+        return(-1.0);
+    }
+    if (iMode <= 0) {
+        vWarn("iOTMarketInfo - Negative mode for getting "+iMode+" for "+s);
+        return(-2.0);
+    }
+    fRetval = MarketInfo(s, iMode);
+    iError = GetLastError();
+    if (iError > 0) {
+        vWarn("Error getting " +iMode +" for " +s
+              +": "+ErrorDescription(iError));
+        return(-iError*1.0);
+    }
+    return(fRetval);
+}
+
+// FixMe: should be per iTicket with sSymbol derived
+bool bOTModifyTrailingStopLoss(string sSymbol, int iTrailingStopLossPoints,
+			       datetime tExpiration=0) {
     // return value of false signals an error
-    string sSymbol=Symbol(); // Symbol
+
     string sMsg;
     bool bRetval=true;
-    int iRetval;
-    int iType;
+    int iRetval, i;
+    int iType, iMinDistance;
     double fTakeProfit;
     double fPrice;
     int iTicket;
@@ -412,16 +511,16 @@ bool bOTModifyTrailingStopLoss(int iTrailingStopLossPoints,
     double fTrailingStopLoss;
     bool bModify;
 
-    int iMinDistance=MarketInfo(sSymbol, MODE_STOPLEVEL);
-    if (iMinDistance < 0) {return(false);}
 
-    for(int i=OrdersTotal()-1; i>=0; i++) {
-        iRetval=OrderSelect(i,SELECT_BY_POS, MODE_TRADES);
+    for(i=OrdersTotal()-1; i>=0; i--) {
+        iRetval = OrderSelect(i, SELECT_BY_POS, MODE_TRADES);
         if (iRetval < 0) {bRetval=false; continue;}
 
         // Analysis of orders:
         iType = OrderType(); // Order type
         if (OrderSymbol() != sSymbol || iType > 1) continue;
+	iMinDistance = MarketInfo(sSymbol, MODE_STOPLEVEL);
+	if (iMinDistance < 0) {bRetval=false; continue;}
 
         fTakeProfit = OrderTakeProfit(); // TakeProfit of the selected order
         fPrice = OrderOpenPrice(); // Price of the selected order
@@ -431,36 +530,39 @@ bool bOTModifyTrailingStopLoss(int iTrailingStopLossPoints,
         fTrailingStopLoss = iTrailingStopLossPoints; // Initial value
         if (fTrailingStopLoss < iMinDistance) {
             // If less than allowed
-            fTrailingStopLoss=iMinDistance;
+            fTrailingStopLoss = iMinDistance;
         }
 
         bModify = false; // Not to be modified
         switch(iType) {
         case OP_BUY: // Order Buy 0
-            if (NormalizeDouble(fStopLoss,Digits) < // If it is lower than we want
-                NormalizeDouble(Bid-fTrailingStopLoss*Point,Digits) &&
-                Bid-fTrailingStopLoss*Point > fTrailingStopLoss*Point/10.0
+            if (NormalizeDouble(fStopLoss, Digits) < // If it is lower than we want
+                NormalizeDouble(Bid-fTrailingStopLoss*Point, Digits) &&
+                Bid-fTrailingStopLoss*Point > fTrailingStopLoss*Point/10.0 //? why
                 ) {
-		fStopLoss=Bid-fTrailingStopLoss*Point; // then modify it
-		sMsg="Buy "; // Text for Buy
-		bModify=true; // To be modified
+		fStopLoss = Bid-fTrailingStopLoss*Point; // then modify it
+		sMsg = "Buy ";
+		bModify = true; // To be modified
 	    }
             break; // Exit 'switch'
         case OP_SELL: // Order Sell 1
             if (NormalizeDouble(fStopLoss,Digits) > // If it is higher than we want
                 NormalizeDouble(Ask+fTrailingStopLoss*Point,Digits) &&
-                Ask+fTrailingStopLoss*Point > fTrailingStopLoss*Point/10.0) {
-                // || NormalizeDouble(fStopLoss,Digits==0)//or equal to zero
+                Ask+fTrailingStopLoss*Point > fTrailingStopLoss*Point/10.0 //? why
+		) {
+                // || NormalizeDouble(fStopLoss, Digits)==0 //or equal to zero
 		fStopLoss=Ask+fTrailingStopLoss*Point; // then modify it
-		sMsg="Sell "; // Text for Sell
-		bModify=true; // To be modified
+		sMsg = "Sell ";
+		bModify = true;
 	    }
         }
 
         if (bModify==false) continue;
 
         bRetval = bRetval && bOTModifyOrder("Modifiying stoploss "+sMsg,
-                                          iTicket, fPrice, fStopLoss, fTakeProfit, tExpiration);
+					    iTicket, fPrice,
+					    fStopLoss, fTakeProfit,
+					    tExpiration);
     }
 
     return(bRetval);
