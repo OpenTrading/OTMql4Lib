@@ -13,7 +13,8 @@ int iOTOrderSend(string sSymbol, int cmd,
 		 double stoploss, double takeprofit,
 		 string comment="", int magic=0, datetime expiration=0,
 		 color arrow_color=CLR_NONE);
-int iOTOrderCloseFull(int iTicket, double fPrice, int iSlippage, color cColor=CLR_NONE);
+int iOTOrderCloseMarket(int iTicket, int iSlippage=3, color cColor=CLR_NONE);
+int iOTOrderCloseFull(int iTicket, double fPrice, int iSlippage=3, color cColor=CLR_NONE);
 int iOTOrderClose(int iTicket,  double fLots, double fPrice, int iSlippage, color cColor=CLR_NONE);
 
 int iOTSetTradeIsBusy(int iMaxWaitingSeconds);

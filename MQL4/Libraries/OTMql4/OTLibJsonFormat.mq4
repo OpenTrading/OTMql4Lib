@@ -172,9 +172,9 @@ string jOTTickInformation(string uSymbol, int iTimeFrame) {
     fPoint = NormalizeDouble(MarketInfo(uSymbol, MODE_POINT), iDigits);
     // FixMe: coalesce
     uRetval = "{";
-    uRetval += StringFormat("\"currenttime\": \"%s\"", IntegerToString(TimeCurrent()));
-    uRetval += StringFormat("\"bid\": %f, ", fBid*MathPow(10, iDigits));
-    uRetval += StringFormat("\"ask\": %f", fAsk*MathPow(10, iDigits));
+    uRetval += StringFormat("\"currenttime\": \"%s\", ", IntegerToString(TimeCurrent()));
+    uRetval += StringFormat("\"bid\": %f, ", fBid);
+    uRetval += StringFormat("\"ask\": %f", fAsk);
 
     uRetval += "}";
     return(uRetval);
@@ -189,11 +189,11 @@ string jOTBarInformation(string uSymbol, int iTimeFrame, int iBar) {
     iDigits = (int) MarketInfo(uSymbol, MODE_DIGITS);
     iSpread = (int) MarketInfo(uSymbol, MODE_SPREAD);
 
-    uRetval += StringFormat("\"bartime\": \"%s\"", TimeToStr(iTime(uSymbol, iTimeFrame, iBar)));
-    uRetval += StringFormat("\"open\": %i, ", iOpen(uSymbol, iTimeFrame, iBar)*MathPow(10, iDigits));
-    uRetval += StringFormat("\"high\": %i, ", iHigh(uSymbol, iTimeFrame, iBar)*MathPow(10, iDigits));
-    uRetval += StringFormat("\"low\": %i, ", iLow(uSymbol, iTimeFrame, iBar)*MathPow(10, iDigits));
-    uRetval += StringFormat("\"close\": %i, ", iClose(uSymbol, iTimeFrame, iBar)*MathPow(10, iDigits));
+    uRetval += StringFormat("\"bartime\": \"%s\", ", TimeToStr(iTime(uSymbol, iTimeFrame, iBar)));
+    uRetval += StringFormat("\"open\": %i, ", iOpen(uSymbol, iTimeFrame, iBar));
+    uRetval += StringFormat("\"high\": %i, ", iHigh(uSymbol, iTimeFrame, iBar));
+    uRetval += StringFormat("\"low\": %i, ", iLow(uSymbol, iTimeFrame, iBar));
+    uRetval += StringFormat("\"close\": %i, ", iClose(uSymbol, iTimeFrame, iBar));
     uRetval += StringFormat("\"volume\": %i", iVolume(uSymbol, iTimeFrame, iBar));
 
     uRetval += "}";

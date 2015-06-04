@@ -26,45 +26,46 @@ int iOTOrderSelect(int iIndex, int iSelect, int iPool=MODE_TRADES) {
     return(1);
 }
 
-int iOTOrderSendMarket(string sSymbol, int iCmd, double fVolume,
+int iOTOrderSendMarket(string uSymbol, int iCmd, double fVolume,
 		       int iStops=5, int iProfits=10, int slippage=3) {
     //                  int slippage, double stoploss, double fTakeprofit,
     double fPrice, fBid, fAsk;
     double fStoploss;
     double fTakeprofit;
     double fMinstoplevel;
-    int iRetval;
+    int iRetval, iDigits;
 
     if (bOTIsTradeAllowed() == false) {
 	// does iOTRefreshRates()
 	return(-1);
     }
-    fBid = MarketInfo(sSymbol, MODE_BID);
+    fBid = MarketInfo(uSymbol, MODE_BID);
     //? assert >0
-    fAsk = MarketInfo(sSymbol, MODE_ASK);
+    fAsk = MarketInfo(uSymbol, MODE_ASK);
     //? assert >0
-    fMinstoplevel = MarketInfo(sSymbol, MODE_STOPLEVEL);
+    fMinstoplevel = MarketInfo(uSymbol, MODE_STOPLEVEL);
+    iDigits = (int) MarketInfo(uSymbol, MODE_DIGITS);
 
     if (iCmd == OP_BUY) {
 	//--- calculated SL and TP fPrices must be normalized
-	fStoploss = NormalizeDouble(fBid-iStops*fMinstoplevel*Point, Digits);
-	fTakeprofit = NormalizeDouble(fAsk+iProfits*fMinstoplevel*Point, Digits);
-	fPrice = NormalizeDouble(fAsk, Digits);
+	fStoploss = NormalizeDouble(fBid-iStops*fMinstoplevel*Point, iDigits);
+	fTakeprofit = NormalizeDouble(fAsk+iProfits*fMinstoplevel*Point, iDigits);
+	fPrice = NormalizeDouble(fAsk, iDigits);
     } else {
 	//--- calculated SL and TP fPrices must be normalized
-	fStoploss = NormalizeDouble(fBid-iStops*fMinstoplevel*Point, Digits);
-	fTakeprofit = NormalizeDouble(fAsk+iProfits*fMinstoplevel*Point, Digits);
-	fPrice = NormalizeDouble(fBid, Digits);
+	fStoploss = NormalizeDouble(fBid-iStops*fMinstoplevel*Point, iDigits);
+	fTakeprofit = NormalizeDouble(fAsk+iProfits*fMinstoplevel*Point, iDigits);
+	fPrice = NormalizeDouble(fBid, iDigits);
     }
 
-    iRetval = iOTOrderSend(sSymbol, iCmd,
+    iRetval = iOTOrderSend(uSymbol, iCmd,
 			   fVolume, fPrice, slippage,
 			   fStoploss, fTakeprofit);
     // 130 is invalid stops
     return(iRetval);
 }
 
-int iOTOrderSend(string sSymbol, int cmd,
+int iOTOrderSend(string uSymbol, int cmd,
                  double fVolume, double fPrice, int slippage,
 		 double fStoploss, double fTakeprofit,
                  string comment="", int magic=0, datetime expiration=0,
@@ -85,7 +86,7 @@ int iOTOrderSend(string sSymbol, int cmd,
             continue;
         }
 
-        iRetval = OrderSend(sSymbol, cmd, fVolume, fPrice, slippage, fStoploss,
+        iRetval = OrderSend(uSymbol, cmd, fVolume, fPrice, slippage, fStoploss,
 			    fTakeprofit, comment, magic, expiration, arrow_color);
         iOTSetTradeIsNotBusy();
 
@@ -100,7 +101,21 @@ int iOTOrderSend(string sSymbol, int cmd,
     return(iRetval);
 }
 
-int iOTOrderCloseFull(int iTicket, double fPrice, int iSlippage, color cColor=CLR_NONE) {
+int iOTOrderCloseMarket(int iTicket, int iSlippage=3, color cColor=CLR_NONE) {
+    // returns 1 on success, 0 or -iError on failure
+    double fPrice=0.0;
+    
+    if (bOTIsTradeAllowed() == false) {
+	// does iOTRefreshRates()
+	return(-1);
+    }
+    //? use to default slippage?
+    //fMinstoplevel = MarketInfo(uSymbol, MODE_STOPLEVEL);
+    
+    return(iOTOrderCloseFull(iTicket, fPrice, iSlippage, cColor));
+}
+
+int iOTOrderCloseFull(int iTicket, double fPrice, int iSlippage=3, color cColor=CLR_NONE) {
     // returns 1 on success, 0 or -iError on failure
     double fLots=0.0;
     return(iOTOrderClose(iTicket, fLots, fPrice, iSlippage, cColor));
@@ -111,9 +126,11 @@ int iOTOrderClose(int iTicket,  double fLots, double fPrice, int iSlippage, colo
     // returns 1 on success, 0 or -iError on failure
     bool bRetval;
     bool bContinuable = true;
-    int iError;
+    int iError, iCmd, iDigits;
     int iTick=0;
-
+    string uSymbol;
+    double fBid, fAsk;
+    
     iTick=0;
     iError=0;
     while (bContinuable == true && iTick < OT_MAX_TICK_RETRIES) {
@@ -123,7 +140,7 @@ int iOTOrderClose(int iTicket,  double fLots, double fPrice, int iSlippage, colo
                   iTick + ")");
             continue;
         }
-	if (fLots < fEPS) {
+	if (fLots < fEPS || fPrice < fEPS) {
 	    iError = iOTOrderSelect(iTicket, SELECT_BY_TICKET, MODE_TRADES);
 	    if (iError <= 0) {
 		vWarn("Select order failed " +
@@ -132,7 +149,23 @@ int iOTOrderClose(int iTicket,  double fLots, double fPrice, int iSlippage, colo
 		// FixMe?: check the error for fatal ones
 		continue;
 	    }
-	    fLots = OrderLots();
+	    if (fLots < fEPS) {
+		fLots = OrderLots();
+	    }
+	    if (fPrice < fEPS) {
+		uSymbol = OrderSymbol();
+		iCmd = OrderType();
+		iDigits = (int) MarketInfo(uSymbol, MODE_DIGITS);
+		if (iCmd == OP_BUY) {
+		    fBid = MarketInfo(uSymbol, MODE_BID);
+		    //? assert >0
+		    fPrice = NormalizeDouble(fBid, iDigits);
+		} else {
+		    fAsk = MarketInfo(uSymbol, MODE_ASK);
+		    //? assert >0
+		    fPrice = NormalizeDouble(fAsk, iDigits);
+		}
+	    }
 	}
         bRetval = OrderClose(iTicket, fLots, fPrice, iSlippage, cColor);
         iOTSetTradeIsNotBusy();
@@ -317,17 +350,13 @@ exposure * iOrderEAMagic=0 gives us exposed margin for ALL orders, ours or not.
 */
 
 double fOTExposedEcuInMarket(int iOrderEAMagic = 0) {
-    string sSymbol=Symbol(); // Symbol
+    string uSymbol;
     int i;
     int iRetval;
     double fStopLoss;
     double fExposedEcu=0.0;
-
-    int iLotSize = MarketInfo(sSymbol, MODE_LOTSIZE);
-    if (iLotSize < 0) {
-        return(-iLotSize);
-    }
-
+    int iLotSize;
+    
     for(i=OrdersTotal()-1; i>=0; i--) {
 
         iRetval = iOTOrderSelect(i, SELECT_BY_POS, MODE_TRADES);
@@ -350,7 +379,7 @@ double fOTExposedEcuInMarket(int iOrderEAMagic = 0) {
 
         int iType = OrderType(); // Order type
         double fOrderLots = OrderLots();
-	string uSymbol = OrderSymbol();
+	uSymbol = OrderSymbol();
 	// FixMe: check retval
 	double fLotSize = MarketInfo(uSymbol, MODE_LOTSIZE);
         double fOpenPrice = OrderOpenPrice();
@@ -495,14 +524,14 @@ double fOTMarketInfo(string s, int iMode) {
     return(fRetval);
 }
 
-// FixMe: should be per iTicket with sSymbol derived
-bool bOTModifyTrailingStopLoss(string sSymbol, int iTrailingStopLossPoints,
+// FixMe: should be per iTicket with uSymbol derived
+bool bOTModifyTrailingStopLoss(string uSymbol, int iTrailingStopLossPoints,
 			       datetime tExpiration=0) {
     // return value of false signals an error
 
     string sMsg;
     bool bRetval=true;
-    int iRetval, i;
+    int iRetval, i, iDigits;
     int iType, iMinDistance;
     double fTakeProfit;
     double fPrice;
@@ -518,14 +547,15 @@ bool bOTModifyTrailingStopLoss(string sSymbol, int iTrailingStopLossPoints,
 
         // Analysis of orders:
         iType = OrderType(); // Order type
-        if (OrderSymbol() != sSymbol || iType > 1) continue;
-	iMinDistance = MarketInfo(sSymbol, MODE_STOPLEVEL);
+        if (OrderSymbol() != uSymbol || iType > 1) continue;
+	iMinDistance = MarketInfo(uSymbol, MODE_STOPLEVEL);
 	if (iMinDistance < 0) {bRetval=false; continue;}
 
         fTakeProfit = OrderTakeProfit(); // TakeProfit of the selected order
         fPrice = OrderOpenPrice(); // Price of the selected order
         iTicket = OrderTicket(); // Ticket of the selected order
         fStopLoss = OrderStopLoss(); // SL of the selected order
+	iDigits = (int) MarketInfo(uSymbol, MODE_DIGITS);
 
         fTrailingStopLoss = iTrailingStopLossPoints; // Initial value
         if (fTrailingStopLoss < iMinDistance) {
@@ -536,8 +566,8 @@ bool bOTModifyTrailingStopLoss(string sSymbol, int iTrailingStopLossPoints,
         bModify = false; // Not to be modified
         switch(iType) {
         case OP_BUY: // Order Buy 0
-            if (NormalizeDouble(fStopLoss, Digits) < // If it is lower than we want
-                NormalizeDouble(Bid-fTrailingStopLoss*Point, Digits) &&
+            if (NormalizeDouble(fStopLoss, iDigits) < // If it is lower than we want
+                NormalizeDouble(Bid-fTrailingStopLoss*Point, iDigits) &&
                 Bid-fTrailingStopLoss*Point > fTrailingStopLoss*Point/10.0 //? why
                 ) {
 		fStopLoss = Bid-fTrailingStopLoss*Point; // then modify it
@@ -546,8 +576,8 @@ bool bOTModifyTrailingStopLoss(string sSymbol, int iTrailingStopLossPoints,
 	    }
             break; // Exit 'switch'
         case OP_SELL: // Order Sell 1
-            if (NormalizeDouble(fStopLoss,Digits) > // If it is higher than we want
-                NormalizeDouble(Ask+fTrailingStopLoss*Point,Digits) &&
+            if (NormalizeDouble(fStopLoss, iDigits) > // If it is higher than we want
+                NormalizeDouble(Ask+fTrailingStopLoss*Point, iDigits) &&
                 Ask+fTrailingStopLoss*Point > fTrailingStopLoss*Point/10.0 //? why
 		) {
                 // || NormalizeDouble(fStopLoss, Digits)==0 //or equal to zero
@@ -576,10 +606,13 @@ bool bOTModifyOrder(string sMsg,
                   datetime tExpiration) {
     // FixMe: how do we check and order has been selected?
     int iRetry=0;
-    int iTicks;
+    int iTicks, iDigits;
     bool bAns;
     bool bRetval=false;
-
+    string uSymbol;
+    
+    uSymbol = OrderSymbol();
+    iDigits = (int) MarketInfo(uSymbol, MODE_DIGITS);
     while(iRetry < OT_MAX_TICK_RETRIES) {
         // Modification cycle
         iRetry += 1;
@@ -587,9 +620,9 @@ bool bOTModifyOrder(string sMsg,
               +" from sl " +OrderStopLoss()+" to " +fStopLoss
               +" from tp " +OrderTakeProfit()+" to " +fTakeProfit
               +". Awaiting response.");
-        bAns = OrderModify(iTicket, NormalizeDouble(fPrice, Digits),
-                         NormalizeDouble(fStopLoss, Digits),
-                         NormalizeDouble(fTakeProfit, Digits),
+        bAns = OrderModify(iTicket, NormalizeDouble(fPrice, iDigits),
+                         NormalizeDouble(fStopLoss, iDigits),
+                         NormalizeDouble(fTakeProfit, iDigits),
                          tExpiration);
 
         if (IsTesting() || IsOptimization() || bAns==true) {

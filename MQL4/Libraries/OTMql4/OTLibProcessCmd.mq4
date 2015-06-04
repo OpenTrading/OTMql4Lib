@@ -200,6 +200,20 @@ string uProcessCmdOT(string uCmd, string uChartId, string uIgnore, string uArg1,
         cColor=CLR_NONE;
         uRetval = "int|" +IntegerToString( iOTOrderSendMarket(sSymbol, iCmd, fLots));
 
+    } else if (uCmd == "iOTOrderCloseMarket") {
+        iTicket = StrToInteger(uArg1);
+        uRetval = "int|" +IntegerToString( iOTOrderCloseMarket(iTicket));
+
+    } else if (uCmd == "iOTOrderCloseFull") {
+        iTicket = StrToInteger(uArg1);
+        fLots = StrToDouble(uArg2);
+        fPrice = StrToDouble(uArg3);
+        // FixMe:
+        iSlippage = StrToInteger(uArg4);
+        // FixMe:
+	cColor=CLR_NONE;
+        uRetval = "int|" +IntegerToString( iOTOrderCloseFull(iTicket, fPrice, iSlippage, cColor));
+
     } else if (uCmd == "iOTOrderClose") {
         iTicket = StrToInteger(uArg1);
         fLots = StrToDouble(uArg2);

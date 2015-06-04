@@ -48,8 +48,6 @@ string zOTLibSimpleFormatBar(string uType, string uChartId, int iIgnore, string 
     if (uType != "bar") {
         return("");
     }
-    uInfo = Bid +uBAR +Ask +uBAR +uInfo;
-    //? uInfo  = iACCNUM +uBAR +uInfo;
     // FixMe: uBAR
     uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, iIgnore, uMark, uInfo);
     return(uRetval);
@@ -64,7 +62,6 @@ string zOTLibSimpleFormatTimer(string uType, string uChartId, int iIgnore, strin
     if (uType != "timer") {
         return("");
     }
-    //? uInfo  = iACCNUM +uBAR +uInfo;
     // FixMe: uBAR
     uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, iIgnore, uMark, uInfo);
     return(uRetval);
@@ -79,8 +76,6 @@ string zOTLibSimpleFormatTick(string uType, string uChartId, int iIgnore, string
     if (uType != "tick") {
         return("");
     }
-    uInfo = Bid +uBAR +Ask +uBAR +uInfo;
-    //? uInfo  = iACCNUM +uBAR +uInfo;
     // FixMe: uBAR
     uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, iIgnore, uMark, uInfo);
     return(uRetval);
