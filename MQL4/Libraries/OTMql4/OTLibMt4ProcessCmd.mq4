@@ -26,22 +26,22 @@ OTLibProcessCmd.mq4.
 
 string zOTLibMt4ProcessCmd(string uMess) {
     /*
-       This is the replacement for what should be Eval in Mt4:
-       take a string expression and evaluate it.
-       zMt4LibProcessCmd only handles base Mt4 expressions.
+      This is the replacement for what should be Eval in Mt4:
+      take a string expression and evaluate it.
+      zMt4LibProcessCmd only handles base Mt4 expressions.
 
-       Returns the result of processing the command as a string
-       in the form "type|value" where type is one of:
-       string, int, double, bool, datetime, void, json
+      Returns the result of processing the command as a string
+      in the form "type|value" where type is one of:
+      string, int, double, bool, datetime, void, json
 
-       Returns "error|explanation" if there is an error.
+      Returns "error|explanation" if there is an error.
 
-       Returns "" if the the command was not recognized;
-       you can use this fact to process the standard Mt4 commands
-       with zOTLibMt4ProcessCmd,  and if it returns "",
-       write your own zMyProcessCmd to process your additions.
+      Returns "" if the the command was not recognized;
+      you can use this fact to process the standard Mt4 commands
+      with zOTLibMt4ProcessCmd,  and if it returns "",
+      write your own zMyProcessCmd to process your additions.
     */
-    string uType, uChartId, uIgnore, uMark, uCmd;
+    string uType, uChartId, uIgnore, uMark, uCmd, uMsg;
     string uArg1="";
     string uArg2="";
     string uArg3="";
@@ -85,6 +85,13 @@ string zOTLibMt4ProcessCmd(string uMess) {
 
     uKey = StringSubstr(uCmd, 0, 3);
 
+    if (StringFind(uCmd, "|", 0) >= 0) {
+        uMsg="Unparsed command: " + uCmd;
+	vWarn(uMsg);
+        uRetval="error|"+uMsg;
+	return(uRetval);
+    }
+    
     if (uCmd == "OrdersTotal") { //0
         uRetval = "int|" +IntegerToString(OrdersTotal());
     } else if (uCmd == "Period") { //0
@@ -115,10 +122,13 @@ string zOTLibMt4ProcessCmd(string uMess) {
         uRetval = zProcessCmdGlo(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
     } else {
         //vTrace("zMt4LibProcessCmd: UNHANDELED" +uKey +" uCmd: " +uCmd);
-        uRetval = "";
+        return("");
     }
     // vTrace("zMt4LibProcessCmd uMess: " +uMess +" -> " +uRetval);
 
+    // WE INCLUDE THE SMARK
+    uRetval = uMark + "|" + uRetval;
+    
     return(uRetval);
 }
 
@@ -189,7 +199,7 @@ string zProcessCmdWin(string uCmd, string uChartId, string uIgnore, string uArg1
         uRetval = "";
     }
 
-    return (uRetval);
+    return(uRetval);
 }
 
 
@@ -289,5 +299,5 @@ string zProcessCmdGlo(string uCmd, string uChartId, string uIgnore, string uArg1
         uRetval = "";
     }
 
-    return (uRetval);
+    return(uRetval);
 }

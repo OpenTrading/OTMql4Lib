@@ -90,8 +90,13 @@ string zOTLibSimpleFormatRetval(string uType, string uChartId, int iIgnore, stri
     if (uType != "retval") {
         return("");
     }
+    if (uMark == "") {
+	// Its already included in uInfo
+	uRetval = StringFormat("%s|%s|%d|%s", uType, uChartId, iIgnore, uInfo);
+    } else {	
     // FixMe: uBAR
-    uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, iIgnore, uMark, uInfo);
+	uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, iIgnore, uMark, uInfo);
+    }
     return(uRetval);
 }
 

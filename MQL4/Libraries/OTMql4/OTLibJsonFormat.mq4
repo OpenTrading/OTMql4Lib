@@ -29,8 +29,8 @@ string jOTAccountInformation() {
     uRetval += StringFormat("\"company\": \"%s\", ", AccountCompany());
     uRetval += StringFormat("\"currency\": \"%s\", ", AccountCurrency());
     uRetval += StringFormat("\"equity\": %f, ", AccountEquity()); // Decimal
-    uRetval += StringFormat("'free_margin': %f, ", AccountFreeMargin()); // Decimal
-    uRetval += StringFormat("'free_margin_mode': \"%f\", ", AccountFreeMarginMode());
+    uRetval += StringFormat("\"free_margin\": %f, ", AccountFreeMargin()); // Decimal
+    uRetval += StringFormat("\"free_margin_mode\": %f, ", AccountFreeMarginMode());
     uRetval += StringFormat("\"leverage\": %i, ", AccountLeverage());
     uRetval += StringFormat("\"margin\": %f, ", AccountMargin()); // Decimal
     uRetval += StringFormat("\"name\": \"%s\", ", AccountName());
@@ -60,11 +60,11 @@ string jOTOrdersTickets() {
 }
 
 string jOTOrdersTrades() {
-    return (jOTOrders(MODE_TRADES));
+    return(jOTOrders(MODE_TRADES));
 }
 
 string jOTOrdersHistory() {
-    return (jOTOrders(MODE_HISTORY));
+    return(jOTOrders(MODE_HISTORY));
 }
 
 string jOTOrders(int iMode) {

@@ -56,13 +56,14 @@ string zOTLibProcessCmd(string uMess) {
 
     uRetval = zOTLibMt4ProcessCmd(uMess);
     if (uRetval != "") {
+	vDebug("zOTLibProcessCmd: returning " +uRetval);
         return(uRetval);
     }
 
     vStringToArray(uMess, aArrayAsList, "|");
 
     iLen = ArraySize(aArrayAsList);
-    vDebug("zOTLibProcessCmd: " +uMess +" ArrayLen " +iLen);
+    // vTrace("zOTLibProcessCmd: " +uMess +" ArrayLen " +iLen);
 
     uRetval = eOTLibSimpleUnformatCmd(aArrayAsList);
     if (uRetval != "") {
@@ -88,19 +89,24 @@ string zOTLibProcessCmd(string uMess) {
         // extentions from OpenTrading
         uRetval = uProcessCmdgOT(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5, uArg6, uArg7);
 
+        if (uRetval == "" ) vDebug("zOTLibProcessCmd: UNHANDELED gOT uCmd: " +uCmd);
     } else if (StringSubstr(uCmd, 1, 2) == "OT") {
         uRetval = uProcessCmdOT(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5, uArg6, uArg7);
+        if (uRetval == "" ) vDebug("zOTLibProcessCmd: UNHANDELED OT uCmd: " +uCmd);
 
     } else if (StringSubstr(uCmd, 0, 1) == "i") {
         //? are these Mt4 or OT?
         uRetval = uProcessCmdi(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5, uArg6, uArg7);
+        if (uRetval == "" ) vDebug("zOTLibProcessCmd: UNHANDELED i uCmd: " +uCmd);
 
    } else {
-        // vDebug("zOTLibProcessCmd: UNHANDELED" +uKey +" uCmd: " +uCmd);
-        uRetval = "";
+        vDebug("zOTLibProcessCmd: UNHANDELED uCmd: " +uCmd);
+        return("");
     }
-    // vTrace("zOTLibProcessCmd uMess: " +uMess +" -> " +uRetval);
+    vTrace("zOTLibProcessCmd uMess: " +uMess +" -> " +uRetval);
 
+    // WE INCLUDE THE SMARK
+    uRetval = uMark + "|" + uRetval;
     return(uRetval);
 
 }
@@ -112,6 +118,13 @@ string uProcessCmdi (string uCmd, string uChartId, string uIgnore, string uArg1,
     int iPeriod, iShift;
     int iType, iCount, iStart;
 
+    if (StringFind(uCmd, "|", 0) >= 0) {
+        uMsg="Unparsed command: " + uCmd;
+	vWarn(uMsg);
+        uRetval="error|"+uMsg;
+	return(uRetval);
+    }
+    
     uSymbol = uArg1;
     iPeriod = StrToInteger(uArg2);
 
@@ -151,7 +164,7 @@ string uProcessCmdi (string uCmd, string uChartId, string uIgnore, string uArg1,
         uRetval="error|"+uMsg;
     }
 
-    return (uRetval);
+    return(uRetval);
 }
 
 // OpenTrading additions
@@ -171,6 +184,13 @@ string uProcessCmdOT(string uCmd, string uChartId, string uIgnore, string uArg1,
     int iSlippage;
     color cColor;
 
+    if (StringFind(uCmd, "|", 0) >= 0) {
+        uMsg="Unparsed command: " + uCmd;
+	vWarn(uMsg);
+        // uRetval="error|"+uMsg;
+	// return(uRetval);
+    }
+ 
     if (uCmd == "iOTOrderSelect") {
         uRetval = "int|" +IntegerToString( iOTOrderSelect(StrToInteger(uArg1), StrToInteger(uArg2), StrToInteger(uArg3)));
 
@@ -281,7 +301,7 @@ string uProcessCmdOT(string uCmd, string uChartId, string uIgnore, string uArg1,
         tExpiration = 0;
         // Notes: Open price and expiration time can be changed only for pending orders.
         uRetval = "bool|" + bOTModifyOrder(uArg1, iTicket, fPrice,
-                                         fStopLoss, fTakeProfit, tExpiration);
+					   fStopLoss, fTakeProfit, tExpiration);
 
     } else if (uCmd == "bOTContinueOnOrderError") {
         iTicket = StrToInteger(uArg1);
@@ -312,7 +332,7 @@ string uProcessCmdOT(string uCmd, string uChartId, string uIgnore, string uArg1,
         uRetval = "";
     }
 
-    return (uRetval);
+    return(uRetval);
 }
 
 
@@ -323,6 +343,13 @@ string uProcessCmdgOT(string uCmd, string uChartId, string uIgnore, string uArg1
     string uMsg;
     int iError;
 
+    if (StringFind(uCmd, "|", 0) >= 0) {
+        uMsg="Unparsed command: " + uCmd;
+	vWarn(uMsg);
+        uRetval="error|"+uMsg;
+	return(uRetval);
+    }
+    
     if (uCmd == "gOTWithOrderSelectByTicket") {
         int iTicket=StrToInteger(uArg1);
 
@@ -346,7 +373,8 @@ string uProcessCmdgOT(string uCmd, string uChartId, string uIgnore, string uArg1
         }
         // drop through
     } else {
-        uMsg="Unrecognized action: " + uCmd; vWarn(uMsg);
+        uMsg="Unrecognized action: " + uCmd;
+	vWarn(uMsg);
         uRetval="error|"+uMsg;
         return(uRetval);
     }
@@ -391,6 +419,6 @@ string uProcessCmdgOT(string uCmd, string uChartId, string uIgnore, string uArg1
         uRetval="";
     }
 
-    return (uRetval);
+    return(uRetval);
 }
 

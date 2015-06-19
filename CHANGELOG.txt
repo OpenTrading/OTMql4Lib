@@ -1,3 +1,8 @@
+commit 9d9020fd2f26062423bdc9328eb4e592b52a596d
+Date:   Thu Jun 4 21:25:23 2015 +0300
+
+    Fixed order close functions and added OrderCloseMarket.
+
 commit 4ef3e1ff34ca8ae25b2a22ebecfd036fed1ec725
 Date:   Wed Jun 3 09:49:56 2015 +0300
 
