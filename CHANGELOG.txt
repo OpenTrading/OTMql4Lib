@@ -1,3 +1,8 @@
+commit 84ef060d4717fbe6542f9232425d7f6a4e991a7b
+Date:   Sun Jul 12 22:32:09 2015 +0300
+
+    Quiet traces until verbose is working
+
 commit 2b1dfba8af5bcf6abf15c38477ffa0b588fb99ff
 Date:   Fri Jun 19 17:19:15 2015 +0300
 

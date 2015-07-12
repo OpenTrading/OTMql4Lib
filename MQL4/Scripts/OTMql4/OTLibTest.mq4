@@ -1,4 +1,4 @@
-// -*-mode: c; c-style: stroustrup; c-basic-offset: 4; coding: utf-8; encoding: utf-8-dos -*-
+// -*-mode: c; c-style: stroustrup; c-basic-offset: 4; coding: utf-8-dos -*-
 
 #property copyright "Copyright 2014 Open Trading"
 #property link      "https://github.com/OpenTrading/"
@@ -58,16 +58,16 @@ string eTestOTLibProcessCmd() {
     uArg = "one";
     uRetval = zOTLibProcessCmd(uArg);
     if (uRetval == "") { 
-	Print("INFO: should have been an error message -> " +uArg);
+	Print("INFO: GOOD there be an error message in the Experts Log -> " +uArg);
     } else {
 	return("ERROR: should NOT have returned a value -> " +uRetval);
     }
     
     uArg = "exec|USDUSD|0|123456|TerminalPath";
     uRetval = zOTLibProcessCmd(uArg);
-    uExpect = "string|" +TerminalPath();
+    uExpect = "123456|string|" +TerminalPath();
     if (uRetval == uExpect) { 
-	Print("INFO: right answer -> " +uArg);
+	Print("INFO: GOOD right answer -> " +uArg);
     } else {
 	return("ERROR: wrong return value -> " +uRetval);
     }
