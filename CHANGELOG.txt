@@ -1,3 +1,8 @@
+commit 2b1dfba8af5bcf6abf15c38477ffa0b588fb99ff
+Date:   Fri Jun 19 17:19:15 2015 +0300
+
+    Refactored SMARK For ZmqCmd
+
 commit 9d9020fd2f26062423bdc9328eb4e592b52a596d
 Date:   Thu Jun 4 21:25:23 2015 +0300
 

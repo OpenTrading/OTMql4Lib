@@ -56,7 +56,7 @@ string zOTLibProcessCmd(string uMess) {
 
     uRetval = zOTLibMt4ProcessCmd(uMess);
     if (uRetval != "") {
-	vDebug("zOTLibProcessCmd: returning " +uRetval);
+	//vTrace("zOTLibProcessCmd: returning " +uRetval);
         return(uRetval);
     }
 
@@ -100,10 +100,10 @@ string zOTLibProcessCmd(string uMess) {
         if (uRetval == "" ) vDebug("zOTLibProcessCmd: UNHANDELED i uCmd: " +uCmd);
 
    } else {
-        vDebug("zOTLibProcessCmd: UNHANDELED uCmd: " +uCmd);
+        //vTrace("zOTLibProcessCmd: UNHANDELED uCmd: " +uCmd);
         return("");
     }
-    vTrace("zOTLibProcessCmd uMess: " +uMess +" -> " +uRetval);
+    // vTrace("zOTLibProcessCmd uMess: " +uMess +" -> " +uRetval);
 
     // WE INCLUDE THE SMARK
     uRetval = uMark + "|" + uRetval;
