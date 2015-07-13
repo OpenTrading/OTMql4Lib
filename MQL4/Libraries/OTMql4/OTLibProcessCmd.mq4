@@ -87,19 +87,20 @@ string zOTLibProcessCmd(string uMess) {
     uKey = StringSubstr(uCmd, 0, 3);
     if (uKey == "gOT") {
         // extentions from OpenTrading
-        uRetval = uProcessCmdgOT(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5, uArg6, uArg7);
+        uRetval = uProcessCmdgOT(uCmd, uChartId, uIgnore, uMark, uArg1, uArg2, uArg3, uArg4, uArg5, uArg6, uArg7);
 
         if (uRetval == "" ) vDebug("zOTLibProcessCmd: UNHANDELED gOT uCmd: " +uCmd);
     } else if (StringSubstr(uCmd, 1, 2) == "OT") {
-        uRetval = uProcessCmdOT(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5, uArg6, uArg7);
+        uRetval = uProcessCmdOT(uCmd, uChartId, uIgnore, uMark, uArg1, uArg2, uArg3, uArg4, uArg5, uArg6, uArg7);
         if (uRetval == "" ) vDebug("zOTLibProcessCmd: UNHANDELED OT uCmd: " +uCmd);
 
     } else if (StringSubstr(uCmd, 0, 1) == "i") {
         //? are these Mt4 or OT?
-        uRetval = uProcessCmdi(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5, uArg6, uArg7);
+        uRetval = uProcessCmdi(uCmd, uChartId, uIgnore, uMark, uArg1, uArg2, uArg3, uArg4, uArg5, uArg6, uArg7);
         if (uRetval == "" ) vDebug("zOTLibProcessCmd: UNHANDELED i uCmd: " +uCmd);
 
-   } else {
+    }
+    if (uRetval == "") {
         //vTrace("zOTLibProcessCmd: UNHANDELED uCmd: " +uCmd);
         return("");
     }
@@ -111,7 +112,7 @@ string zOTLibProcessCmd(string uMess) {
 
 }
 
-string uProcessCmdi (string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5, string uArg6, string uArg7) {
+string uProcessCmdi (string uCmd, string uChartId, string uIgnore, string uMark, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5, string uArg6, string uArg7) {
     string uMsg;
     string uRetval="none|";
     string uSymbol;
@@ -119,9 +120,9 @@ string uProcessCmdi (string uCmd, string uChartId, string uIgnore, string uArg1,
     int iType, iCount, iStart;
 
     if (StringFind(uCmd, "|", 0) >= 0) {
-        uMsg="Unparsed command: " + uCmd;
-	vWarn(uMsg);
-        uRetval="error|"+uMsg;
+        uMsg="found separator in command";
+	vWarn(uMsg +": " +uCmd);
+        uRetval=uMark +"|error|"+uMsg;
 	return(uRetval);
     }
     
@@ -160,8 +161,9 @@ string uProcessCmdi (string uCmd, string uChartId, string uIgnore, string uArg1,
         iShift = StrToInteger(uArg3);
         uRetval = "double|" +DoubleToStr( iVolume(uSymbol, iPeriod, iShift), 2);
     } else {
-        uMsg="Unrecognized action: " + uCmd; vWarn(uMsg);
-        uRetval="error|"+uMsg;
+        uMsg="Unrecognized action: ";
+	vWarn(uMsg + uCmd);
+        uRetval=uMark +"|error|"+uMsg;
     }
 
     return(uRetval);
@@ -169,7 +171,7 @@ string uProcessCmdi (string uCmd, string uChartId, string uIgnore, string uArg1,
 
 // OpenTrading additions
 // names start with a lower case letter then OT
-string uProcessCmdOT(string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5, string uArg6, string uArg7) {
+string uProcessCmdOT(string uCmd, string uChartId, string uIgnore, string uMark, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5, string uArg6, string uArg7) {
     string uMsg, sSymbol;
     string uRetval="none|";
     int iTicket, iTimeframe, iCmd, iBar;
@@ -185,10 +187,10 @@ string uProcessCmdOT(string uCmd, string uChartId, string uIgnore, string uArg1,
     color cColor;
 
     if (StringFind(uCmd, "|", 0) >= 0) {
-        uMsg="Unparsed command: " + uCmd;
-	vWarn(uMsg);
-        // uRetval="error|"+uMsg;
-	// return(uRetval);
+        uMsg="Found separator in command";
+	vWarn(uMsg + uCmd);
+        uRetval=uMark +"|error|"+uMsg;
+	return(uRetval);
     }
  
     if (uCmd == "iOTOrderSelect") {
@@ -338,15 +340,15 @@ string uProcessCmdOT(string uCmd, string uChartId, string uIgnore, string uArg1,
 
 // Wrap all of the functions that depend on an order being selected
 // into a generic gOTWithOrderSelectByTicket and gOTWithOrderSelectByPosition
-string uProcessCmdgOT(string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5, string uArg6, string uArg7) {
+string uProcessCmdgOT(string uCmd, string uChartId, string uIgnore, string uMark, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5, string uArg6, string uArg7) {
     string uRetval="none|";
     string uMsg;
     int iError;
 
     if (StringFind(uCmd, "|", 0) >= 0) {
-        uMsg="Unparsed command: " + uCmd;
-	vWarn(uMsg);
-        uRetval="error|"+uMsg;
+        uMsg="Found separator in command";
+	vWarn(uMsg + uCmd);
+        uRetval=uMark +"|error|"+uMsg;
 	return(uRetval);
     }
     
@@ -357,7 +359,7 @@ string uProcessCmdgOT(string uCmd, string uChartId, string uIgnore, string uArg1
             iError=GetLastError();
             uMsg = "OrderSelect returned an error: " + ErrorDescription(iError)+"("+iError+")";
             vError(uMsg);
-            uRetval="error|"+uMsg;
+            uRetval=uMark +"|error|"+uMsg;
             return(uRetval);
         }
         // drop through
@@ -368,14 +370,14 @@ string uProcessCmdgOT(string uCmd, string uChartId, string uIgnore, string uArg1
             iError=GetLastError();
             uMsg = "OrderSelect returned an error: " + ErrorDescription(iError)+"("+iError+")";
             vError(uMsg);
-            uRetval="error|"+uMsg;
+            uRetval=uMark +"|error|"+uMsg;
             return(uRetval);
         }
         // drop through
     } else {
-        uMsg="Unrecognized action: " + uCmd;
-	vWarn(uMsg);
-        uRetval="error|"+uMsg;
+        uMsg="Unrecognized action";
+	vWarn(uMsg + uCmd);
+        uRetval=uMark +"|error|"+uMsg;
         return(uRetval);
     }
 

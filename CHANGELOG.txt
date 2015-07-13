@@ -1,3 +1,8 @@
+commit 0eaaf19bb188f1431c09f132fb814e881f81e52f
+Date:   Sun Jul 12 23:48:44 2015 +0300
+
+    Fixed test Scripts
+
 commit 84ef060d4717fbe6542f9232425d7f6a4e991a7b
 Date:   Sun Jul 12 22:32:09 2015 +0300
 

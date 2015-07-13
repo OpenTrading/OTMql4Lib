@@ -86,9 +86,9 @@ string zOTLibMt4ProcessCmd(string uMess) {
     uKey = StringSubstr(uCmd, 0, 3);
 
     if (StringFind(uCmd, "|", 0) >= 0) {
-        uMsg="Unparsed command: " + uCmd;
+        uMsg="Found separator in command";
 	vWarn(uMsg);
-        uRetval="error|"+uMsg;
+        uRetval=uMark+"|error|"+uMsg;
 	return(uRetval);
     }
     
@@ -120,7 +120,9 @@ string zOTLibMt4ProcessCmd(string uMess) {
         uRetval = zProcessCmdAcc(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
     } else if (uKey == "Glo") {
         uRetval = zProcessCmdGlo(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
-    } else {
+    }
+
+    if (uRetval == "") {
         //vTrace("zMt4LibProcessCmd: UNHANDELED" +uKey +" uCmd: " +uCmd);
         return("");
     }
@@ -146,8 +148,8 @@ string zProcessCmdTer(string uCmd, string uChartId, string uIgnore, string uArg1
     } else if (uCmd == "TerminalPath") { //0
         uRetval = "string|" +TerminalPath();
     } else {
-        uMsg = "Unrecognized action: " +uCmd;
-        vWarn("zProcessCmdTer: " +uMsg);
+        uMsg = "Unrecognized action: ";
+        vWarn("zProcessCmdTer: " +uMsg +uCmd);
         uRetval = "";
     }
 
@@ -194,8 +196,8 @@ string zProcessCmdWin(string uCmd, string uChartId, string uIgnore, string uArg1
     } else if (uCmd == "WindowsTotal") { //0
         uRetval = "int|" +IntegerToString(WindowsTotal());
     } else {
-        uMsg="Unrecognized action: " +uCmd;
-        vWarn("zProcessCmdWin: " +uMsg);
+        uMsg="Unrecognized action: ";
+        vWarn("zProcessCmdWin: " +uMsg +uCmd);
         uRetval = "";
     }
 
@@ -247,8 +249,8 @@ string zProcessCmdAcc(string uCmd, string uChartId, string uIgnore, string uArg1
     } else if (uCmd == "AccountStopoutMode") { //0
         uRetval = "int|" +IntegerToString(AccountStopoutMode());
     } else {
-        uMsg="Unrecognized action: " +uCmd;
-        vWarn("zProcessCmdAcc: " +uMsg);
+        uMsg="Unrecognized action: ";
+        vWarn("zProcessCmdAcc: " +uMsg  +uCmd);
         uRetval="";
     }
 
@@ -294,8 +296,8 @@ string zProcessCmdGlo(string uCmd, string uChartId, string uIgnore, string uArg1
         uRetval = "double|" +DoubleToStr(GlobalVariableSet(sName, fValue), 6);
     } else {
 	// GlobalVariableSetOnCondition
-        uMsg = "Unrecognized action: " +uCmd;
-        vWarn("zProcessCmdGlo: " +uMsg);
+        uMsg = "Unrecognized action: ";
+        vWarn("zProcessCmdGlo: " +uMsg +uCmd);
         uRetval = "";
     }
 
