@@ -329,8 +329,8 @@ string uProcessCmdOT(string uCmd, string uChartId, string uIgnore, string uMark,
         iBar = StrToInteger(uArg3);
         uRetval = "json|" + jOTBarInformation(uArg1, iTimeframe, iBar);
     } else {
-        uMsg = "Unrecognized action: " +uCmd;
-        vWarn("uProcessCmdOT: " +uMsg);
+        uMsg = "Unrecognized action: ";
+        vWarn("uProcessCmdOT: " +uMsg +uCmd);
         uRetval = "";
     }
 

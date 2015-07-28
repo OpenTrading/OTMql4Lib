@@ -190,10 +190,10 @@ string jOTBarInformation(string uSymbol, int iTimeFrame, int iBar) {
     iSpread = (int) MarketInfo(uSymbol, MODE_SPREAD);
 
     uRetval += StringFormat("\"bartime\": \"%s\", ", TimeToStr(iTime(uSymbol, iTimeFrame, iBar)));
-    uRetval += StringFormat("\"open\": %i, ", iOpen(uSymbol, iTimeFrame, iBar));
-    uRetval += StringFormat("\"high\": %i, ", iHigh(uSymbol, iTimeFrame, iBar));
-    uRetval += StringFormat("\"low\": %i, ", iLow(uSymbol, iTimeFrame, iBar));
-    uRetval += StringFormat("\"close\": %i, ", iClose(uSymbol, iTimeFrame, iBar));
+    uRetval += StringFormat("\"open\": %f, ", iOpen(uSymbol, iTimeFrame, iBar));
+    uRetval += StringFormat("\"high\": %f, ", iHigh(uSymbol, iTimeFrame, iBar));
+    uRetval += StringFormat("\"low\": %f, ", iLow(uSymbol, iTimeFrame, iBar));
+    uRetval += StringFormat("\"close\": %f, ", iClose(uSymbol, iTimeFrame, iBar));
     uRetval += StringFormat("\"volume\": %i", iVolume(uSymbol, iTimeFrame, iBar));
 
     uRetval += "}";
