@@ -8,6 +8,10 @@ This is just a stub for a full logging system later.
 
 #import "OTMql4/OTLibLog.ex4"
 
+void vLogInit();
+void vSetLogLevel(int i);
+int iGetLogLevel();
+
 void vLog(int iLevel, string sMsg);
 void vError(string sMess);
 void vWarn(string sMess);

@@ -263,7 +263,6 @@ string zProcessCmdGlo(string uCmd, string uChartId, string uIgnore, string uArg1
     string sName;
     double fValue;
     int iValue;
-    datetime tValue;
 
     if (uCmd == "GlobalVariableCheck") {
         // assert
