@@ -1,18 +1,15 @@
 // -*-mode: c; c-style: stroustrup; c-basic-offset: 4; coding: utf-8-dos -*-
 
-/*
-
-This is the replacement for what should be Eval in Mt4:
-take a string expression and evaluate it.
-
-I know this is verbose and could be done more compactly,
-but it's clean and robust so I'll leave it like this for now.
-
-If you want to extend this for your own functions you have declared in Mql4,
-look at how OTLibProcessCmd.mq4 calls zMt4LibProcessCmd and then
-goes on and handles it if zMt4LibProcessCmd didn't.
-
- */
+//  This is the replacement for what should be Eval in Mt4:
+//  take a string expression and evaluate it.
+//  
+//  I know this is verbose and could be done more compactly,
+//  but it's clean and robust so I'll leave it like this for now.
+//  
+//  If you want to extend this for your own functions you have declared in Mql4,
+//  look at how OTLibProcessCmd.mq4 calls zMt4LibProcessCmd and then
+//  goes on and handles it if zMt4LibProcessCmd didn't.
+//  
 
 #property copyright "Copyright 2013 OpenTrading"
 #property link      "https://github.com/OpenTrading/"

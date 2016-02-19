@@ -4,19 +4,17 @@
 #property link      "https://github.com/OpenTrading/"
 #property library
 
-/*
-One of the many fundamental defects of the Mql4 language
-is that there is no Object Oriented error handling.
-
-This leads to Mq4 returning hundreds of different errors
-that are not grouped so that we can take actions based
-on classes of errors.
-
-We try to group the large number of errors into 9 groups
-so that we can for example retry a trade when there is
-some kind of network error.
-
- */
+//  One of the many fundamental defects of the Mql4 language
+//  is that there is no Object Oriented error handling.
+//  
+//  This leads to Mq4 returning hundreds of different errors
+//  that are not grouped so that we can take actions based
+//  on classes of errors.
+//  
+//  We try to group the large number of errors into 9 groups
+//  so that we can for example retry a trade when there is
+//  some kind of network error.
+//  
 
 #define OFLIB_OTHER_ERROR 0
 #define OFLIB_BUSY_ERROR 1 // continuable - should retry

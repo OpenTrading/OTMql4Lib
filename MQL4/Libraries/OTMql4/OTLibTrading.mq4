@@ -4,6 +4,8 @@
 #property link      "https://github.com/OpenTrading/"
 #property library
 
+// A More robust library of functions for Orders.
+
 #include <stdlib.mqh>
 #include <stderror.mqh>
 #include <OTMql4/OTLibLog.mqh>

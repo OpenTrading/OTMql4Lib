@@ -10,10 +10,10 @@ including all documentation.
 
 The standardized Unix layout works for both MultiPlatformCoding under
 both Unix and Windows, and many configuration tools assume its layout. The
-layout is the defacto-standard created by the [http://www.fsf.org/ GNU]
+layout is the defacto-standard created by the [[http://www.fsf.org/|GNU]]
 toolchain.
 
-In your top project directory you should find:[M]
+In your top project directory you should find:
 
     * '''bin''': binary directory.  This will contain executables, for
     either the main program, or support tools. For multi-platform work

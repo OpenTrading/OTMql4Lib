@@ -1,5 +1,8 @@
 Welcome to the OTMql4Lib wiki!
 
+The OTMql4Lib aims to provide a high-quality library of code to Mt4
+with testing and documentation, that can serve as a basis to other projects.
+
 Please file any bugs in the issues tracker:
 https://github.com/OpenTrading/OTMql4Lib/issues
 
@@ -9,7 +12,6 @@ It's better to use the wiki for knowledge capture, and then we can pull
 the important pages back into the documentation in the share/doc directory.
 You will need to be signed into github.com to see or edit in the wiki.
 
-* [[DevelopmentStyle]]
-* [[DirectoryStructure]]
+* [[FrontPage]]
 
 * [[TitleIndex]]

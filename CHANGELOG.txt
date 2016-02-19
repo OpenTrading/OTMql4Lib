@@ -1,3 +1,13 @@
+commit 7ff5031e7e878ba12a108065dbb705485037d004
+Date:   Fri Feb 19 20:54:54 2016 +0200
+
+    Started to document the library code
+
+commit 03db482cdb7871ea87da85cd018f949bdaac2970
+Date:   Fri Feb 19 19:50:35 2016 +0200
+
+    Moved documentation to a creole format
+
 commit 8d1cfeb3addfb166a2160e8444771fb1507124e0
 Date:   Fri Feb 19 19:28:01 2016 +0200
 

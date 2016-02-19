@@ -1,9 +1,7 @@
 // -*-mode: c; c-style: stroustrup; c-basic-offset: 4; coding: utf-8-dos -*-
 
-/*
-This will provide our logging functions, but is just a
-skeleton for now. See OTLibPyLog for logging with Python.
-*/
+//  This will provide our logging functions, but is just a
+//  skeleton for now. See OTLibPyLog for logging with Python.
 
 #property copyright "Copyright 2014 Open Trading"
 #property link      "https://github.com/OpenTrading/"
@@ -19,16 +17,14 @@ skeleton for now. See OTLibPyLog for logging with Python.
 
 int iDefaultLoglevel = OT_LOG_DEBUG;
 
-// floating point rounding error
+/* floating point rounding error */
 double fEPSILON=0.01;
 
 void vLogInit() {
-    /*
-      Initializes the Python environment. This should be called
-      from your OnInit() function. It is safe to call it a second time;
-      subsequent calls will just be ignored.
+    //  Initializes the logging environment. This should be called
+    //  from your OnInit() function. It is safe to call it a second time;
+    //  subsequent calls will just be ignored.
 
-    */
     /* not Tmp */
     if (GlobalVariableCheck("fDebugLevel") == false) {
         /* 1= Error, 2 = Warn, 3 = Info, 4 = Debug, 5 = Trace */

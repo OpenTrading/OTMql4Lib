@@ -1,15 +1,11 @@
 // -*-mode: c; c-style: stroustrup; c-basic-offset: 4; coding: utf-8-dos -*-
 
-/*
-
-JSON formatting for sending information to clients.
-This is simple string formatting: a JSON structure or class is never used.
-
-*/
-
 #property copyright "Copyright 2015 OpenTrading"
 #property link      "https://github.com/OpenTrading/"
 #property library
+
+//  JSON formatting for sending information to clients.
+//  This is simple string formatting: a JSON structure or class is never used.
 
 #include <stdlib.mqh>
 #include <stderror.mqh>
@@ -19,6 +15,10 @@ This is simple string formatting: a JSON structure or class is never used.
 #include <OTMql4/OTLibJsonFormat.mqh>
 
 string jOTAccountInformation() {
+    //  Retrieve the Account information as a JSON structure.
+    //  This brings back all of the ususal Account* calls,
+    //  with the values formatted as strings, intergers or floats.
+    //  
     string uRetval;
 
     // FixMe: coalesce
@@ -204,7 +204,7 @@ string jOTTimerInformation() {
     string uRetval;
     uRetval = "{";
     uRetval += StringFormat("\"IsConnected\": %i, ", IsConnected());
-    //    uRetval += StringFormat("\"IsTradeAllowed\": %i, ", IsTradeAllowed());
+    // uRetval += StringFormat("\"IsTradeAllowed\": %i, ", IsTradeAllowed());
     uRetval += StringFormat("\"OrdersTotal\": %i, ", OrdersTotal());
     uRetval += StringFormat("\"IsTradeContextBusy\": %i", IsTradeContextBusy());
     uRetval += "}";

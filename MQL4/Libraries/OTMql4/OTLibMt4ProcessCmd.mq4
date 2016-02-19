@@ -1,18 +1,13 @@
 // -*-mode: c; c-style: stroustrup; c-basic-offset: 4; coding: utf-8-dos -*-
 
-/*
-
-This is the replacement for what should be Eval in Mt4:
-take a string expression and evaluate it.
-
-I know this is verbose and could be done more compactly,
-but it's clean and robust so I'll leave it like this for now.
-
-If you want to extend this for your own functions you have declared in Mql4,
-look at how zOTLibProcessCmd calls zMt4LibProcessCmd in
-OTLibProcessCmd.mq4.
-
-*/
+// This is the replacement for what should be Eval in Mt4:
+// take a string expression and evaluate it.
+//  
+// We know this is verbose and could be done more compactly,
+// but it's clean and robust so we'll leave it like this for now.
+//  
+// If you want to extend this for your own functions you have declared in Mql4,
+// look at how zOTLibProcessCmd calls zMt4LibProcessCmd in OTLibProcessCmd.mq4.
 
 #property copyright "Copyright 2015 Open Trading"
 #property link      "https://github.com/OpenTrading/"
@@ -25,22 +20,21 @@ OTLibProcessCmd.mq4.
 #include <OTMql4/OTLibSimpleFormatCmd.mqh>
 
 string zOTLibMt4ProcessCmd(string uMess) {
-    /*
-      This is the replacement for what should be Eval in Mt4:
-      take a string expression and evaluate it.
-      zMt4LibProcessCmd only handles base Mt4 expressions.
+    //  This is the replacement for what should be Eval in Mt4:
+    //  take a string expression and evaluate it.
+    //  zMt4LibProcessCmd only handles base Mt4 expressions.
 
-      Returns the result of processing the command as a string
-      in the form "type|value" where type is one of:
-      string, int, double, bool, datetime, void, json
+    //  Returns the result of processing the command as a string
+    //  in the form "type|value" where type is one of:
+    //  string, int, double, bool, datetime, void, json
 
-      Returns "error|explanation" if there is an error.
+    //  Returns "error|explanation" if there is an error.
 
-      Returns "" if the the command was not recognized;
-      you can use this fact to process the standard Mt4 commands
-      with zOTLibMt4ProcessCmd,  and if it returns "",
-      write your own zMyProcessCmd to process your additions.
-    */
+    //  Returns "" if the the command was not recognized;
+    //  you can use this fact to process the standard Mt4 commands
+    //  with zOTLibMt4ProcessCmd,  and if it returns "",
+    //  write your own zMyProcessCmd to process your additions.
+					       
     string uType, uChartId, uIgnore, uMark, uCmd, uMsg;
     string uArg1="";
     string uArg2="";
