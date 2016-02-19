@@ -1,0 +1,18 @@
+===  MQL4/Libraries/OTMql4/OTLibServerErrors.mq4
+
+
+One of the many fundamental defects of the Mql4 language
+is that there is no Object Oriented error handling.
+
+This leads to Mq4 returning hundreds of different errors
+that are not grouped so that we can take actions based
+on classes of errors.
+
+We try to group the large number of errors into 9 groups
+so that we can for example retry a trade when there is
+some kind of network error.
+
+
+{{{bool bOTLibServerErrorIsContinuable(int iErr) }}}
+
+{{{bool bOTLibServerErrorType(int iErr) }}}

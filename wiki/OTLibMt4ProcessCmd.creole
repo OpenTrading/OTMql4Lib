@@ -1,0 +1,26 @@
+===  MQL4/Libraries/OTMql4/OTLibMt4ProcessCmd.mq4
+
+
+
+
+
+{{{string zOTLibMt4ProcessCmd(string uMess) }}}
+    This is the replacement for what should be Eval in Mt4:
+    take a string expression and evaluate it.
+    zMt4LibProcessCmd only handles base Mt4 expressions.
+    Returns the result of processing the command as a string
+    in the form "type|value" where type is one of:
+    string, int, double, bool, datetime, void, json
+    Returns "error|explanation" if there is an error.
+    Returns "" if the the command was not recognized;
+    you can use this fact to process the standard Mt4 commands
+    with zOTLibMt4ProcessCmd,  and if it returns "",
+    write your own zMyProcessCmd to process your additions.
+
+{{{string zProcessCmdTer(string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) }}}
+
+{{{string zProcessCmdWin(string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) }}}
+
+{{{string zProcessCmdAcc(string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) }}}
+
+{{{string zProcessCmdGlo(string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) }}}

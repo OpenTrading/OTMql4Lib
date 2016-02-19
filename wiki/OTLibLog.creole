@@ -1,0 +1,26 @@
+===  MQL4/Libraries/OTMql4/OTLibLog.mq4
+
+
+This will provide our logging functions, but is just a
+skeleton for now. See OTLibPyLog for logging with Python.
+
+{{{void vLogInit() }}}
+    Initializes the logging environment. This should be called
+    from your OnInit() function. It is safe to call it a second time;
+    subsequent calls will just be ignored.
+
+{{{void vSetLogLevel(int i) }}}
+
+{{{int iGetLogLevel() }}}
+
+{{{void vLog(int iLevel, string sMess) }}}
+
+{{{void vError(string sMess) }}}
+
+{{{void vWarn(string sMess) }}}
+
+{{{void vInfo(string sMess) }}}
+
+{{{void vDebug(string sMess) }}}
+
+{{{void vTrace(string sMess) }}}

@@ -1,0 +1,28 @@
+===  MQL4/Libraries/OTMql4/OTLibTrading.mq4
+
+
+
+{{{int iOTOrderSelect(int iIndex, int iSelect, int iPool=MODE_TRADES) }}}
+                    int slippage, double stoploss, double fTakeprofit,
+
+{{{int iOTOrderCloseMarket(int iTicket, int iSlippage=3, color cColor=CLR_NONE) }}}
+
+{{{int iOTOrderCloseFull(int iTicket, double fPrice, int iSlippage=3, color cColor=CLR_NONE) }}}
+
+{{{int iOTOrderClose(int iTicket,  double fLots, double fPrice, int iSlippage, color cColor=CLR_NONE) }}}
+
+{{{int iOTSetTradeIsBusy( int iMaxWaitingSeconds = 60 ) }}}
+
+{{{int iOTSetTradeIsNotBusy() }}}
+
+{{{double fOTExposedEcuInMarket(int iOrderEAMagic = 0) }}}
+
+{{{bool bOTIsTradeAllowed() }}}
+
+{{{int iOTRefreshRates() }}}
+
+{{{int iOTMarketInfo(string s, int iMode) }}}
+
+{{{double fOTMarketInfo(string s, int iMode) }}}
+
+{{{bool bOTContinueOnOrderError(int iTicket) }}}
