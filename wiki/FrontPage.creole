@@ -1,0 +1,45 @@
+## OpenTrading Mt4 Library Code
+https://github.com/OpenTrading/OTMql4Lib
+
+The OTMql4Lib aims to provide a high-quality library of code to Mt4
+with testing and documentation, that can serve as a basis to other projects.
+
+Metatrader has been a great international success, putting into the
+hands of end-users the ability to do programmed trading, something
+that was only previously available to large trading houses. It has
+been widely adopted, provides a credible platform for Forex trading,
+and there are a huge number of "experts" and programs that have been
+developed for it.
+
+However, Metatrader as a language is not without some significant
+drawbacks. The language is very rudimentary from the computer science
+point of view, and is a closed sole-source product. Very importantly
+for writing robust, well-tested and easily maintained code, it lacks
+proper error handling flow-of-control constructs, such as are found in
+Java, Python or Lisp. This leads to poor quality code, as can be seen
+by much of the MQL code in existence, including the code from the
+manufacturer, MetaQuotes. The poor nature of the language combines
+with the very poor coding practices of the community (e.g. not
+checking error codes and no documentation or testing) to create a very
+poor programming environment.
+
+**This is a work in progress - a developers' pre-release version.**
+
+### Installation
+
+For the moment there is no installer: just "git clone" or download the
+zip from github.com and unzip into an empty directory. Then recursively copy
+the folder MQL4 over the MQL4 folder of your Metatrader installation. It will
+not overwrite any system files, and keeps its files in subdirectories
+called `OTMql4`.
+
+### Project
+
+Please file any bugs in the issues tracker:
+https://github.com/OpenTrading/OTMql4Lib/issues
+
+Use the Wiki to start topics for discussion:
+https://github.com/OpenTrading/OTMql4Lib/wiki
+It's better to use the wiki for knowledge capture, and then we can pull
+the important pages back into the documentation in the share/doc directory.
+You will need to be signed into github.com to see or edit in the wiki.
