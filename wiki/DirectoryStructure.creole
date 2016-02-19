@@ -1,4 +1,7 @@
-WE adopt a standard directory structure for all projects, so that it
+
+=== Directory Structure
+
+We adopt a standard directory structure for all projects, so that it
 will be obvious what directory things should go in as the projects
 progress, and it will make it easier to share code and transfer
 knowledge between projects.  The directory structure must be complete

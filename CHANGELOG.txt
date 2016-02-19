@@ -1,3 +1,13 @@
+commit 8d1cfeb3addfb166a2160e8444771fb1507124e0
+Date:   Fri Feb 19 19:28:01 2016 +0200
+
+    Moved documentation to a wiki format
+
+commit ef308d4bc7b884f2a7a4d003a0d39ae19e8b5c33
+Date:   Fri Aug 21 19:10:05 2015 +0300
+
+    Wired up the global variable fDebugLevel
+
 commit 1b3f74cc3a7723823897949994f1a7a170201b71
 Date:   Wed Jul 29 01:55:14 2015 +0300
 

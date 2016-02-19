@@ -1,4 +1,4 @@
-## OpenTrading Mt4 Library Code
+OpenTrading Mt4 Library Code
 https://github.com/OpenTrading/OTMql4Lib
 
 The OTMql4Lib aims to provide a high-quality library of code to Mt4
@@ -23,23 +23,28 @@ with the very poor coding practices of the community (e.g. not
 checking error codes and no documentation or testing) to create a very
 poor programming environment.
 
-**This is a work in progress - a developers' pre-release version.**
+**This is a work in progress - a developers' version.**
 
-### Installation
+=== Installation
 
 For the moment there is no installer: just "git clone" or download the
 zip from github.com and unzip into an empty directory. Then recursively copy
 the folder MQL4 over the MQL4 folder of your Metatrader installation. It will
 not overwrite any system files, and keeps its files in subdirectories
-called `OTMql4`.
+called {{{OTMql4}}}.
 
-### Project
+=== Project
 
 Please file any bugs in the issues tracker:
 https://github.com/OpenTrading/OTMql4Lib/issues
 
 Use the Wiki to start topics for discussion:
-https://github.com/OpenTrading/OTMql4Lib/wiki
+https://github.com/OpenTrading/OTMql4Lib/wiki/Home
 It's better to use the wiki for knowledge capture, and then we can pull
 the important pages back into the documentation in the share/doc directory.
 You will need to be signed into github.com to see or edit in the wiki.
+
+
+* [[Home|https://github.com/OpenTrading/OTMql4Lib/wiki/Home]]
+
+* [[TitleIndex|https://github.com/OpenTrading/OTMql4Lib/wiki/TitleIndex]]
