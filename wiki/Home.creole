@@ -2,6 +2,8 @@ Welcome to the OTMql4Lib wiki!
 
 The OTMql4Lib aims to provide a high-quality library of code to Mt4
 with testing and documentation, that can serve as a basis to other projects.
+It is the common library of Mt4 code to all of the OpenTrading projects:
+https://github.com/OpenTrading/
 
 Please file any bugs in the issues tracker:
 https://github.com/OpenTrading/OTMql4Lib/issues

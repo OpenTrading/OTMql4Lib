@@ -1,7 +1,11 @@
 // -*-mode: c; c-style: stroustrup; c-basic-offset: 4; coding: utf-8-dos -*-
 
+#property copyright "Copyright 2013 OpenTrading"
+#property link      "https://github.com/OpenTrading/"
+#property library
+
 //  This is the replacement for what should be Eval in Mt4:
-//  take a string expression and evaluate it.
+//  it takes a string expression and evaluates it.
 //  
 //  I know this is verbose and could be done more compactly,
 //  but it's clean and robust so I'll leave it like this for now.
@@ -11,10 +15,6 @@
 //  goes on and handles it if zMt4LibProcessCmd didn't.
 //  
 
-#property copyright "Copyright 2013 OpenTrading"
-#property link      "https://github.com/OpenTrading/"
-#property library
-
 #include <stdlib.mqh>
 #include <stderror.mqh>
 #include <OTMql4/OTLibLog.mqh>
@@ -22,12 +22,12 @@
 #include <OTMql4/OTLibSimpleFormatCmd.mqh>
 
 string zOTLibSimpleFormatCmd(string uType, string uChartId, int iIgnore, string uMark, string uCmd) {
+    //  uType is cmd or exec
+    //  Both will be handled by ProcessCmd, but
+    //  cmd commands will be put back on the wire as a retval.
+    //  If  uType is not cmd or exec then "" is returned to signal failure.
+    //
     string uRetval;
-    /* uType is cmd or exec
-    Both will be handled by ProcessCmd, but
-    cmd commands will be put back on the wire as a retval.
-    If  uType is not cmd or exec then "" is returned to signal failure.
-    */
     if (uType != "cmd" && uType != "exec") {
         return("");
     }
@@ -37,11 +37,11 @@ string zOTLibSimpleFormatCmd(string uType, string uChartId, int iIgnore, string 
 }
 
 string zOTLibSimpleFormatBar(string uType, string uChartId, int iIgnore, string uMark, string uInfo) {
+    //  uType should be one of: bar
+    //  Both will be put on the wire as a their type topics.
+    //  If uType is not tick timer or bar, then "" is returned to signal failure.
+
     string uRetval;
-    /* uType should be one of: bar
-    Both will be put on the wire as a their type topics.
-    If  uType is not tick timer or bar, then "" is returned to signal failure.
-    */
     if (uType != "bar") {
         return("");
     }
@@ -51,11 +51,11 @@ string zOTLibSimpleFormatBar(string uType, string uChartId, int iIgnore, string 
 }
 
 string zOTLibSimpleFormatTimer(string uType, string uChartId, int iIgnore, string uMark, string uInfo) {
+    //  uType should be one of: tick or timer
+    //  Both will be put on the wire as a their type topics.
+    //  If uType is not tick timer or bar, then "" is returned to signal failure.
+    //  
     string uRetval;
-    /* uType should be one of: tick or timer
-    Both will be put on the wire as a their type topics.
-    If  uType is not tick timer or bar, then "" is returned to signal failure.
-    */
     if (uType != "timer") {
         return("");
     }
@@ -65,11 +65,11 @@ string zOTLibSimpleFormatTimer(string uType, string uChartId, int iIgnore, strin
 }
 
 string zOTLibSimpleFormatTick(string uType, string uChartId, int iIgnore, string uMark, string uInfo) {
+    //  uType should be one of: tick or timer
+    //  Both will be put on the wire as a their type topics.
+    //  If  uType is not tick timer or bar, then "" is returned to signal failure.
+    //  
     string uRetval;
-    /* uType should be one of: tick or timer
-    Both will be put on the wire as a their type topics.
-    If  uType is not tick timer or bar, then "" is returned to signal failure.
-    */
     if (uType != "tick") {
         return("");
     }
@@ -79,11 +79,11 @@ string zOTLibSimpleFormatTick(string uType, string uChartId, int iIgnore, string
 }
 
 string zOTLibSimpleFormatRetval(string uType, string uChartId, int iIgnore, string uMark, string uInfo) {
+    //  uType should be one of: retval
+    //  Will be put on the wire as a its type topic.
+    //  If  uType is not retval, then "" is returned to signal failure.
+    //
     string uRetval;
-    /* uType should be one of: retval
-    Will be put on the wire as a its type topic.
-    If  uType is not retval, then "" is returned to signal failure.
-    */
     if (uType != "retval") {
         return("");
     }
