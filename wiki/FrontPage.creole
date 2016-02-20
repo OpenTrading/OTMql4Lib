@@ -40,13 +40,13 @@ https://github.com/OpenTrading/OTMql4Lib/issues
 
 Use the Wiki to start topics for discussion:
 https://github.com/OpenTrading/OTMql4Lib/wiki/Home
-It's better to use the wiki for knowledge capture, and then we can pull
-the important pages back into the documentation in the share/doc directory.
-You will need to be signed into github.com to see or edit in the wiki.
+It's better to use the wiki for knowledge capture, and then we can pull the
+important pages back into the documentation in the {{{share/doc}}} directory.
+You will need to be signed into github.com to edit in the wiki.
 
-* [[Libraries]]
-* [[DevelopmentStyle]]
-* [[DirectoryStructure]]
+* [[Libraries|https://github.com/OpenTrading/OTMql4Lib/wiki/Libraries]]
+* [[DevelopmentStyle|https://github.com/OpenTrading/OTMql4Lib/wiki/DevelopmentStyle]]
+* [[DirectoryStructure|https://github.com/OpenTrading/OTMql4Lib/wiki/]]
 
 
 * [[Home|https://github.com/OpenTrading/OTMql4Lib/wiki/Home]]

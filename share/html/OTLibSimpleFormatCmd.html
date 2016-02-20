@@ -10,7 +10,7 @@
 <h3>MQL4/Libraries/OTMql4/OTLibSimpleFormatCmd.mq4</h3>
 
 <p>This is the replacement for what should be Eval in Mt4:<br />
-take a string expression and evaluate it.</p>
+it takes a string expression and evaluates it.</p>
 
 <p>I know this is verbose and could be done more compactly,<br />
 but it's clean and robust so I'll leave it like this for now.</p>
@@ -19,15 +19,31 @@ but it's clean and robust so I'll leave it like this for now.</p>
 look at how OTLibProcessCmd.mq4 calls zMt4LibProcessCmd and then<br />
 goes on and handles it if zMt4LibProcessCmd didn't.</p>
 
-<p><tt>string zOTLibSimpleFormatCmd(string uType, string uChartId, int iIgnore, string uMark, string uCmd) </tt></p>
+<p><tt>string zOTLibSimpleFormatCmd(string uType, string uChartId, int iIgnore, string uMark, string uCmd) </tt><br />
+    uType is cmd or exec<br />
+    Both will be handled by ProcessCmd, but<br />
+    cmd commands will be put back on the wire as a retval.<br />
+    If  uType is not cmd or exec then "" is returned to signal failure.</p>
 
-<p><tt>string zOTLibSimpleFormatBar(string uType, string uChartId, int iIgnore, string uMark, string uInfo) </tt></p>
+<p><tt>string zOTLibSimpleFormatBar(string uType, string uChartId, int iIgnore, string uMark, string uInfo) </tt><br />
+    uType should be one of: bar<br />
+    Both will be put on the wire as a their type topics.<br />
+    If uType is not tick timer or bar, then "" is returned to signal failure.</p>
 
-<p><tt>string zOTLibSimpleFormatTimer(string uType, string uChartId, int iIgnore, string uMark, string uInfo) </tt></p>
+<p><tt>string zOTLibSimpleFormatTimer(string uType, string uChartId, int iIgnore, string uMark, string uInfo) </tt><br />
+    uType should be one of: tick or timer<br />
+    Both will be put on the wire as a their type topics.<br />
+    If uType is not tick timer or bar, then "" is returned to signal failure.</p>
 
-<p><tt>string zOTLibSimpleFormatTick(string uType, string uChartId, int iIgnore, string uMark, string uInfo) </tt></p>
+<p><tt>string zOTLibSimpleFormatTick(string uType, string uChartId, int iIgnore, string uMark, string uInfo) </tt><br />
+    uType should be one of: tick or timer<br />
+    Both will be put on the wire as a their type topics.<br />
+    If  uType is not tick timer or bar, then "" is returned to signal failure.</p>
 
-<p><tt>string zOTLibSimpleFormatRetval(string uType, string uChartId, int iIgnore, string uMark, string uInfo) </tt></p>
+<p><tt>string zOTLibSimpleFormatRetval(string uType, string uChartId, int iIgnore, string uMark, string uInfo) </tt><br />
+    uType should be one of: retval<br />
+    Will be put on the wire as a its type topic.<br />
+    If  uType is not retval, then "" is returned to signal failure.</p>
 
 <p><tt>string eOTLibSimpleUnformatCmd(string&amp; aArrayAsList[]) </tt></p></body>
 </html>

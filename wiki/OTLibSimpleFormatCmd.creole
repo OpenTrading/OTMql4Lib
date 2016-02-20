@@ -2,7 +2,7 @@
 
 
 This is the replacement for what should be Eval in Mt4:
-take a string expression and evaluate it.
+it takes a string expression and evaluates it.
 
 I know this is verbose and could be done more compactly,
 but it's clean and robust so I'll leave it like this for now.
@@ -13,13 +13,31 @@ goes on and handles it if zMt4LibProcessCmd didn't.
 
 
 {{{string zOTLibSimpleFormatCmd(string uType, string uChartId, int iIgnore, string uMark, string uCmd) }}}
+    uType is cmd or exec
+    Both will be handled by ProcessCmd, but
+    cmd commands will be put back on the wire as a retval.
+    If  uType is not cmd or exec then "" is returned to signal failure.
 
 {{{string zOTLibSimpleFormatBar(string uType, string uChartId, int iIgnore, string uMark, string uInfo) }}}
+    uType should be one of: bar
+    Both will be put on the wire as a their type topics.
+    If uType is not tick timer or bar, then "" is returned to signal failure.
 
 {{{string zOTLibSimpleFormatTimer(string uType, string uChartId, int iIgnore, string uMark, string uInfo) }}}
+    uType should be one of: tick or timer
+    Both will be put on the wire as a their type topics.
+    If uType is not tick timer or bar, then "" is returned to signal failure.
+    
 
 {{{string zOTLibSimpleFormatTick(string uType, string uChartId, int iIgnore, string uMark, string uInfo) }}}
+    uType should be one of: tick or timer
+    Both will be put on the wire as a their type topics.
+    If  uType is not tick timer or bar, then "" is returned to signal failure.
+    
 
 {{{string zOTLibSimpleFormatRetval(string uType, string uChartId, int iIgnore, string uMark, string uInfo) }}}
+    uType should be one of: retval
+    Will be put on the wire as a its type topic.
+    If  uType is not retval, then "" is returned to signal failure.
 
 {{{string eOTLibSimpleUnformatCmd(string& aArrayAsList[]) }}}

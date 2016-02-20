@@ -1,3 +1,13 @@
+commit 6b38527436f6e124ce1c599edd18461f2a8b36e3
+Date:   Sat Feb 20 08:11:31 2016 +0200
+
+    Updated documentation
+
+commit d91f017369b823a44e5825a70305a9d656df3e7c
+Date:   Fri Feb 19 21:04:39 2016 +0200
+
+    More documentation of the library code
+
 commit 7ff5031e7e878ba12a108065dbb705485037d004
 Date:   Fri Feb 19 20:54:54 2016 +0200
 
