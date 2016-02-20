@@ -24,6 +24,7 @@ Choose the initial letter from the following list:
 || g			|| generic - unknown or mutable			||
 || h			|| hypertext - HTML/XML entity encoded string	||
 || i			|| integer		       	       		||
+|| j			|| json string		       	       		||
 || l			|| list or tuple	(unused)		||
 || o			|| instance or pointer to a class		||
 || r			|| series       	    			||
