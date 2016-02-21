@@ -41,3 +41,7 @@ goes on and handles it if zMt4LibProcessCmd didn't.
     If  uType is not retval, then "" is returned to signal failure.
 
 {{{string eOTLibSimpleUnformatCmd(string& aArrayAsList[]) }}}
+
+Source code: [[MQL4/Libraries/OTMql4/OTLibSimpleFormatCmd.mq4|https://github.com/OpenTrading/OTMql4Lib/raw/master/MQL4/Libraries/OTMql4/OTLibSimpleFormatCmd.mq4]]
+
+

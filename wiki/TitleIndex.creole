@@ -13,7 +13,9 @@
 * [[OTLibServerErrors]]
 * [[OTLibSimpleFormatCmd]]
 * [[OTLibStrings]]
+* [[OTLibTest]]
 * [[OTLibTrading]]
+* [[Scripts]]
 * [[TitleIndex]]
 
 ----

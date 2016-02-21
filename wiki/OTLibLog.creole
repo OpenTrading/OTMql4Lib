@@ -24,3 +24,7 @@ skeleton for now. See OTLibPyLog for logging with Python.
 {{{void vDebug(string sMess) }}}
 
 {{{void vTrace(string sMess) }}}
+
+Source code: [[MQL4/Libraries/OTMql4/OTLibLog.mq4|https://github.com/OpenTrading/OTMql4Lib/raw/master/MQL4/Libraries/OTMql4/OTLibLog.mq4]]
+
+

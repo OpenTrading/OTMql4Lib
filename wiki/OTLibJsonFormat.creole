@@ -27,3 +27,7 @@ This is simple string formatting: a JSON structure or class is never used.
 {{{string jOTBarInformation(string uSymbol, int iTimeFrame, int iBar) }}}
 
 {{{string jOTTimerInformation() }}}
+
+Source code: [[MQL4/Libraries/OTMql4/OTLibJsonFormat.mq4|https://github.com/OpenTrading/OTMql4Lib/raw/master/MQL4/Libraries/OTMql4/OTLibJsonFormat.mq4]]
+
+

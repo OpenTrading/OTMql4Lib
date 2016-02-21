@@ -24,3 +24,7 @@
 {{{string zProcessCmdAcc(string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) }}}
 
 {{{string zProcessCmdGlo(string uCmd, string uChartId, string uIgnore, string uArg1, string uArg2, string uArg3, string uArg4, string uArg5) }}}
+
+Source code: [[MQL4/Libraries/OTMql4/OTLibMt4ProcessCmd.mq4|https://github.com/OpenTrading/OTMql4Lib/raw/master/MQL4/Libraries/OTMql4/OTLibMt4ProcessCmd.mq4]]
+
+

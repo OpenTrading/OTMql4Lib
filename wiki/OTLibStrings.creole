@@ -11,3 +11,7 @@ This includes Ansi to Unicode "issues".
 {{{void vStringToArray(string uInput, string& uOutput[], string uDelim) }}}
 
 {{{string uStringReplace(string uHaystack, string uNeedle, string uReplace) }}}
+
+Source code: [[MQL4/Libraries/OTMql4/OTLibStrings.mq4|https://github.com/OpenTrading/OTMql4Lib/raw/master/MQL4/Libraries/OTMql4/OTLibStrings.mq4]]
+
+

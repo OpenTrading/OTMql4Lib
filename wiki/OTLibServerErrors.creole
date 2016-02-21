@@ -16,3 +16,7 @@ some kind of network error.
 {{{bool bOTLibServerErrorIsContinuable(int iErr) }}}
 
 {{{bool bOTLibServerErrorType(int iErr) }}}
+
+Source code: [[MQL4/Libraries/OTMql4/OTLibServerErrors.mq4|https://github.com/OpenTrading/OTMql4Lib/raw/master/MQL4/Libraries/OTMql4/OTLibServerErrors.mq4]]
+
+

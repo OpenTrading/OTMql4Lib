@@ -1,3 +1,8 @@
+commit ed42a5ced1c810f8229371ca53dd229016738191
+Date:   Sun Feb 21 00:39:16 2016 +0200
+
+    Fixed documentation in Creole format
+
 commit ce5a63ada7ca5c899dd2bacf3499abf44b5d900f
 Date:   Sun Feb 21 00:23:02 2016 +0200
 

@@ -3,6 +3,10 @@
 #property copyright "Copyright 2014 Open Trading"
 #property link      "https://github.com/OpenTrading/"
 
+//  A simple test Script that doesn't do much, but it's a start.
+//  Attach it to a chart, and a MessageBox will pop up to tell you
+//  if it passed or failed.
+
 #property show_inputs
 
 #include <OTMql4/OTLibLog.mqh>
@@ -11,10 +15,9 @@
 
 #include <WinUser32.mqh>
 
-/*
-We will put each test as a boolean external input so the user
-can select which tests to run.
-*/
+//  We will put each test as a boolean external input so the user
+//  can select which tests to run.
+
 extern bool bTestStrings=true;
 extern bool bTestOTLibProcessCmd=true;
 
@@ -25,6 +28,8 @@ void vAlert(string uText) {
 }
 
 string eTestStrings() {
+    //  Test our parsing of strings with vStringToArray
+    //  
     int iErr = 0;
     string uRetval = "";
     string uArg;

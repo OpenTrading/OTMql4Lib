@@ -26,3 +26,7 @@
 {{{double fOTMarketInfo(string s, int iMode) }}}
 
 {{{bool bOTContinueOnOrderError(int iTicket) }}}
+
+Source code: [[MQL4/Libraries/OTMql4/OTLibTrading.mq4|https://github.com/OpenTrading/OTMql4Lib/raw/master/MQL4/Libraries/OTMql4/OTLibTrading.mq4]]
+
+
