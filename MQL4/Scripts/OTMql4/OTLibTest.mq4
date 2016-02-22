@@ -4,8 +4,8 @@
 #property link      "https://github.com/OpenTrading/"
 
 //  A simple test Script that doesn't do much, but it's a start.
-//  Attach it to a chart, and a MessageBox will pop up to tell you
-//  if it passed or failed.
+//  Attach it to a chart, select the tests you want to run,
+//  and a MessageBox will pop up to tell you if it passed or failed.
 
 #property show_inputs
 

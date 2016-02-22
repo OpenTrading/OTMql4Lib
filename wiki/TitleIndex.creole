@@ -1,11 +1,12 @@
 
 == Title Index
 
+* [[CodeLibraries]]
+* [[CodeScripts]]
 * [[DevelopmentStyle]]
 * [[DirectoryStructure]]
 * [[FrontPage]]
 * [[Home]]
-* [[Libraries]]
 * [[OTLibJsonFormat]]
 * [[OTLibLog]]
 * [[OTLibMt4ProcessCmd]]
@@ -15,7 +16,6 @@
 * [[OTLibStrings]]
 * [[OTLibTest]]
 * [[OTLibTrading]]
-* [[Scripts]]
 * [[TitleIndex]]
 
 ----

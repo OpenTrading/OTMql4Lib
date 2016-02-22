@@ -1,3 +1,8 @@
+commit 1a237f87d70c1cdd62240a141092bdfac970367d
+Date:   Sun Feb 21 05:45:59 2016 +0200
+
+    Added more documentation in Creole format
+
 commit ed42a5ced1c810f8229371ca53dd229016738191
 Date:   Sun Feb 21 00:39:16 2016 +0200
 

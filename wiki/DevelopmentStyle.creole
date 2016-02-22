@@ -1,6 +1,25 @@
 
 === Coding Style
 
+Metatrader has been a great international success, putting into the
+hands of end-users the ability to do programmed trading, something
+that was only previously available to large trading houses. It has
+been widely adopted, provides a credible platform for Forex trading,
+and there are a huge number of "experts" and programs that have been
+developed for it.
+
+However, Metatrader as a language is not without some significant
+drawbacks. The language is very rudimentary from the computer science
+point of view, and is a closed sole-source product. Very importantly
+for writing robust, well-tested and easily maintained code, it lacks
+proper error handling flow-of-control constructs, such as are found in
+Java, Python or Lisp. This leads to poor quality code, as can be seen
+by much of the MQL code in existence, including the code from the
+manufacturer, MetaQuotes. The poor nature of the language combines
+with the very poor coding practices of the community (e.g. not
+checking error codes and no documentation or testing) to create a very
+poor programming environment.
+
 ==== Type Prefixing
 
 We prefix all variable, function and method names with a lowercase letter
@@ -34,3 +53,7 @@ Choose the initial letter from the following list:
 || v			|| void - return value not to be used		||
 || z			|| non-empty string return - empty is a failure	||
 
+* [[DirectoryStructure]]
+
+----
+Parent: [[Home]]
