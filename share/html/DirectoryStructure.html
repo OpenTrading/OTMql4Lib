@@ -24,26 +24,29 @@ toolchain.</p>
 <p>In your top project directory you should find:</p>
 
 <ul>
-	<li>'''bin''': binary directory.  This will contain executables, for    either the main program, or support tools. For multi-platform work    assume that there may be platform and OS dependent subdirectories    such as</li>
-	<li>`bin/windows-x86`: windows subdirectory</li>
-	<li>`bin/linux-x86`: linux subdirectory</li>
+	<li><strong>bin</strong>: binary directory.  This will contain executables, for    either the main program, or support tools. For multi-platform work    assume that there may be platform and OS dependent subdirectories    such as</li>
+	<li><tt>bin/windows-x86</tt>: windows subdirectory</li>
+	<li><tt>bin/linux-x86</tt>: linux subdirectory</li>
 </ul>
 <ul>
-	<li>'''etc''': configuration files - may be empty.</li>
+	<li><strong>etc</strong>: configuration files - may be empty.</li>
 </ul>
 <ul>
-	<li>'''lib''': library directory.  This will contain object libraries, for    either the main program, or support tools. For multi-platform work,    assume that there will be platform and OS dependent files under `lib`.</li>
+	<li><strong>lib</strong>: library directory.  This will contain object libraries, for    either the main program, or support tools. For multi-platform work,    assume that there will be platform and OS dependent files under <tt>lib</tt>.</li>
 </ul>
 <ul>
-	<li>'''net''': Repository for files downloaded from the net, for all    bundled prerquisites of code or tools required by the program. It    may also contain the orginal version of code that this project    extends, so that it's easy to compare the preoject with its origins.    Make protocol subdirectories such as `net/Http` `net/Ftp`    and in these subdirectories, put the name of the site the package    was downloaded from.</li>
+	<li><strong>net</strong>: Repository for files downloaded from the net, for all    bundled prerquisites of code or tools required by the program. It    may also contain the orginal version of code that this project    extends, so that it's easy to compare the preoject with its origins.    Make protocol subdirectories such as <tt>net/Http</tt> <tt>net/Ftp</tt>    and in these subdirectories, put the name of the site the package    was downloaded from.</li>
 </ul>
 <ul>
-	<li>'''share''': platform independent library directories. For example,    the on-line documentation might go in `share/doc` or in `share/html`    and icons might go in `share/icons` etc.</li>
+	<li><strong>share</strong>: platform independent library directories. For example,    the on-line documentation might go in <tt>share/doc</tt> or in <tt>share/html</tt>    and icons might go in <tt>share/icons</tt> etc.</li>
 </ul>
 <ul>
-	<li>'''src''': The source code for the application and any of the tools    it requires. </li>
+	<li><strong>src</strong>: The source code for the application and any of the tools    it requires. </li>
 </ul>
 <ul>
-	<li>'''var''': variable run-time data, initially empty. May have    subdirectories like `var/log` for log files,     `var/cache` for runtime files, `var/tmp` for temporary files etc.</li>
-</ul></body>
+	<li><strong>var</strong>: variable run-time data, initially empty. May have    subdirectories like <tt>var/log</tt> for log files,     <tt>var/cache</tt> for runtime files, <tt>var/tmp</tt> for temporary files etc.</li>
+</ul>
+<hr />
+
+<p>Parent: <a href="DevelopmentStyle.html">DevelopmentStyle</a></p></body>
 </html>

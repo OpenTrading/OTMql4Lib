@@ -1,4 +1,4 @@
-===  MQL4/Libraries/OTMql4/OTLibStrings.mq4
+===  MQL4/Libraries/OTMql4/OTLibStrings.mq4 ===
 
 
 Miscellaneous functions that help handling strings.

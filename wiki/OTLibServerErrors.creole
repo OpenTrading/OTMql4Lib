@@ -1,4 +1,4 @@
-===  MQL4/Libraries/OTMql4/OTLibServerErrors.mq4
+===  MQL4/Libraries/OTMql4/OTLibServerErrors.mq4 ===
 
 
 One of the many fundamental defects of the Mql4 language

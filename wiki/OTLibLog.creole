@@ -1,4 +1,4 @@
-===  MQL4/Libraries/OTMql4/OTLibLog.mq4
+===  MQL4/Libraries/OTMql4/OTLibLog.mq4 ===
 
 
 This will provide our logging functions, but is just a
