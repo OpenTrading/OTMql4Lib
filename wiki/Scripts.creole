@@ -1,7 +1,0 @@
-===  Scripts
-
-
-See [[MQL4/Scripts/OTMql4/|https://github.com/OpenTrading/OTMql4Lib/raw/master/MQL4/Scripts/OTMql4]]
-
-
-*  [[OTLibTest]]

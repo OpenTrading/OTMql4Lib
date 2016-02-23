@@ -357,7 +357,6 @@ double fOTExposedEcuInMarket(int iOrderEAMagic = 0) {
     int iRetval;
     double fStopLoss;
     double fExposedEcu=0.0;
-    int iLotSize;
     
     for(i=OrdersTotal()-1; i>=0; i--) {
 
@@ -425,7 +424,6 @@ bool bOTIsTradeAllowed() {
       Warning: RefreshRates can take a long time.
     */
     int iTicks = 0;
-    int iRetval;
     
     if (IsTesting() || IsOptimization()) return (true);
     if (IsConnected() == false) {
@@ -481,6 +479,8 @@ int iOTMarketInfo(string s, int iMode) {
       to be sure that we getting the up-to-date market data.
 
     */
+    int iRetval;
+    int iError;
     if (s == "") {
         vWarn("iOTMarketInfo - Empty symbol for getting "+iMode);
         return(-1);
@@ -489,8 +489,8 @@ int iOTMarketInfo(string s, int iMode) {
         vWarn("iOTMarketInfo - Negative mode for getting "+iMode+" for "+s);
         return(-1);
     }
-    int iRetval=MarketInfo(s, iMode);
-    int iError=GetLastError();
+    iRetval = MarketInfo(s, iMode);
+    iError = GetLastError();
     if (iError > 0) {
         vWarn("Error getting " +iMode +" for " +s
               +": "+ErrorDescription(iError));

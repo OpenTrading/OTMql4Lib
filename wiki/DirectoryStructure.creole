@@ -1,5 +1,5 @@
 
-=== Directory Structure
+=== Directory Structure ===
 
 We adopt a standard directory structure for all projects, so that it
 will be obvious what directory things should go in as the projects

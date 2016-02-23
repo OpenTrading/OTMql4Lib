@@ -1,5 +1,5 @@
 
-=== Coding Style
+=== Coding Style ===
 
 Metatrader has been a great international success, putting into the
 hands of end-users the ability to do programmed trading, something
@@ -20,7 +20,7 @@ with the very poor coding practices of the community (e.g. not
 checking error codes and no documentation or testing) to create a very
 poor programming environment.
 
-==== Type Prefixing
+==== Type Prefixing ====
 
 We prefix all variable, function and method names with a lowercase letter
 that indicates the type; it helps you anticipate what type a quantity

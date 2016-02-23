@@ -1,0 +1,28 @@
+
+=== Binary Installer ===
+
+There is now an installer in the Releases section on github:
+https://github.com/OpenTrading/OTMql4Lib/releases
+It's a simple installer that asks where you want the software installed,
+and the location of your {{{AppData}} Metatrader terminal directory,
+and copies the files to the right places; it installs a copy of the
+documentation too.  Usually you could just overwrite old releases with
+new ones, but for now we recommend unistalling old releases before
+installing new ones in case the filenames have changed.
+
+The location of your Metatrader directory to install into is no longer the
+{{{Program Files}} directory (something like {{{c:/Program Files/MetaTrader 4 Terminal/}}})
+but rather your personal {{{AppData}}} directory (something like
+{{{c:\Users\Administrator\AppData\Roaming\MetaQuotes\Terminal\LONGHEXNANE}}}).
+When Setup asks you to select your existing Metatrader 4 folder in which Setup
+should install MQL4 files, use the Browse button to select it, then click Next.
+
+=== Install from Source ===
+
+Alernatively, you can just "git clone" or download the zip from github.com
+and unzip into an empty directory. Then recursively copy the folder
+{{{MQL4}}} over the {{{MQL4}}} folder of your personal {{{AppData...}}} directory
+(something like
+{{{c:\Users\Administrator\AppData\Roaming\MetaQuotes\Terminal\LONGHEXNANE}}}).
+It will not overwrite any system files, and keeps its files in subdirectories
+called {{{OTMql4}}}.

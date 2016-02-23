@@ -7,6 +7,7 @@
 * [[DirectoryStructure]]
 * [[FrontPage]]
 * [[Home]]
+* [[Installation]]
 * [[OTLibJsonFormat]]
 * [[OTLibLog]]
 * [[OTLibMt4ProcessCmd]]

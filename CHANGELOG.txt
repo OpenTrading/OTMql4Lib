@@ -1,3 +1,13 @@
+commit 3d842d88f43cfcfd0135ede57cb12240684ad040
+Date:   Mon Feb 22 16:02:46 2016 +0200
+
+    Updated documentation
+
+commit e8c0c97cda8b82e4c7a3c191c443b3e6544e9028
+Date:   Mon Feb 22 02:43:27 2016 +0200
+
+    Updated documentation
+
 commit 1a237f87d70c1cdd62240a141092bdfac970367d
 Date:   Sun Feb 21 05:45:59 2016 +0200
 

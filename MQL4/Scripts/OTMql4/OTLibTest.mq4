@@ -81,13 +81,26 @@ string eTestOTLibProcessCmd() {
 
 void OnStart() {
     string uRetval = "";
+    int i = 0;
     if ( bTestStrings == true ) {
         uRetval = eTestStrings();
-        if (uRetval != "") { vAlert(uRetval); }
+        if (uRetval != "") {
+	    vAlert(uRetval);
+	} else {
+	    i = i + 1;
+	}
     }
     if ( bTestOTLibProcessCmd == true ) {
         uRetval = eTestOTLibProcessCmd();
-        if (uRetval != "") { vAlert(uRetval); }
+        if (uRetval != "") {
+	    vAlert(uRetval);
+	} else {
+	    i = i + 1;
+	}
+    }
+    if ( i > 0 ) {
+	uRetval = "INFO: tests completed";
+	vAlert(uRetval);
     }
 }
 

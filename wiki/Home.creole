@@ -3,9 +3,18 @@ Welcome to the OTMql4Lib project!
 The OTMql4Lib aims to provide a high-quality library of code to Metatrader 4,
 with testing and documentation, that can serve as a basis to other projects.
 It is the common library of Mt4 code to all of the OpenTrading projects:
-https://github.com/OpenTrading/
+https://github.com/OpenTrading/ and is required as a prerequisite by OpenTrader
+https://github.com/OpenTrading/OpenTrader
+
+One of the key funtionalities that it provides is the {{{ProcessCmd}}} functions
+which is a simple replacement for what should be an {{{Eval}}} command in Mt4,
+to allow an Expert to evaluate arbirtary Mt4 commands. This can be used by
+any Remote Procedure Call libraries to send commands to Mt4 for evaluation.
 
 === Documentation ===
+
+There is now an installer in the Releases section on github: see
+* [[Installation]]
 
 * [[CodeLibraries]]
 * [[CodeScripts]]
