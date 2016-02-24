@@ -18,7 +18,7 @@ string jOTAccountInformation() {
     //  Retrieve the Account information as a JSON structure.
     //  This brings back all of the ususal Account* calls,
     //  with the values formatted as strings, intergers or floats.
-    //  
+    //
     string uRetval;
 
     // FixMe: coalesce
@@ -52,8 +52,8 @@ string jOTOrdersTickets() {
     for(i=OrdersTotal()-1; i>=0; i--) {
         iRetval = iOTOrderSelect(i, SELECT_BY_POS, MODE_TRADES);
         if (iRetval < 0) {continue;}
-	if (uRetval != "[") uRetval += ", ";
-	uRetval += StringFormat("%i", OrderTicket());
+        if (uRetval != "[") uRetval += ", ";
+        uRetval += StringFormat("%i", OrderTicket());
     }
     uRetval += "]";
     return(uRetval);
@@ -73,16 +73,16 @@ string jOTOrders(int iMode) {
 
     uRetval = "[";
     for(i=OrdersTotal()-1; i>=0; i--) {
-	iRetval = iOTOrderSelect(i, SELECT_BY_POS, iMode);
-	if (iRetval <= 0) {
-	    uReason = ErrorDescription(GetLastError());
-	    vWarn("Select order failed " +
-		  " for pos " + i + ": " + uReason);
-	} else {
-	    if (uRetval != "[") uRetval += ", ";
-	    iTicket = OrderTicket();
-	    uRetval += jOTOrderInformationByTicket(iTicket);
-	}
+        iRetval = iOTOrderSelect(i, SELECT_BY_POS, iMode);
+        if (iRetval <= 0) {
+            uReason = ErrorDescription(GetLastError());
+            vWarn("Select order failed " +
+                  " for pos " + i + ": " + uReason);
+        } else {
+            if (uRetval != "[") uRetval += ", ";
+            iTicket = OrderTicket();
+            uRetval += jOTOrderInformationByTicket(iTicket);
+        }
     }
     uRetval += "]";
     return(uRetval);
@@ -96,28 +96,28 @@ string jOTOrderInformationByTicket(int iTicket) {
     uRetval = "{";
     iRetval = iOTOrderSelect(iTicket, SELECT_BY_TICKET, MODE_TRADES);
     if (iRetval <= 0) {
-	uReason = ErrorDescription(GetLastError());
-	vWarn("Select order failed " +
-	      " for order " + iTicket + ": " + uReason);
-	uRetval += StringFormat("\"status\": \"%s\", ", "failed");
-	uRetval += StringFormat("\"reason\": \"%s\"", uReason);
+        uReason = ErrorDescription(GetLastError());
+        vWarn("Select order failed " +
+              " for order " + iTicket + ": " + uReason);
+        uRetval += StringFormat("\"status\": \"%s\", ", "failed");
+        uRetval += StringFormat("\"reason\": \"%s\"", uReason);
     } else {
-	uRetval += StringFormat("\"ticket\": %i, ", OrderTicket());
-	uRetval += StringFormat("\"symbol\": \"%s\", ", OrderSymbol());
-	uRetval += StringFormat("\"status\": \"%s\", ", "ok");
-	uRetval += StringFormat("\"opentime\": %i, ", OrderOpenTime());
-	uRetval += StringFormat("\"type\": %i, ", OrderType());
-	uRetval += StringFormat("\"lots\": %f, ", OrderLots());
-	uRetval += StringFormat("\"openprice\": %f, ", OrderOpenPrice());
-	uRetval += StringFormat("\"stoploss\": %f, ", OrderStopLoss());
-	uRetval += StringFormat("\"takeprofit\": %f, ", OrderTakeProfit());
-	uRetval += StringFormat("\"closetime\": %i, ", OrderCloseTime());
-	uRetval += StringFormat("\"closeprice\": %f, ", OrderClosePrice());
-	uRetval += StringFormat("\"commission\": %f, ", OrderCommission());
-	uRetval += StringFormat("\"swap\": %f, ", OrderSwap());
-	uRetval += StringFormat("\"profit\": %f, ", OrderProfit());
-	uRetval += StringFormat("\"comment\": \"%s\", ", OrderComment());
-	uRetval += StringFormat("\"magicnumber\": %i", OrderMagicNumber());
+        uRetval += StringFormat("\"ticket\": %i, ", OrderTicket());
+        uRetval += StringFormat("\"symbol\": \"%s\", ", OrderSymbol());
+        uRetval += StringFormat("\"status\": \"%s\", ", "ok");
+        uRetval += StringFormat("\"opentime\": %i, ", OrderOpenTime());
+        uRetval += StringFormat("\"type\": %i, ", OrderType());
+        uRetval += StringFormat("\"lots\": %f, ", OrderLots());
+        uRetval += StringFormat("\"openprice\": %f, ", OrderOpenPrice());
+        uRetval += StringFormat("\"stoploss\": %f, ", OrderStopLoss());
+        uRetval += StringFormat("\"takeprofit\": %f, ", OrderTakeProfit());
+        uRetval += StringFormat("\"closetime\": %i, ", OrderCloseTime());
+        uRetval += StringFormat("\"closeprice\": %f, ", OrderClosePrice());
+        uRetval += StringFormat("\"commission\": %f, ", OrderCommission());
+        uRetval += StringFormat("\"swap\": %f, ", OrderSwap());
+        uRetval += StringFormat("\"profit\": %f, ", OrderProfit());
+        uRetval += StringFormat("\"comment\": \"%s\", ", OrderComment());
+        uRetval += StringFormat("\"magicnumber\": %i", OrderMagicNumber());
     }
     uRetval += "}";
     return(uRetval);

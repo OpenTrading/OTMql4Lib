@@ -12,18 +12,24 @@
 <p>There is now an installer in the Releases section on github:<br />
 <a href="https://github.com/OpenTrading/OTMql4Lib/releases">https://github.com/OpenTrading/OTMql4Lib/releases</a><br />
 It's a simple installer that asks where you want the software installed,<br />
-and the location of your <img src="{AppData" title="{AppData" alt="{AppData" /> Metatrader terminal directory,<br />
+and the location of your personal <tt>AppData</tt> Metatrader directory,<br />
 and copies the files to the right places; it installs a copy of the<br />
 documentation too.  Usually you could just overwrite old releases with<br />
-new ones, but for now we recommend unistalling old releases before<br />
-installing new ones in case the filenames have changed.</p>
+new ones, but for now, we recommend uninstalling old releases before<br />
+installing new ones in case the filenames or locations have changed.</p>
 
-<p>The location of your Metatrader directory to install into is no longer the<br />
-<tt>Program Files}} directory (something like {{{c:/Program Files/MetaTrader 4 Terminal/</tt>)<br />
+<p>If you have a recent (2016) release of Mt4, the location of your personal<br />
+Metatrader directory to install into is no longer the <tt>Program Files</tt><br />
+directory (something like <tt>c:\Program Files\MetaTrader 4 Terminal</tt>)<br />
 but rather your personal <tt>AppData</tt> directory (something like<br />
-<tt>c:\Users\Administrator\AppData\Roaming\MetaQuotes\Terminal\LONGHEXNANE</tt>).<br />
-When Setup asks you to select your existing Metatrader 4 folder in which Setup<br />
-should install MQL4 files, use the Browse button to select it, then click Next.</p>
+<tt>c:\Users\Administrator\AppData\Roaming\MetaQuotes\Terminal\LONGHEXNAME</tt>).</p>
+
+<p>When you start Metatrader, look for the <tt>Data Directory:</tt> message<br />
+in the Journal log.  Usually there are 2 possibilities: if you have a<br />
+subdirectory of your <tt>Users\AppData\Roaming\MetaQuotes\Terminal</tt> and<br />
+then a long hexadecimal name, use it. Otherwise look in <tt>c:\Program Files</tt><br />
+for the <tt>Metatrader directory</tt>.  Use the Browse button to select it,<br />
+then click Next.</p>
 
 <h3>Install from Source</h3>
 
@@ -31,7 +37,49 @@ should install MQL4 files, use the Browse button to select it, then click Next.<
 and unzip into an empty directory. Then recursively copy the folder<br />
 <tt>MQL4</tt> over the <tt>MQL4</tt> folder of your personal <tt>AppData...</tt> directory<br />
 (something like<br />
-<tt>c:\Users\Administrator\AppData\Roaming\MetaQuotes\Terminal\LONGHEXNANE</tt>).<br />
+<tt>c:\Users\Administrator\AppData\Roaming\MetaQuotes\Terminal\LONGHEXNAME</tt>).<br />
 It will not overwrite any system files, and keeps its files in subdirectories<br />
-called <tt>OTMql4</tt>.</p></body>
+called <tt>OTMql4</tt>.</p>
+
+<h4>New Mt4 Layout</h4>
+
+<p>From the <a href="Mt4 Files Documentation">https://docs.mql4.com/files</a> :</p>
+
+<p>There are two directories (with subdirectories) in which working files can be located:</p>
+
+<ul>
+	<li><tt>terminal_data_folder\MQL4\Files</tt> (in the terminal menu select to view "File" - "Open the data directory");</li>
+</ul>
+<ul>
+	<li>the common folder for all the terminals installed on a computer - usually located in the directory <tt>C:\Documents and Settings\All Users\Application Data\MetaQuotes\Terminal\Common\Files</tt>.</li>
+</ul>
+<p>There is a program method to obtain names of these catalogs using the<br />
+<tt>TerminalInfoString()</tt> function, using the <tt>ENUM_TERMINAL_INFO_STRING</tt><br />
+enumeration:</p>
+<table>
+<tr>
+	<td>TERMINAL_PATH</td>
+	<td>Folder from which the terminal is started</td>
+	<td>string</td>
+</tr>
+<tr>
+	<td>TERMINAL_DATA_PATH</td>
+	<td>Folder in which terminal data are stored</td>
+	<td>string</td>
+</tr>
+<tr>
+	<td>TERMINAL_COMMONDATA_PATH</td>
+	<td>Common path for all of the terminals installed on a computer</td>
+	<td>string</td>
+</tr>
+</table>
+<p>We have chosen to install to the <tt>TERMINAL_DATA_PATH</tt> to give people the<br />
+option of having multiple Mt4 installations, each configured differently.</p>
+
+<p>The long hex directory name is the md5 hash of the installation directory, then</p>
+<ul>
+	<li>convert path to uppercase with no trailing slash</li>
+	<li>convert to base64 string using unicode encoding</li>
+	<li>MD5 has the result from step 2See <a href="https://forum.mql4.com/60897/page2">https://forum.mql4.com/60897/page2</a></li>
+</ul></body>
 </html>

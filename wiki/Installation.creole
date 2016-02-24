@@ -4,18 +4,25 @@
 There is now an installer in the Releases section on github:
 https://github.com/OpenTrading/OTMql4Lib/releases
 It's a simple installer that asks where you want the software installed,
-and the location of your {{{AppData}} Metatrader terminal directory,
+and the location of your personal {{{AppData}}} Metatrader directory,
 and copies the files to the right places; it installs a copy of the
 documentation too.  Usually you could just overwrite old releases with
-new ones, but for now we recommend unistalling old releases before
-installing new ones in case the filenames have changed.
+new ones, but for now, we recommend uninstalling old releases before
+installing new ones in case the filenames or locations have changed.
 
-The location of your Metatrader directory to install into is no longer the
-{{{Program Files}} directory (something like {{{c:/Program Files/MetaTrader 4 Terminal/}}})
+If you have a recent (2016) release of Mt4, the location of your personal
+Metatrader directory to install into is no longer the {{{Program Files}}}
+directory (something like {{{c:\Program Files\MetaTrader 4 Terminal}}})
 but rather your personal {{{AppData}}} directory (something like
-{{{c:\Users\Administrator\AppData\Roaming\MetaQuotes\Terminal\LONGHEXNANE}}}).
-When Setup asks you to select your existing Metatrader 4 folder in which Setup
-should install MQL4 files, use the Browse button to select it, then click Next.
+{{{c:\Users\Administrator\AppData\Roaming\MetaQuotes\Terminal\LONGHEXNAME}}}).
+
+When you start Metatrader, look for the {{{Data Directory:}}} message
+in the Journal log.  Usually there are 2 possibilities: if you have a
+subdirectory of your {{{Users\AppData\Roaming\MetaQuotes\Terminal}}} and
+then a long hexadecimal name, use it. Otherwise look in {{{c:\Program Files}}}
+for the {{{Metatrader directory}}}.  Use the Browse button to select it,
+then click Next.
+
 
 === Install from Source ===
 
@@ -23,6 +30,32 @@ Alernatively, you can just "git clone" or download the zip from github.com
 and unzip into an empty directory. Then recursively copy the folder
 {{{MQL4}}} over the {{{MQL4}}} folder of your personal {{{AppData...}}} directory
 (something like
-{{{c:\Users\Administrator\AppData\Roaming\MetaQuotes\Terminal\LONGHEXNANE}}}).
+{{{c:\Users\Administrator\AppData\Roaming\MetaQuotes\Terminal\LONGHEXNAME}}}).
 It will not overwrite any system files, and keeps its files in subdirectories
 called {{{OTMql4}}}.
+
+==== New Mt4 Layout ====
+
+From the [[Mt4 Files Documentation|https://docs.mql4.com/files]] :
+
+There are two directories (with subdirectories) in which working files can be located:
+
+* {{{terminal_data_folder\MQL4\Files}}} (in the terminal menu select to view "File" - "Open the data directory");
+
+* the common folder for all the terminals installed on a computer - usually located in the directory {{{C:\Documents and Settings\All Users\Application Data\MetaQuotes\Terminal\Common\Files}}}.
+
+There is a program method to obtain names of these catalogs using the
+{{{TerminalInfoString()}}} function, using the {{{ENUM_TERMINAL_INFO_STRING}}}
+enumeration:
+| TERMINAL_PATH | Folder from which the terminal is started | string |
+| TERMINAL_DATA_PATH | Folder in which terminal data are stored | string |
+| TERMINAL_COMMONDATA_PATH | Common path for all of the terminals installed on a computer | string |
+
+We have chosen to install to the {{{TERMINAL_DATA_PATH}}} to give people the
+option of having multiple Mt4 installations, each configured differently.
+
+The long hex directory name is the md5 hash of the installation directory, then
+*   convert path to uppercase with no trailing slash
+*   convert to base64 string using unicode encoding
+*   MD5 has the result from step 2
+See https://forum.mql4.com/60897/page2

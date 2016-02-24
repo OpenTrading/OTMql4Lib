@@ -10,19 +10,19 @@
 <h3>MQL4/Libraries/OTMql4/OTLibServerErrors.mq4</h3>
 
 <p>One of the many fundamental defects of the Mql4 language<br />
-is that there is no Object Oriented error handling.</p>
-
-<p>This leads to Mq4 returning hundreds of different errors<br />
+is that there is no Object Oriented error handling.<br />
+This leads to Mq4 returning hundreds of different errors<br />
 that are not grouped so that we can take actions based<br />
-on classes of errors.</p>
-
-<p>We try to group the large number of errors into 9 groups<br />
+on classes of errors.<br />
+We try to group the large number of errors into 9 groups<br />
 so that we can for example retry a trade when there is<br />
 some kind of network error.</p>
 
 <p><tt>bool bOTLibServerErrorIsContinuable(int iErr) </tt></p>
 
-<p><tt>bool bOTLibServerErrorType(int iErr) </tt></p>
+<p><tt>bool bOTLibServerErrorType(int iErr) </tt><br />
+    Group the errors returned from trade server<br />
+    so that we can take action based on classes of errors.</p>
 
 <p>Source code: <a href="MQL4/Libraries/OTMql4/OTLibServerErrors.mq4">https://github.com/OpenTrading/OTMql4Lib/raw/master/MQL4/Libraries/OTMql4/OTLibServerErrors.mq4</a></p>
 

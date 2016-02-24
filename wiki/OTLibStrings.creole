@@ -2,11 +2,9 @@
 
 
 Miscellaneous functions that help handling strings.
-
 This includes Ansi to Unicode "issues".
 
-
-{{{string uAnsi2Unicode(int ptrStringMemory) }}}
+{{{string uAnsi2Unicode(int iStringMemory) }}}
 
 {{{void vStringToArray(string uInput, string& uOutput[], string uDelim) }}}
 

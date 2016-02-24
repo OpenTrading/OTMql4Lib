@@ -24,12 +24,12 @@ extern bool bTestOTLibProcessCmd=true;
 double fEps=0.000001;
 
 void vAlert(string uText) {
-  MessageBox(uText, "OTLibTest.mq4", MB_OK|MB_ICONEXCLAMATION);
+    MessageBox(uText, "OTLibTest.mq4", MB_OK|MB_ICONEXCLAMATION);
 }
 
 string eTestStrings() {
     //  Test our parsing of strings with vStringToArray
-    //  
+    //
     int iErr = 0;
     string uRetval = "";
     string uArg;
@@ -37,18 +37,18 @@ string eTestStrings() {
 
     uArg = "one";
     vStringToArray(uArg, aOutput, "|");
-    if (ArraySize(aOutput) == 1) { 
-	Print("INFO: ArraySize(aOutput) == 1 -> " +uArg);
+    if (ArraySize(aOutput) == 1) {
+        Print("INFO: ArraySize(aOutput) == 1 -> " +uArg);
     } else {
-	return("ERROR: ArraySize(aOutput) != 1 -> " +uArg);
+        return("ERROR: ArraySize(aOutput) != 1 -> " +uArg);
     }
-    
+
     uArg = "one|two|three";
     vStringToArray(uArg, aOutput, "|");
-    if (ArraySize(aOutput) == 3) { 
-	Print("INFO: ArraySize(aOutput) == 3 -> " +uArg);
+    if (ArraySize(aOutput) == 3) {
+        Print("INFO: ArraySize(aOutput) == 3 -> " +uArg);
     } else {
-	return("ERROR: ArraySize(aOutput) != 3 -> " +uArg);
+        return("ERROR: ArraySize(aOutput) != 3 -> " +uArg);
     }
     return("");
 }
@@ -59,22 +59,22 @@ string eTestOTLibProcessCmd() {
     string uArg;
     string aOutput[];
     string uExpect;
-    
+
     uArg = "one";
     uRetval = zOTLibProcessCmd(uArg);
-    if (uRetval == "") { 
-	Print("INFO: GOOD there be an error message in the Experts Log -> " +uArg);
+    if (StringCompare(uRetval, "") == 0) {
+        Print("INFO: GOOD there be an error message in the Experts Log -> " +uArg);
     } else {
-	return("ERROR: should NOT have returned a value -> " +uRetval);
+        return("ERROR: should NOT have returned a value -> " +uRetval);
     }
-    
+
     uArg = "exec|USDUSD|0|123456|TerminalPath";
     uRetval = zOTLibProcessCmd(uArg);
     uExpect = "123456|string|" +TerminalPath();
-    if (uRetval == uExpect) { 
-	Print("INFO: GOOD right answer -> " +uArg);
+    if (uRetval == uExpect) {
+        Print("INFO: GOOD right answer -> " +uArg);
     } else {
-	return("ERROR: wrong return value -> " +uRetval);
+        return("ERROR: wrong return value -> " +uRetval);
     }
     return("");
 }
@@ -85,22 +85,22 @@ void OnStart() {
     if ( bTestStrings == true ) {
         uRetval = eTestStrings();
         if (uRetval != "") {
-	    vAlert(uRetval);
-	} else {
-	    i = i + 1;
-	}
+            vAlert(uRetval);
+        } else {
+            i = i + 1;
+        }
     }
     if ( bTestOTLibProcessCmd == true ) {
         uRetval = eTestOTLibProcessCmd();
         if (uRetval != "") {
-	    vAlert(uRetval);
-	} else {
-	    i = i + 1;
-	}
+            vAlert(uRetval);
+        } else {
+            i = i + 1;
+        }
     }
     if ( i > 0 ) {
-	uRetval = "INFO: tests completed";
-	vAlert(uRetval);
+        uRetval = "INFO: tests completed";
+        vAlert(uRetval);
     }
 }
 

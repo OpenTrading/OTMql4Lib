@@ -30,10 +30,6 @@ It's better to use the wiki for knowledge capture, and then we can pull the
 important pages back into the documentation in the {{{share/doc}}} directory.
 You will need to be signed into github.com to edit in the wiki.
 
-* [[Libraries|https://github.com/OpenTrading/OTMql4Lib/wiki/Libraries]]
-* [[Scripts|https://github.com/OpenTrading/OTMql4Lib/wiki/Scripts]]
-* [[DevelopmentStyle|https://github.com/OpenTrading/OTMql4Lib/wiki/DevelopmentStyle]]
-
 * [[Home|https://github.com/OpenTrading/OTMql4Lib/wiki/Home]]
 
 * [[TitleIndex|https://github.com/OpenTrading/OTMql4Lib/wiki/TitleIndex]]

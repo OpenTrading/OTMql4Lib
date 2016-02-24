@@ -37,22 +37,22 @@ void vSetLogLevel(int i) {
 }
 
 int iGetLogLevel() {
-  int iDebugLevel;
-  double fDebugLevel;
+    int iDebugLevel;
+    double fDebugLevel;
 
-  fDebugLevel = GlobalVariableGet("fDebugLevel");
-  if (fDebugLevel < fEPSILON) {
-    iDebugLevel = iDefaultLoglevel;
-    GlobalVariableSet("fDebugLevel", iDebugLevel);
-  } else {
-    iDebugLevel = MathRound(fDebugLevel);
-  }
-  return(iDebugLevel);
+    fDebugLevel = GlobalVariableGet("fDebugLevel");
+    if (fDebugLevel < fEPSILON) {
+	iDebugLevel = iDefaultLoglevel;
+	GlobalVariableSet("fDebugLevel", iDebugLevel);
+    } else {
+	iDebugLevel = MathRound(fDebugLevel);
+    }
+    return(iDebugLevel);
 }
 
 void vLog(int iLevel, string sMess) {
     if (iLevel <= iGetLogLevel() ) {
-	Print(sMess);
+        Print(sMess);
     }
 }
 

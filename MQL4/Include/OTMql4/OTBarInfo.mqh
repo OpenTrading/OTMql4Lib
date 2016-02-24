@@ -19,11 +19,11 @@ string uBarInfo() {
   string sInfo;
 
   sInfo="iMACD="+iMACD(NULL, 0, iFastEMA, iSlowEMA, iSignalSMA,
-		       PRICE_CLOSE, MODE_MAIN,0);
+                       PRICE_CLOSE, MODE_MAIN,0);
   sInfo=sInfo+",iMA="+iMA(NULL, 0 , iFastEMA, 0, MODE_LWMA, PRICE_MEDIAN, 0);
   sInfo=sInfo+",iStochasticMain="+iStochastic(NULL, 0, iStochKperiod, iStochDperiod, iStochSlowing,
-					      MODE_SMA,0,MODE_MAIN,0);
+                                              MODE_SMA,0,MODE_MAIN,0);
   sInfo=sInfo+",iStochasticSignal="+iStochastic(NULL, 0, iStochKperiod, iStochDperiod, iStochSlowing,
-						MODE_SMA,0,MODE_SIGNAL,0);
+                                                MODE_SMA,0,MODE_SIGNAL,0);
   return (sInfo);
 }

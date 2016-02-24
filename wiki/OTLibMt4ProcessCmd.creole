@@ -2,8 +2,6 @@
 
 
 
-
-
 {{{string zOTLibMt4ProcessCmd(string uMess) }}}
     This is the replacement for what should be Eval in Mt4:
     take a string expression and evaluate it.

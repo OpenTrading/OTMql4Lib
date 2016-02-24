@@ -3,14 +3,11 @@
 
 This is the replacement for what should be Eval in Mt4:
 it takes a string expression and evaluates it.
-
 I know this is verbose and could be done more compactly,
 but it's clean and robust so I'll leave it like this for now.
-
 If you want to extend this for your own functions you have declared in Mql4,
 look at how OTLibProcessCmd.mq4 calls zMt4LibProcessCmd and then
 goes on and handles it if zMt4LibProcessCmd didn't.
-
 
 {{{string zOTLibSimpleFormatCmd(string uType, string uChartId, int iIgnore, string uMark, string uCmd) }}}
     uType is cmd or exec
@@ -27,13 +24,11 @@ goes on and handles it if zMt4LibProcessCmd didn't.
     uType should be one of: tick or timer
     Both will be put on the wire as a their type topics.
     If uType is not tick timer or bar, then "" is returned to signal failure.
-    
 
 {{{string zOTLibSimpleFormatTick(string uType, string uChartId, int iIgnore, string uMark, string uInfo) }}}
     uType should be one of: tick or timer
     Both will be put on the wire as a their type topics.
     If  uType is not tick timer or bar, then "" is returned to signal failure.
-    
 
 {{{string zOTLibSimpleFormatRetval(string uType, string uChartId, int iIgnore, string uMark, string uInfo) }}}
     uType should be one of: retval

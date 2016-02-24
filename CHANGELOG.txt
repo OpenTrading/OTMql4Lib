@@ -1,3 +1,8 @@
+commit c6384c252926ef06ccda0a4d7e16765a1948f141
+Date:   Tue Feb 23 16:40:57 2016 +0200
+
+    Tagged 1.1.0.0
+
 commit 0fd99b1870146d596c652a3a8fccd23a2421607e
 Date:   Tue Feb 23 16:35:15 2016 +0200
 

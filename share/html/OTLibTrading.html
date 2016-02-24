@@ -20,7 +20,9 @@
 
 <p><tt>int iOTSetTradeIsBusy( int iMaxWaitingSeconds = 60 ) </tt></p>
 
-<p><tt>int iOTSetTradeIsNotBusy() </tt></p>
+<p><tt>int iOTSetTradeIsNotBusy() </tt><br />
+    The function sets the value of the global variable fTradeIsBusy = 0.<br />
+    If the fTradeIsBusy does not exist, the function creates it.</p>
 
 <p><tt>double fOTExposedEcuInMarket(int iOrderEAMagic = 0) </tt></p>
 

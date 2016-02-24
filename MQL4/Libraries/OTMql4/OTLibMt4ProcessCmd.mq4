@@ -2,10 +2,10 @@
 
 // This is the replacement for what should be Eval in Mt4:
 // take a string expression and evaluate it.
-//  
+//
 // We know this is verbose and could be done more compactly,
 // but it's clean and robust so we'll leave it like this for now.
-//  
+//
 // If you want to extend this for your own functions you have declared in Mql4,
 // look at how zOTLibProcessCmd calls zMt4LibProcessCmd in OTLibProcessCmd.mq4.
 
@@ -34,7 +34,7 @@ string zOTLibMt4ProcessCmd(string uMess) {
     //  you can use this fact to process the standard Mt4 commands
     //  with zOTLibMt4ProcessCmd,  and if it returns "",
     //  write your own zMyProcessCmd to process your additions.
-					       
+
     string uType, uChartId, uIgnore, uMark, uCmd, uMsg;
     string uArg1="";
     string uArg2="";
@@ -50,7 +50,7 @@ string zOTLibMt4ProcessCmd(string uMess) {
     iLen =  StringLen(uMess);
     if (iLen <= 0) {
         vError("eOTLibProcessCmd: empty input");
-	return("");
+        return("");
     }
 
     vStringToArray(uMess, aArrayAsList, "|");
@@ -81,11 +81,11 @@ string zOTLibMt4ProcessCmd(string uMess) {
 
     if (StringFind(uCmd, "|", 0) >= 0) {
         uMsg="Found separator in command";
-	vWarn(uMsg);
+        vWarn(uMsg);
         uRetval=uMark+"|error|"+uMsg;
-	return(uRetval);
+        return(uRetval);
     }
-    
+
     if (uCmd == "OrdersTotal") { //0
         uRetval = "int|" +IntegerToString(OrdersTotal());
     } else if (uCmd == "Period") { //0
@@ -116,7 +116,7 @@ string zOTLibMt4ProcessCmd(string uMess) {
         uRetval = zProcessCmdGlo(uCmd, uChartId, uIgnore, uArg1, uArg2, uArg3, uArg4, uArg5);
     }
 
-    if (uRetval == "") {
+    if (StringCompare(uRetval, "") == 0) {
         //vTrace("zMt4LibProcessCmd: UNHANDELED" +uKey +" uCmd: " +uCmd);
         return("");
     }
@@ -124,7 +124,7 @@ string zOTLibMt4ProcessCmd(string uMess) {
 
     // WE INCLUDE THE SMARK
     uRetval = uMark + "|" + uRetval;
-    
+
     return(uRetval);
 }
 
@@ -137,7 +137,7 @@ string zProcessCmdTer(string uCmd, string uChartId, string uIgnore, string uArg1
     } else if (uCmd == "TerminalName") { //0
         uRetval = "string|" +TerminalName();
     } else if (uCmd == "TerminalInfoString") { //1
-	// groan - does everything coerce?
+        // groan - does everything coerce?
         uRetval = "string|" +(string)TerminalInfoString(uArg1);
     } else if (uCmd == "TerminalPath") { //0
         uRetval = "string|" +TerminalPath();
@@ -271,24 +271,24 @@ string zProcessCmdGlo(string uCmd, string uChartId, string uIgnore, string uArg1
         sName = uArg1;
         iValue = StringToInteger(uArg2); //FixMe: datetime
         //FixMe uRetval = "bool|" +GlobalVariableDeleteAll(sName, iValue);
-	uRetval = "bool|false";
+        uRetval = "bool|false";
     } else if (uCmd == "GlobalVariableGet") {
         // assert
         sName = uArg1;
         uRetval = "double|" +DoubleToStr(GlobalVariableGet(sName), 6);
-	// overloaded
+        // overloaded
     } else if (uCmd == "GlobalVariableName") {
         // assert
         iValue = StringToInteger(uArg1);
         uRetval = "string|" +GlobalVariableName(iValue);
-	// overloaded but we cant pass pointers
+        // overloaded but we cant pass pointers
     } else if (uCmd == "GlobalVariableSet") {
         // assert
         sName = uArg1;
         fValue = StrToDouble(uArg2);
         uRetval = "double|" +DoubleToStr(GlobalVariableSet(sName, fValue), 6);
     } else {
-	// GlobalVariableSetOnCondition
+        // GlobalVariableSetOnCondition
         uMsg = "Unrecognized action: ";
         vWarn("zProcessCmdGlo: " +uMsg +uCmd);
         uRetval = "";

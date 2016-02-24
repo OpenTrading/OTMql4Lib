@@ -8,7 +8,6 @@ This is simple string formatting: a JSON structure or class is never used.
     Retrieve the Account information as a JSON structure.
     This brings back all of the ususal Account* calls,
     with the values formatted as strings, intergers or floats.
-    
 
 {{{string jOTOrdersTickets() }}}
 

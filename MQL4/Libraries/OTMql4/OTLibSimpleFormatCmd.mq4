@@ -6,14 +6,14 @@
 
 //  This is the replacement for what should be Eval in Mt4:
 //  it takes a string expression and evaluates it.
-//  
+//
 //  I know this is verbose and could be done more compactly,
 //  but it's clean and robust so I'll leave it like this for now.
-//  
+//
 //  If you want to extend this for your own functions you have declared in Mql4,
 //  look at how OTLibProcessCmd.mq4 calls zMt4LibProcessCmd and then
 //  goes on and handles it if zMt4LibProcessCmd didn't.
-//  
+//
 
 #include <stdlib.mqh>
 #include <stderror.mqh>
@@ -54,7 +54,7 @@ string zOTLibSimpleFormatTimer(string uType, string uChartId, int iIgnore, strin
     //  uType should be one of: tick or timer
     //  Both will be put on the wire as a their type topics.
     //  If uType is not tick timer or bar, then "" is returned to signal failure.
-    //  
+    //
     string uRetval;
     if (uType != "timer") {
         return("");
@@ -68,7 +68,7 @@ string zOTLibSimpleFormatTick(string uType, string uChartId, int iIgnore, string
     //  uType should be one of: tick or timer
     //  Both will be put on the wire as a their type topics.
     //  If  uType is not tick timer or bar, then "" is returned to signal failure.
-    //  
+    //
     string uRetval;
     if (uType != "tick") {
         return("");
@@ -88,11 +88,11 @@ string zOTLibSimpleFormatRetval(string uType, string uChartId, int iIgnore, stri
         return("");
     }
     if (uMark == "") {
-	// Its already included in uInfo
-	uRetval = StringFormat("%s|%s|%d|%s", uType, uChartId, iIgnore, uInfo);
-    } else {	
+        // Its already included in uInfo
+        uRetval = StringFormat("%s|%s|%d|%s", uType, uChartId, iIgnore, uInfo);
+    } else {
     // FixMe: uBAR
-	uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, iIgnore, uMark, uInfo);
+        uRetval = StringFormat("%s|%s|%d|%s|%s", uType, uChartId, iIgnore, uMark, uInfo);
     }
     return(uRetval);
 }
@@ -155,12 +155,12 @@ string eOTLibSimpleUnformatCmd(string& aArrayAsList[]) {
                     uArg4 = StringTrimRight(aArrayAsList[8]);
                     if (iLen > 9) {
                         uArg5 = StringTrimRight(aArrayAsList[9]);
-			if (iLen > 10) {
-			    uArg6 = StringTrimRight(aArrayAsList[10]);
-			    if (iLen > 11) {
-				uArg7 = StringTrimRight(aArrayAsList[11]);
-			    }
-			}
+                        if (iLen > 10) {
+                            uArg6 = StringTrimRight(aArrayAsList[10]);
+                            if (iLen > 11) {
+                                uArg7 = StringTrimRight(aArrayAsList[11]);
+                            }
+                        }
                     }
                 }
             }
